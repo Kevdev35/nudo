@@ -1,0 +1,7 @@
+{
+	"files.associations": {
+		"*.css": "tailwindcss"
+	},
+	"editor.fontFamily": "JetBrains Mono",
+	"editor.fontLigatures": true
+}
