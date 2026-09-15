@@ -29,3 +29,9 @@ vite.config.ts.timestamp-*
 *.sqlite
 *.sqlite3
 *.sqlite3-journal
+
+tokens.json
+
+*.css.bak
+
+
