@@ -281,7 +281,7 @@
   }
 
   .page-toolbar h1 {
-    font-size: clamp(22px, 2.6vw, 28px);
+    font-size: clamp(26px, 3vw, 34px);
     font-weight: 800;
     color: var(--nudo-text-primary);
     margin: 0;
@@ -332,7 +332,7 @@
     margin-bottom: 18px;
   }
   .dialog-header h2 {
-    font-size: 19px;
+    font-size: 21px;
     font-weight: 800;
     color: var(--nudo-text-primary);
     margin: 0;
@@ -341,14 +341,14 @@
   .dialog-form { display: flex; flex-direction: column; gap: 16px; }
 
   .field { display: flex; flex-direction: column; gap: 8px; }
-  .field > span { font-size: 13px; font-weight: 600; color: var(--nudo-text-secondary); }
+  .field > span { font-size: 14px; font-weight: 600; color: var(--nudo-text-secondary); }
 
   .field textarea {
     border: 1px solid var(--nudo-border);
     border-radius: var(--nudo-radius-md);
     padding: 14px 16px;
     font-family: inherit;
-    font-size: 14px;
+    font-size: 15px;
     color: var(--nudo-text-primary);
     resize: vertical;
     min-height: 90px;
@@ -401,7 +401,7 @@
 
   .note-text {
     flex: 1;
-    font-size: 14.5px;
+    font-size: 16px;
     line-height: 1.5;
     color: var(--nudo-text-primary);
     margin: 0;
@@ -443,7 +443,7 @@
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 13.5px;
+    font-size: 14.5px;
     font-weight: 700;
     color: var(--nudo-text-secondary);
     padding: 6px 4px;
@@ -467,8 +467,8 @@
     color: var(--nudo-text-secondary);
   }
   .empty-state i { font-size: 26px; color: var(--nudo-text-tertiary); margin-bottom: 4px; }
-  .empty-state p { margin: 0; font-size: 14px; font-weight: 600; color: var(--nudo-text-primary); }
-  .empty-sub { font-weight: 400 !important; font-size: 13px !important; color: var(--nudo-text-secondary) !important; }
+  .empty-state p { margin: 0; font-size: 15px; font-weight: 600; color: var(--nudo-text-primary); }
+  .empty-sub { font-weight: 400 !important; font-size: 14px !important; color: var(--nudo-text-secondary) !important; }
 
   @media (prefers-reduced-motion: reduce) {
     .completed-toggle i { transition: none; }

@@ -2,7 +2,7 @@ import type { ProjectRepository } from "@ports/project-repository";
 import type { ProjectStatus } from "@entities/project-entity";
 
 export function createUpdateProjectUseCase(projectRepo: ProjectRepository){
-    return async (userId: string, projectId: string, data: { name?: string; description?: string | null; status?: ProjectStatus; budget?: number | null }) => {
+    return async (userId: string, projectId: string, data: { name?: string; description?: string | null; status?: ProjectStatus; budget?: number | null; client_id?: string | null }) => {
         const searchProject = await projectRepo.findById(projectId);
 
         if (!searchProject) {

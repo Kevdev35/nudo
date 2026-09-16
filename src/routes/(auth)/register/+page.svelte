@@ -3,6 +3,8 @@
 	import type { ActionData } from './$types';
 	import Button from '@components/Button.svelte';
 
+  import Logo from "@ui/components/Logo.svelte"
+
 	let { form }: { form: ActionData } = $props();
 
 	// Estado reactivo de Svelte 5 para el submit
@@ -25,22 +27,21 @@
         </div>
 
     <div class="absolute top-6 right-8 z-10">
-		<p class="text-4xl font-extrabold tracking-tight">NUDO</p>
+		<Logo showBadge={false}/>
 	</div>
 
 	<!-- Columna Formulario -->
 	<div class="relative w-full flex flex-col justify-center items-center px-4 py-8">
-        
-		<div class="w-full bg-white max-w-md bg-surface border border-border-default rounded-3xl shadow-tokens-shadows-card p-8">
-        	<!-- Columna Background -->
+
+		<div class="w-full max-w-md bg-nudo-bg border border-nudo-border rounded-3xl shadow-lg p-8">
 			<div class="text-center mb-8">
-				<h1 class="text-4xl font-bold">Registrarse</h1>
-				<p class="text-lg text-[#767676] mt-2">Bienvenido a NUDO</p>
+				<h1 class="text-3xl font-extrabold text-nudo-text-primary">Registrarse</h1>
+				<p class="text-sm text-nudo-text-secondary mt-2">Bienvenido a NUDO</p>
 			</div>
 
 			{#if form?.error}
-				<div class="mb-6 p-3 rounded-tokens-border-radius-md bg-status-error-bg text-white bg-[#830c1f] text-md rounded-3xl">
-					<i class="ri-error-warning-line text-xl items-center"></i> {form.error}
+				<div class="mb-6 p-3 rounded-2xl bg-red-500/10 text-red-500 text-sm font-medium flex items-center gap-2">
+					<i class="ri-error-warning-line text-lg"></i> {form.error}
 				</div>
 			{/if}
 
@@ -53,21 +54,24 @@
 						loading = false;
 					};
 				}}
-				class="flex flex-col gap-5"
+				class="flex flex-col gap-4"
 			>
-				<div class="flex flex-col gap-1.5">
-                    <label for="name" class="text-lg font-bold text-content-secondary">
-                        Nombre
-                        <input
-                            id="name"
-                            name="name"
-                            type="text"
-                            value=""
-                            placeholder="ej. Jhon Doe"
-                            class="w-full px-5 py-4 bg-surface-container border border-border-default rounded-3xl text-content-primary placeholder:text-content-muted focus:outline-none focus:shadow-tokens-shadows-input-focus transition-shadow"
-                        />
-                    </label>
-					<label for="email" class="text-lg font-bold text-content-secondary">
+				<div class="flex flex-col gap-2">
+					<label for="name" class="text-sm font-semibold text-nudo-text-secondary">
+						Nombre
+					</label>
+					<input
+						id="name"
+						name="name"
+						type="text"
+						value=""
+						placeholder="ej. Jhon Doe"
+						class="w-full px-4 py-3.5 bg-nudo-surface border border-nudo-border rounded-2xl text-[15px] text-nudo-text-primary placeholder:text-nudo-text-tertiary focus:outline-none focus:border-nudo-accent transition-colors"
+					/>
+				</div>
+
+				<div class="flex flex-col gap-2">
+					<label for="email" class="text-sm font-semibold text-nudo-text-secondary">
 						Email
 					</label>
 					<input
@@ -77,12 +81,12 @@
 						required
 						value=""
 						placeholder="tu@email.com"
-						class="w-full px-5 py-4 bg-surface-container border border-border-default rounded-3xl text-content-primary placeholder:text-content-muted focus:outline-none focus:shadow-tokens-shadows-input-focus transition-shadow"
+						class="w-full px-4 py-3.5 bg-nudo-surface border border-nudo-border rounded-2xl text-[15px] text-nudo-text-primary placeholder:text-nudo-text-tertiary focus:outline-none focus:border-nudo-accent transition-colors"
 					/>
 				</div>
 
-				<div class="flex flex-col gap-1.5">
-					<label for="password" class="text-lg font-bold text-content-secondary">
+				<div class="flex flex-col gap-2">
+					<label for="password" class="text-sm font-semibold text-nudo-text-secondary">
 						Contraseña
 					</label>
 					<input
@@ -91,18 +95,18 @@
 						type="password"
 						required
 						placeholder="••••••••"
-						class="w-full px-5 py-4 bg-surface-container border border-border-default rounded-3xl text-content-primary placeholder:text-content-muted focus:outline-none focus:shadow-tokens-shadows-input-focus transition-shadow"
+						class="w-full px-4 py-3.5 bg-nudo-surface border border-nudo-border rounded-2xl text-[15px] text-nudo-text-primary placeholder:text-nudo-text-tertiary focus:outline-none focus:border-nudo-accent transition-colors"
 					/>
 				</div>
 
-				<Button type="submit" icon="ri-login-box-line" disabled={loading} class="text-center">
+				<Button type="submit" icon="ri-login-box-line" disabled={loading} class="text-center mt-2">
 					{loading ? 'Registrando...' : 'Registrarse'}
 				</Button>
 			</form>
 
-			<p class="text-center text-sm text-content-muted mt-6">
+			<p class="text-center text-sm text-nudo-text-tertiary mt-6">
 				¿Ya tienes una cuenta?
-				<a href="/login" class="text-brand-primary hover:text-brand-primary-hover transition-colors hover:text-[#767676]">
+				<a href="/login" class="text-nudo-accent font-semibold hover:opacity-80 transition-opacity">
 					Iniciar sesión
 				</a>
 			</p>

@@ -147,7 +147,7 @@
     }
 
     .page-general h1 {
-        font-size: clamp(22px, 2.6vw, 28px);
+        font-size: clamp(26px, 3vw, 34px);
         font-weight: 800;
         color: var(--nudo-text-primary);
         margin: 0;
@@ -190,27 +190,27 @@
     }
 
     .stat-label {
-        font-size: 13px;
+        font-size: 14px;
         font-weight: 600;
         color: var(--nudo-text-secondary);
         margin: 0 0 2px;
     }
     .stat-value {
-        font-size: 28px;
+        font-size: 32px;
         font-weight: 800;
         color: var(--nudo-text-primary);
         margin: 0;
         line-height: 1.1;
     }
     .stat-sub {
-        font-size: 12px;
+        font-size: 13px;
         color: var(--nudo-text-tertiary);
         margin: 5px 0 0;
     }
 
     /* ---------- Activity ---------- */
     .activity-block h2 {
-        font-size: 15px;
+        font-size: 16px;
         font-weight: 700;
         color: var(--nudo-text-secondary);
         margin: 0 0 10px;
@@ -259,7 +259,7 @@
         flex-direction: column;
     }
     .activity-title {
-        font-size: 14px;
+        font-size: 15px;
         font-weight: 600;
         color: var(--nudo-text-primary);
         margin: 0;
@@ -268,7 +268,7 @@
         text-overflow: ellipsis;
     }
     .activity-type {
-        font-size: 12px;
+        font-size: 13px;
         color: var(--nudo-text-tertiary);
         margin: 1px 0 0;
         text-transform: capitalize;
@@ -284,7 +284,7 @@
 
     .activity-time {
         flex-shrink: 0;
-        font-size: 12.5px;
+        font-size: 13.5px;
         color: var(--nudo-text-tertiary);
     }
 
@@ -302,8 +302,8 @@
         color: var(--nudo-text-secondary);
     }
     .empty-state i { font-size: 26px; color: var(--nudo-text-tertiary); margin-bottom: 4px; }
-    .empty-state p { margin: 0; font-size: 14px; font-weight: 600; color: var(--nudo-text-primary); }
-    .empty-sub { font-weight: 400 !important; font-size: 13px !important; color: var(--nudo-text-secondary) !important; }
+    .empty-state p { margin: 0; font-size: 15px; font-weight: 600; color: var(--nudo-text-primary); }
+    .empty-sub { font-weight: 400 !important; font-size: 14px !important; color: var(--nudo-text-secondary) !important; }
 
     @media (max-width: 760px) {
         .stats-grid { grid-template-columns: repeat(2, 1fr); }

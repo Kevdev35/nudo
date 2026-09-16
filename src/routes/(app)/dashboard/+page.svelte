@@ -1,98 +1,113 @@
 <script lang="ts">
-    import type {PageData} from "./$types"
+    import type { PageData } from "./$types"
     import Button from '@components/Button.svelte'
 
-    import Navbar from "@ui/components/Navbar.svelte";
-    let { data }: { data: PageData} = $props()
+    let { data }: { data: PageData } = $props()
     let dialogRef: HTMLDialogElement = $state() as HTMLDialogElement
 
-    function openModal() {
-        dialogRef.showModal()
+    function openModal() { dialogRef.showModal() }
+    function closeModal() { dialogRef.close() }
+
+    function formatBudget(amount: number | null): string {
+        if (!amount) return '—';
+        return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(amount);
     }
 
-    function closeModal() {
-        dialogRef.close()
+    function formatDate(d: Date | string): string {
+        return new Date(d).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' });
     }
-
 </script>
 
-<section>
+<div class="flex items-center justify-between flex-wrap gap-4">
+    <h1 class="text-nudo-text-primary font-extrabold tracking-tight m-0" style="font-size:clamp(26px,3vw,34px)">
+        Mis proyectos
+    </h1>
+    <div class="flex items-center gap-1.5 mb-4">
+        <a href="/clients"
+            class="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full border border-nudo-border bg-transparent text-nudo-text-primary text-sm font-semibold no-underline hover:bg-nudo-surface hover:border-nudo-text-tertiary transition-all duration-150">
+            <i class="ri-team-line" aria-hidden="true"></i> Ver clientes
+        </a>
+        <Button onclick={openModal}>
+            <i class="ri-add-line" aria-hidden="true"></i> Nuevo proyecto
+        </Button>
+    </div>
+</div>
 
-    <Navbar {data}/>
-
-    <div class="flex gap-2 justify-between px-10">
-
-        <div class="flex">
-            <h2 class="font-bold text-5xl flex items-center">Mis proyectos</h2>
-        </div>
-
-        <div>
-            <a href="/clients" class="py-5 px-7 rounded-3xl text-amber-50 bg-black">Ver clientes</a>
-
-            <Button onclick={openModal}>
-                <i class="ri-add-line text-lg"></i> Nuevo proyecto
-            </Button>
-        </div>
+<dialog
+    bind:this={dialogRef}
+    onclick={(e) => e.target === dialogRef && closeModal()}
+    class="fixed inset-0 m-auto max-w-md w-full p-7 border-none rounded-3xl bg-nudo-bg shadow-2xl backdrop:bg-black/40"
+>
+    <div class="flex items-center justify-between mb-5">
+        <h2 class="text-xl font-extrabold text-nudo-text-primary m-0">Crear nuevo proyecto</h2>
+        <button onclick={closeModal} class="icon-btn cursor-pointer" aria-label="Cerrar"><i class="ri-close-line" aria-hidden="true"></i></button>
     </div>
 
-    
-    <dialog
-        bind:this={dialogRef}
-        onclick={(e) => e.target === dialogRef && closeModal()}
-        class="fixed inset-0 m-auto max-w-md w-full py-8 px-10 rounded-3xl bg-white shadow-xl backdrop:bg-black/50"
-    >
-        <div class="flex items-center justify-between">
-            <h2 class="text-3xl font-bold">Crear nuevo proyecto</h2>
-            <button onclick={closeModal} class="cursor-pointer text-gray-500 hover:text-black text-2xl"><i class="ri-close-line"></i></button>
+    <form method="POST" action="?/createProject" class="flex flex-col gap-4">
+        <label class="flex flex-col gap-2">
+            <span class="text-sm font-semibold text-nudo-text-secondary">Nombre</span>
+            <input name="name" type="text" required placeholder="Nombre del proyecto"
+                class="border border-nudo-border rounded-2xl px-4 py-3.5 text-[15px] text-nudo-text-primary bg-nudo-bg focus:outline-none focus:border-nudo-accent" />
+        </label>
+        <label class="flex flex-col gap-2">
+            <span class="text-sm font-semibold text-nudo-text-secondary">Descripción</span>
+            <textarea name="description" rows="3" placeholder="Describe el proyecto..."
+                class="border border-nudo-border rounded-2xl px-4 py-3.5 text-[15px] text-nudo-text-primary bg-nudo-bg focus:outline-none focus:border-nudo-accent resize-none"></textarea>
+        </label>
+        <label class="flex flex-col gap-2">
+            <span class="text-sm font-semibold text-nudo-text-secondary">Cliente</span>
+            <select name="clientId"
+                class="border border-nudo-border rounded-2xl px-4 py-3.5 text-[15px] text-nudo-text-primary bg-nudo-bg focus:outline-none focus:border-nudo-accent">
+                <option value="">Proyecto propio</option>
+                {#each data.clients as client}
+                    <option value={client.id}>{client.name}</option>
+                {/each}
+            </select>
+        </label>
+        <label class="flex flex-col gap-2">
+            <span class="text-sm font-semibold text-nudo-text-secondary">Presupuesto</span>
+            <input name="budget" type="number" step="0.01" placeholder="0.00"
+                class="border border-nudo-border rounded-2xl px-4 py-3.5 text-[15px] text-nudo-text-primary bg-nudo-bg focus:outline-none focus:border-nudo-accent" />
+        </label>
+        <div class="flex justify-end gap-2.5 mt-2">
+            <Button type="button" onclick={closeModal}>Cancelar</Button>
+            <Button type="submit">Crear proyecto</Button>
         </div>
+    </form>
+</dialog>
 
-        <form method="POST" action="?/createProject" class="mt-4 flex flex-col gap-4">
-            <label class="flex flex-col gap-1">
-                <span>Nombre</span>
-                <input name="name" type="text" required class="rounded-3xl border p-5" placeholder="Nombre del proyecto"/>
-            </label>
-
-            <label class="flex flex-col gap-1">
-                <span>Descripción</span>
-                <textarea name="description" class="rounded border p-2"></textarea>
-            </label>
-
-            <label class="flex flex-col gap-1">
-                <span>Cliente</span>
-                <select name="clientId" class="rounded border p-2">
-                    <option value="">Proyecto propio</option>
-                    {#each data.clients as client}
-                        <option value={client.id}>{client.name}</option>
-                    {/each}
-                </select>
-            </label>
-
-            <label class="flex flex-col gap-1">
-                <span>Presupuesto</span>
-                <input name="budget" type="number" step="0.01" class="rounded border p-2" />
-            </label>
-
-            <div class="mt-4 flex justify-end gap-2">
-                <Button type="button" onclick={closeModal}>
-                    Cancelar
-                </Button>
-                <Button type="submit" icon="ri-save-line">Crear proyecto</Button>
-            </div>
-        </form>
-    </dialog>
-
-    
+<div class="flex flex-col gap-4">
     {#if data.projects.length === 0}
-        <p>Aún no tienes proyectos.</p>
+        <div class="flex flex-col items-center justify-center gap-1.5 text-center py-14 px-5 bg-nudo-surface rounded-3xl">
+            <i class="ri-folder-add-line text-nudo-text-tertiary text-[26px] mb-1" aria-hidden="true"></i>
+            <p class="m-0 text-[15px] font-semibold text-nudo-text-primary">Aún no tienes proyectos</p>
+            <p class="m-0 text-[14px] text-nudo-text-secondary">Crea tu primer proyecto con el botón de arriba.</p>
+        </div>
     {:else}
-        <ul class="m-2">
+        <div class="flex flex-col gap-2">
             {#each data.projects as project}
-                <li class="mx-4 my-2 px-4 py-6">
-                    <a href="/projects/{project.id}" class=" px-4 py-6 bg-[#e6e6e6] rounded-3xl">
-                        <span class="text-lg font-bold">{project.name}</span> — {project.status}
-                    </a>
-                </li>
+                <a href="/projects/{project.id}"
+                    class="flex items-center gap-4 px-5 py-4 bg-nudo-surface rounded-3xl no-underline text-inherit hover:bg-nudo-bg hover:shadow-sm transition-all duration-150">
+                    <div class="w-11 h-11 rounded-xl bg-nudo-accent-bg flex items-center justify-center text-xl text-nudo-accent shrink-0">
+                        <i class="ri-folder-3-line" aria-hidden="true"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-base font-semibold text-nudo-text-primary m-0 truncate">{project.name}</p>
+                        <div class="flex items-center gap-2.5 mt-1">
+                            <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-nudo-surface text-nudo-text-secondary capitalize">{project.status ?? 'active'}</span>
+                            {#if project.description}
+                                <span class="text-xs text-nudo-text-tertiary truncate max-w-[260px]">{project.description}</span>
+                            {/if}
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-end gap-1 shrink-0">
+                        {#if project.budget}
+                            <span class="text-sm font-bold text-nudo-text-primary">{formatBudget(project.budget)}</span>
+                        {/if}
+                        <span class="text-xs text-nudo-text-tertiary">{formatDate(project.createdAt)}</span>
+                    </div>
+                </a>
             {/each}
-        </ul>
+        </div>
     {/if}
-</section>
+</div>
