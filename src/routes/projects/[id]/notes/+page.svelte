@@ -13,18 +13,23 @@
   let editColor = $state('');
 
   const colors = [
-    { name: 'default', bg: 'var(--nudo-surface)' },
-    { name: 'amarillo', bg: '#fef3c7' },
-    { name: 'rosa', bg: '#fce7f3' },
-    { name: 'azul', bg: '#dbeafe' },
-    { name: 'verde', bg: '#dcfce7' },
-    { name: 'morado', bg: '#f3e8ff' },
-    { name: 'naranja', bg: '#ffedd5' },
+    { name: 'default', bg: 'var(--nudo-surface)', text: 'var(--nudo-text-primary)' },
+    { name: 'amarillo', bg: '#fde68a', text: '#78350f' },
+    { name: 'rosa', bg: '#fbcfe8', text: '#831843' },
+    { name: 'azul', bg: '#bfdbfe', text: '#1e3a5f' },
+    { name: 'verde', bg: '#bbf7d0', text: '#14532d' },
+    { name: 'morado', bg: '#ddd6fe', text: '#4c1d95' },
+    { name: 'naranja', bg: '#fed7aa', text: '#7c2d12' },
   ];
 
   function getNoteBg(color: string | null): string {
     const found = colors.find(c => c.name === color);
     return found ? found.bg : colors[0].bg;
+  }
+
+  function getNoteText(color: string | null): string {
+    const found = colors.find(c => c.name === color);
+    return found ? found.text : colors[0].text;
   }
 
   function openModal() {
@@ -86,19 +91,25 @@
   });
 </script>
 
-<section class="page-notes">
-  <div class="page-toolbar">
-    <h1>Notas de {data.project.name}</h1>
+<section class="bg-nudo-bg flex flex-col gap-5 px-4 md:px-8 py-1 pb-12">
+  <div class="flex items-center justify-between gap-4 flex-wrap">
+    <h1 class="text-nudo-text-primary font-extrabold tracking-tight m-0" style="font-size:clamp(26px,3vw,34px)">
+      Notas de {data.project.name}
+    </h1>
 
-    <div class="toolbar-actions">
-      <button onclick={toggleSort} class="icon-btn" aria-label={sortOrder === 'desc' ? 'Ordenar del más antiguo al más reciente' : 'Ordenar del más reciente al más antiguo'} title="Cambiar orden">
+    <div class="flex items-center gap-1.5">
+      <button onclick={toggleSort}
+        class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-transparent border-none text-nudo-text-secondary cursor-pointer text-lg hover:bg-nudo-surface hover:text-nudo-text-primary transition-all"
+        aria-label={sortOrder === 'desc' ? 'Ordenar del más antiguo al más reciente' : 'Ordenar del más reciente al más antiguo'} title="Cambiar orden">
         {#if sortOrder === 'desc'}
           <i class="ri-sort-desc" aria-hidden="true"></i>
         {:else}
           <i class="ri-sort-asc" aria-hidden="true"></i>
         {/if}
       </button>
-      <button onclick={toggleView} class="icon-btn" aria-label={viewMode === 'list' ? 'Cambiar a vista de cuadrícula' : 'Cambiar a vista de lista'} title="Cambiar vista">
+      <button onclick={toggleView}
+        class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-transparent border-none text-nudo-text-secondary cursor-pointer text-lg hover:bg-nudo-surface hover:text-nudo-text-primary transition-all"
+        aria-label={viewMode === 'list' ? 'Cambiar a vista de cuadrícula' : 'Cambiar a vista de lista'} title="Cambiar vista">
         {#if viewMode === 'list'}
           <i class="ri-layout-grid-line" aria-hidden="true"></i>
         {:else}
@@ -115,25 +126,28 @@
   <dialog
     bind:this={dialogRef}
     onclick={(e) => e.target === dialogRef && closeModal()}
-    class="nudo-dialog"
+    class="fixed inset-0 m-auto max-w-[440px] w-full p-7 border-none rounded-[var(--nudo-radius-lg)] bg-nudo-bg shadow-2xl backdrop:bg-black/40"
   >
-    <div class="dialog-header">
-      <h2>Crear nueva nota</h2>
-      <button onclick={closeModal} class="icon-btn" aria-label="Cerrar"><i class="ri-close-line" aria-hidden="true"></i></button>
+    <div class="flex items-center justify-between mb-5">
+      <h2 class="text-xl font-extrabold text-nudo-text-primary m-0">Crear nueva nota</h2>
+      <button onclick={closeModal} class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-transparent border-none text-nudo-text-secondary cursor-pointer text-lg hover:bg-nudo-surface hover:text-nudo-text-primary transition-all" aria-label="Cerrar">
+        <i class="ri-close-line" aria-hidden="true"></i>
+      </button>
     </div>
 
-    <form method="POST" action="?/createNote" class="dialog-form">
-      <label class="field">
-        <span>Nueva nota</span>
-        <textarea name="content" required placeholder="Escribe tu nota..."></textarea>
+    <form method="POST" action="?/createNote" class="flex flex-col gap-4">
+      <label class="flex flex-col gap-2">
+        <span class="text-sm font-semibold text-nudo-text-secondary">Nueva nota</span>
+        <textarea name="content" required placeholder="Escribe tu nota..."
+          class="border border-nudo-border rounded-[var(--nudo-radius-md)] px-4 py-3.5 text-[15px] text-nudo-text-primary bg-nudo-bg font-[inherit] resize-y min-h-[90px] focus:outline-none focus:ring-2 focus:ring-nudo-accent focus:border-nudo-accent"></textarea>
       </label>
-      <div class="field">
-        <span>Color</span>
-        <div class="color-row">
+      <div class="flex flex-col gap-2">
+        <span class="text-sm font-semibold text-nudo-text-secondary">Color</span>
+        <div class="flex gap-2 flex-wrap">
           {#each colors as color}
             <button type="button" onclick={() => editColor = color.name}
-              class="color-swatch"
-              class:selected={editColor === color.name}
+              class="w-7 h-7 rounded-full cursor-pointer border-2 border-transparent shadow-[inset_0_0_0_1px_var(--nudo-border)] transition-all hover:scale-110
+                {editColor === color.name ? 'border-nudo-accent shadow-[0_0_0_2px_var(--nudo-bg),0_0_0_4px_var(--nudo-accent)]' : ''}"
               style="background-color: {color.bg}"
               aria-label={color.name}
               aria-pressed={editColor === color.name}
@@ -150,27 +164,30 @@
   <dialog
     bind:this={editDialogRef}
     onclick={(e) => e.target === editDialogRef && closeEdit()}
-    class="nudo-dialog"
+    class="fixed inset-0 m-auto max-w-[440px] w-full p-7 border-none rounded-[var(--nudo-radius-lg)] bg-nudo-bg shadow-2xl backdrop:bg-black/40"
   >
-    <div class="dialog-header">
-      <h2>Editar nota</h2>
-      <button onclick={closeEdit} class="icon-btn" aria-label="Cerrar"><i class="ri-close-line" aria-hidden="true"></i></button>
+    <div class="flex items-center justify-between mb-5">
+      <h2 class="text-xl font-extrabold text-nudo-text-primary m-0">Editar nota</h2>
+      <button onclick={closeEdit} class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-transparent border-none text-nudo-text-secondary cursor-pointer text-lg hover:bg-nudo-surface hover:text-nudo-text-primary transition-all" aria-label="Cerrar">
+        <i class="ri-close-line" aria-hidden="true"></i>
+      </button>
     </div>
 
     {#if editingNote}
-      <form method="POST" action="?/editNote" class="dialog-form">
+      <form method="POST" action="?/editNote" class="flex flex-col gap-4">
         <input type="hidden" name="noteId" value={editingNote.id} />
-        <label class="field">
-          <span>Contenido</span>
-          <textarea name="content" rows="6" required>{editContent}</textarea>
+        <label class="flex flex-col gap-2">
+          <span class="text-sm font-semibold text-nudo-text-secondary">Contenido</span>
+          <textarea name="content" rows="6" required
+            class="border border-nudo-border rounded-[var(--nudo-radius-md)] px-4 py-3.5 text-[15px] text-nudo-text-primary bg-nudo-bg font-[inherit] resize-y min-h-[90px] focus:outline-none focus:ring-2 focus:ring-nudo-accent focus:border-nudo-accent">{editContent}</textarea>
         </label>
-        <div class="field">
-          <span>Color</span>
-          <div class="color-row">
+        <div class="flex flex-col gap-2">
+          <span class="text-sm font-semibold text-nudo-text-secondary">Color</span>
+          <div class="flex gap-2 flex-wrap">
             {#each colors as color}
               <button type="button" onclick={() => editColor = color.name}
-                class="color-swatch"
-                class:selected={editColor === color.name}
+                class="w-7 h-7 rounded-full cursor-pointer border-2 border-transparent shadow-[inset_0_0_0_1px_var(--nudo-border)] transition-all hover:scale-110
+                  {editColor === color.name ? 'border-nudo-accent shadow-[0_0_0_2px_var(--nudo-bg),0_0_0_4px_var(--nudo-accent)]' : ''}"
                 style="background-color: {color.bg}"
                 aria-label={color.name}
                 aria-pressed={editColor === color.name}
@@ -184,33 +201,36 @@
     {/if}
   </dialog>
 
-  <div class="notes-body">
+  <div class="flex flex-col gap-6">
     {#if activeNotes.length === 0 && completedNotes.length === 0}
-      <div class="empty-state">
-        <i class="ri-sticky-note-line" aria-hidden="true"></i>
-        <p>Aún no hay notas en este proyecto</p>
-        <p class="empty-sub">Crea tu primera nota con el botón de arriba.</p>
+      <div class="flex flex-col items-center justify-center gap-1.5 text-center py-14 px-5 bg-nudo-surface rounded-[var(--nudo-radius-lg)]">
+        <i class="ri-sticky-note-line text-nudo-text-tertiary text-[26px] mb-1" aria-hidden="true"></i>
+        <p class="m-0 text-[15px] font-semibold text-nudo-text-primary">Aún no hay notas en este proyecto</p>
+        <p class="m-0 text-[14px] text-nudo-text-secondary">Crea tu primera nota con el botón de arriba.</p>
       </div>
     {:else}
-      <div class={viewMode === 'grid' ? 'notes-grid' : 'notes-list'}>
+      <div class="{viewMode === 'grid' ? 'grid grid-cols-2 md:grid-cols-3 gap-3' : 'flex flex-col gap-2'}">
         {#each activeNotes as note}
           <div
             data-highlight-id={note.id}
             onclick={() => openEdit(note)}
-            class="note-card {viewMode === 'grid' ? 'note-card-grid' : ''}"
-            style="background-color: {getNoteBg(note.color)}"
+            class="flex items-start justify-between gap-3 px-4 py-4 rounded-[var(--nudo-radius-lg)] cursor-pointer transition-all hover:brightness-[0.97]
+              {viewMode === 'grid' ? 'flex-col min-h-[150px]' : ''}"
+            style="background-color: {getNoteBg(note.color)}; color: {getNoteText(note.color)}"
           >
-            <p class="note-text {viewMode === 'grid' ? 'clamp' : ''}">{note.content}</p>
-            <div class="note-actions">
+            <p class="flex-1 text-base leading-relaxed m-0 whitespace-pre-wrap break-words
+              {viewMode === 'grid' ? 'line-clamp-5' : ''}">{note.content}</p>
+            <div class="flex items-center gap-1 shrink-0 opacity-70
+              {viewMode === 'grid' ? 'self-end mt-auto pt-2.5' : ''}">
               <form method="POST" action="?/toggleComplete" onclick={(e) => e.stopPropagation()}>
                 <input type="hidden" name="noteId" value={note.id} />
-                <button type="submit" class="note-action" aria-label="Marcar como completada" title="Marcar como completada">
+                <button type="submit" class="inline-flex items-center justify-center w-8 h-8 rounded-[9px] bg-transparent border-none cursor-pointer text-[17px] text-nudo-text-tertiary hover:bg-black/5 hover:text-nudo-text-primary transition-all" aria-label="Marcar como completada" title="Marcar como completada">
                   <i class="ri-checkbox-blank-circle-line" aria-hidden="true"></i>
                 </button>
               </form>
               <form method="POST" action="?/deleteNote" onclick={(e) => e.stopPropagation()}>
                 <input type="hidden" name="noteId" value={note.id} />
-                <button type="submit" class="note-action danger" aria-label="Eliminar nota" title="Eliminar nota">
+                <button type="submit" class="inline-flex items-center justify-center w-8 h-8 rounded-[9px] bg-transparent border-none cursor-pointer text-[17px] text-nudo-text-tertiary hover:bg-black/5 hover:text-[#d70015] transition-all" aria-label="Eliminar nota" title="Eliminar nota">
                   <i class="ri-delete-bin-line" aria-hidden="true"></i>
                 </button>
               </form>
@@ -221,36 +241,39 @@
     {/if}
 
     {#if completedNotes.length > 0}
-      <div class="completed-section">
+      <div class="flex flex-col gap-6">
         <button
           onclick={() => showCompleted = !showCompleted}
-          class="completed-toggle"
+          class="inline-flex items-center gap-1.5 bg-transparent border-none cursor-pointer text-[14.5px] font-bold text-nudo-text-secondary px-1 py-1.5 mb-2.5 hover:text-nudo-text-primary transition-colors"
           aria-expanded={showCompleted}
         >
-          <i class="ri-arrow-down-s-line {showCompleted ? 'rotated' : ''}" aria-hidden="true"></i>
+          <i class="ri-arrow-down-s-line text-base transition-transform duration-200 {showCompleted ? 'rotate-180' : ''}" aria-hidden="true"></i>
           Completadas ({completedNotes.length})
         </button>
 
         {#if showCompleted}
-          <div class={viewMode === 'grid' ? 'notes-grid' : 'notes-list'}>
+          <div class="{viewMode === 'grid' ? 'grid grid-cols-2 md:grid-cols-3 gap-3' : 'flex flex-col gap-2'}">
             {#each completedNotes as note}
               <div
                 data-highlight-id={note.id}
                 onclick={() => openEdit(note)}
-                class="note-card note-card-done {viewMode === 'grid' ? 'note-card-grid' : ''}"
-                style="background-color: {getNoteBg(note.color)}"
+                class="flex items-start justify-between gap-3 px-4 py-4 rounded-[var(--nudo-radius-lg)] cursor-pointer opacity-60 hover:opacity-85 transition-all
+                  {viewMode === 'grid' ? 'flex-col min-h-[150px]' : ''}"
+                style="background-color: {getNoteBg(note.color)}; color: {getNoteText(note.color)}"
               >
-                <p class="note-text {viewMode === 'grid' ? 'clamp' : ''} done">{note.content}</p>
-                <div class="note-actions">
+                <p class="flex-1 text-base leading-relaxed m-0 whitespace-pre-wrap break-words line-through
+                  {viewMode === 'grid' ? 'line-clamp-5' : ''}">{note.content}</p>
+                <div class="flex items-center gap-1 shrink-0 opacity-70
+                  {viewMode === 'grid' ? 'self-end mt-auto pt-2.5' : ''}">
                   <form method="POST" action="?/toggleComplete" onclick={(e) => e.stopPropagation()}>
                     <input type="hidden" name="noteId" value={note.id} />
-                    <button type="submit" class="note-action done" aria-label="Marcar como pendiente" title="Marcar como pendiente">
+                    <button type="submit" class="inline-flex items-center justify-center w-8 h-8 rounded-[9px] bg-transparent border-none cursor-pointer text-[17px] text-nudo-success hover:bg-black/5 transition-all" aria-label="Marcar como pendiente" title="Marcar como pendiente">
                       <i class="ri-checkbox-circle-fill" aria-hidden="true"></i>
                     </button>
                   </form>
                   <form method="POST" action="?/deleteNote" onclick={(e) => e.stopPropagation()}>
                     <input type="hidden" name="noteId" value={note.id} />
-                    <button type="submit" class="note-action danger" aria-label="Eliminar nota" title="Eliminar nota">
+                    <button type="submit" class="inline-flex items-center justify-center w-8 h-8 rounded-[9px] bg-transparent border-none cursor-pointer text-[17px] text-nudo-text-tertiary hover:bg-black/5 hover:text-[#d70015] transition-all" aria-label="Eliminar nota" title="Eliminar nota">
                       <i class="ri-delete-bin-line" aria-hidden="true"></i>
                     </button>
                   </form>
@@ -263,222 +286,3 @@
     {/if}
   </div>
 </section>
-
-<style>
-  .page-notes {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding: 4px 32px 48px;
-  }
-
-  .page-toolbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-
-  .page-toolbar h1 {
-    font-size: clamp(26px, 3vw, 34px);
-    font-weight: 800;
-    color: var(--nudo-text-primary);
-    margin: 0;
-    letter-spacing: -0.01em;
-  }
-
-  .toolbar-actions {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .icon-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    background: none;
-    border: none;
-    color: var(--nudo-text-secondary);
-    cursor: pointer;
-    font-size: 18px;
-    transition: background .15s ease, color .15s ease;
-  }
-  .icon-btn:hover { background: var(--nudo-surface); color: var(--nudo-text-primary); }
-
-  /* ---------- Dialogs ---------- */
-  .nudo-dialog {
-    position: fixed;
-    inset: 0;
-    margin: auto;
-    max-width: 440px;
-    width: 100%;
-    padding: 28px 30px;
-    border: none;
-    border-radius: var(--nudo-radius-lg);
-    background: var(--nudo-bg);
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
-  }
-  .nudo-dialog::backdrop { background: rgba(0, 0, 0, 0.4); }
-
-  .dialog-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 18px;
-  }
-  .dialog-header h2 {
-    font-size: 21px;
-    font-weight: 800;
-    color: var(--nudo-text-primary);
-    margin: 0;
-  }
-
-  .dialog-form { display: flex; flex-direction: column; gap: 16px; }
-
-  .field { display: flex; flex-direction: column; gap: 8px; }
-  .field > span { font-size: 14px; font-weight: 600; color: var(--nudo-text-secondary); }
-
-  .field textarea {
-    border: 1px solid var(--nudo-border);
-    border-radius: var(--nudo-radius-md);
-    padding: 14px 16px;
-    font-family: inherit;
-    font-size: 15px;
-    color: var(--nudo-text-primary);
-    resize: vertical;
-    min-height: 90px;
-    background: var(--nudo-bg);
-  }
-  .field textarea:focus-visible {
-    outline: 2px solid var(--nudo-accent);
-    outline-offset: 1px;
-    border-color: var(--nudo-accent);
-  }
-
-  .color-row { display: flex; gap: 8px; flex-wrap: wrap; }
-  .color-swatch {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid transparent;
-    box-shadow: inset 0 0 0 1px var(--nudo-border);
-    transition: transform .12s ease, box-shadow .12s ease;
-  }
-  .color-swatch:hover { transform: scale(1.1); }
-  .color-swatch.selected {
-    border-color: var(--nudo-accent);
-    box-shadow: 0 0 0 2px var(--nudo-bg), 0 0 0 4px var(--nudo-accent);
-  }
-
-  /* ---------- Notes body ---------- */
-  .notes-body { display: flex; flex-direction: column; gap: 24px; }
-
-  .notes-list { display: flex; flex-direction: column; gap: 8px; }
-  .notes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-
-  .note-card {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 16px 18px;
-    border-radius: var(--nudo-radius-lg);
-    cursor: pointer;
-    transition: filter .15s ease;
-  }
-  .note-card:hover { filter: brightness(0.97); }
-  .note-card-grid { flex-direction: column; min-height: 150px; }
-  .note-card-grid .note-actions { align-self: flex-end; margin-top: auto; padding-top: 10px; }
-
-  .note-card-done { opacity: 0.6; }
-  .note-card-done:hover { opacity: 0.85; }
-
-  .note-text {
-    flex: 1;
-    font-size: 16px;
-    line-height: 1.5;
-    color: var(--nudo-text-primary);
-    margin: 0;
-    white-space: pre-wrap;
-    word-break: break-word;
-  }
-  .note-text.clamp {
-    display: -webkit-box;
-    -webkit-line-clamp: 5;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  .note-text.done { text-decoration: line-through; }
-
-  .note-actions { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
-  .note-action {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 9px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 17px;
-    color: var(--nudo-text-tertiary);
-    transition: background .15s ease, color .15s ease;
-  }
-  .note-action:hover { background: rgba(0, 0, 0, 0.06); color: var(--nudo-text-primary); }
-  .note-action.done { color: var(--nudo-success); }
-  .note-action.danger:hover { color: #d70015; }
-
-  /* ---------- Completed ---------- */
-  .completed-toggle {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 14.5px;
-    font-weight: 700;
-    color: var(--nudo-text-secondary);
-    padding: 6px 4px;
-    margin-bottom: 10px;
-  }
-  .completed-toggle:hover { color: var(--nudo-text-primary); }
-  .completed-toggle i { font-size: 16px; transition: transform .2s ease; }
-  .completed-toggle i.rotated { transform: rotate(180deg); }
-
-  /* ---------- Empty state ---------- */
-  .empty-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    text-align: center;
-    padding: 56px 20px;
-    background: var(--nudo-surface);
-    border-radius: var(--nudo-radius-lg);
-    color: var(--nudo-text-secondary);
-  }
-  .empty-state i { font-size: 26px; color: var(--nudo-text-tertiary); margin-bottom: 4px; }
-  .empty-state p { margin: 0; font-size: 15px; font-weight: 600; color: var(--nudo-text-primary); }
-  .empty-sub { font-weight: 400 !important; font-size: 14px !important; color: var(--nudo-text-secondary) !important; }
-
-  @media (prefers-reduced-motion: reduce) {
-    .completed-toggle i { transition: none; }
-  }
-
-  @media (max-width: 760px) {
-    .page-notes { padding-left: 20px; padding-right: 20px; }
-    .notes-grid { grid-template-columns: repeat(2, 1fr); }
-  }
-  @media (max-width: 480px) {
-    .notes-grid { grid-template-columns: 1fr; }
-  }
-</style>

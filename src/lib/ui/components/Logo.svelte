@@ -45,7 +45,7 @@
 
 	<!-- Identidad Tipográfica -->
 	<div class="flex items-center gap-3">
-		<span class="text-3xl font-black tracking-[0.22em] text-black uppercase ">
+		<span class="text-3xl font-black tracking-[0.22em] text-nudo-text-primary uppercase ">
 			NUDO
 		</span>
 

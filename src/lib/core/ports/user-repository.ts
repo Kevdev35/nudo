@@ -4,6 +4,6 @@ export interface UserRepository {
     create(data: NewUser): Promise<User>;
     findById(id: User['id']): Promise<User | null>;
     findByEmail(email: User['email']): Promise<User | null>;
-    update(id: User['id'], data: Partial<Pick<NewUser, 'name' | 'password_hash'>>): Promise<User>;
+    update(id: User['id'], data: Partial<Pick<NewUser, 'name' | 'email' | 'password_hash'>>): Promise<User>;
     softDelete(id: User['id']): Promise<User>;
 }

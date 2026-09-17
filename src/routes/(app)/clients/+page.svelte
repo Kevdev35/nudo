@@ -13,8 +13,8 @@
     }
 </script>
 
-<div class="flex items-center justify-between flex-wrap gap-4 mb-4">
-    <h1 class="text-nudo-text-primary font-extrabold tracking-tight m-0" style="font-size:clamp(26px,3vw,34px)">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5">
+    <h1 class="text-nudo-text-primary font-extrabold tracking-tight m-0" style="font-size:clamp(24px,3vw,34px)">
         Mis clientes
     </h1>
     <Button onclick={openModal}>
@@ -25,7 +25,7 @@
 <dialog
     bind:this={dialogRef}
     onclick={(e) => e.target === dialogRef && closeModal()}
-    class="fixed inset-0 m-auto max-w-md w-full p-7 border-none rounded-3xl bg-nudo-bg shadow-2xl backdrop:bg-black/40"
+    class="fixed inset-0 m-auto max-w-md w-[calc(100%-2rem)] p-7 border-none rounded-3xl bg-nudo-bg shadow-2xl backdrop:bg-black/40"
 >
     <div class="flex items-center justify-between mb-5">
         <h2 class="text-xl font-extrabold text-nudo-text-primary m-0">Nuevo cliente</h2>
@@ -65,21 +65,21 @@
     {:else}
         <div class="flex flex-col gap-2">
             {#each data.clients as client}
-                <div class="flex items-center gap-4 px-5 py-4 bg-nudo-surface rounded-3xl hover:bg-nudo-bg hover:shadow-sm transition-all duration-150">
-                    <div class="w-11 h-11 rounded-xl bg-nudo-accent-bg flex items-center justify-center text-xl text-nudo-accent shrink-0">
+                <div class="flex items-center gap-3 sm:gap-4 px-4 sm:px-5 py-3 sm:py-4 bg-nudo-surface rounded-3xl hover:bg-nudo-bg hover:shadow-sm transition-all duration-150">
+                    <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-nudo-accent-bg flex items-center justify-center text-lg sm:text-xl text-nudo-accent shrink-0">
                         <i class="ri-user-3-line" aria-hidden="true"></i>
                     </div>
                     <div class="flex-1 min-w-0">
-                        <p class="text-base font-semibold text-nudo-text-primary m-0 truncate">{client.name}</p>
+                        <p class="text-sm sm:text-base font-semibold text-nudo-text-primary m-0 truncate">{client.name}</p>
                         {#if client.contact_info}
-                            <p class="text-sm text-nudo-text-secondary mt-1 m-0 truncate">{client.contact_info}</p>
+                            <p class="text-xs sm:text-sm text-nudo-text-secondary mt-1 m-0 truncate">{client.contact_info}</p>
                         {/if}
                     </div>
                     <div class="flex flex-col items-end gap-1 shrink-0">
                         {#if client.notes}
-                            <span class="text-xs text-nudo-text-tertiary max-w-[180px] truncate">{client.notes}</span>
+                            <span class="text-[10px] sm:text-xs text-nudo-text-tertiary max-w-[120px] sm:max-w-[180px] truncate">{client.notes}</span>
                         {/if}
-                        <span class="text-xs text-nudo-text-tertiary">{formatDate(client.createdAt)}</span>
+                        <span class="text-[10px] sm:text-xs text-nudo-text-tertiary">{formatDate(client.createdAt)}</span>
                     </div>
                 </div>
             {/each}

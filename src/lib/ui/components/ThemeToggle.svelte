@@ -6,7 +6,7 @@
     theme.subscribe(v => current = v);
 </script>
 
-<button onclick={() => theme.toggle()} class="p-2 rounded-tokens-border-radius-md hover:bg-surface-container-high transition-colors" aria-label="Toggle theme">
+<button onclick={() => theme.toggle()} class="cursor-pointer p-2 rounded-tokens-border-radius-md hover:bg-surface-container-high transition-colors" aria-label="Toggle theme">
     {#if current === 'dark'}
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="4"/>

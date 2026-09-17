@@ -18,11 +18,11 @@
     }
 </script>
 
-<div class="flex items-center justify-between flex-wrap gap-4">
-    <h1 class="text-nudo-text-primary font-extrabold tracking-tight m-0" style="font-size:clamp(26px,3vw,34px)">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5">
+    <h1 class="text-nudo-text-primary font-extrabold tracking-tight m-0" style="font-size:clamp(24px,3vw,34px)">
         Mis proyectos
     </h1>
-    <div class="flex items-center gap-1.5 mb-4">
+    <div class="flex items-center gap-1.5">
         <a href="/clients"
             class="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full border border-nudo-border bg-transparent text-nudo-text-primary text-sm font-semibold no-underline hover:bg-nudo-surface hover:border-nudo-text-tertiary transition-all duration-150">
             <i class="ri-team-line" aria-hidden="true"></i> Ver clientes
@@ -36,7 +36,7 @@
 <dialog
     bind:this={dialogRef}
     onclick={(e) => e.target === dialogRef && closeModal()}
-    class="fixed inset-0 m-auto max-w-md w-full p-7 border-none rounded-3xl bg-nudo-bg shadow-2xl backdrop:bg-black/40"
+    class="fixed inset-0 m-auto max-w-md w-[calc(100%-2rem)] p-7 border-none rounded-3xl bg-nudo-bg shadow-2xl backdrop:bg-black/40"
 >
     <div class="flex items-center justify-between mb-5">
         <h2 class="text-xl font-extrabold text-nudo-text-primary m-0">Crear nuevo proyecto</h2>
@@ -87,24 +87,24 @@
         <div class="flex flex-col gap-2">
             {#each data.projects as project}
                 <a href="/projects/{project.id}"
-                    class="flex items-center gap-4 px-5 py-4 bg-nudo-surface rounded-3xl no-underline text-inherit hover:bg-nudo-bg hover:shadow-sm transition-all duration-150">
-                    <div class="w-11 h-11 rounded-xl bg-nudo-accent-bg flex items-center justify-center text-xl text-nudo-accent shrink-0">
+                    class="flex items-center gap-3 sm:gap-4 px-4 sm:px-5 py-3 sm:py-4 bg-nudo-surface rounded-3xl no-underline text-inherit hover:bg-nudo-bg hover:shadow-sm transition-all duration-150">
+                    <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-nudo-accent-bg flex items-center justify-center text-lg sm:text-xl text-nudo-accent shrink-0">
                         <i class="ri-folder-3-line" aria-hidden="true"></i>
                     </div>
                     <div class="flex-1 min-w-0">
-                        <p class="text-base font-semibold text-nudo-text-primary m-0 truncate">{project.name}</p>
-                        <div class="flex items-center gap-2.5 mt-1">
-                            <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-nudo-surface text-nudo-text-secondary capitalize">{project.status ?? 'active'}</span>
+                        <p class="text-sm sm:text-base font-semibold text-nudo-text-primary m-0 truncate">{project.name}</p>
+                        <div class="flex items-center gap-2 sm:gap-2.5 mt-1">
+                            <span class="text-[10px] sm:text-xs font-semibold px-2 sm:px-2.5 py-0.5 rounded-full bg-nudo-surface text-nudo-text-secondary capitalize">{project.status ?? 'active'}</span>
                             {#if project.description}
-                                <span class="text-xs text-nudo-text-tertiary truncate max-w-[260px]">{project.description}</span>
+                                <span class="text-[10px] sm:text-xs text-nudo-text-tertiary truncate max-w-[140px] sm:max-w-[260px]">{project.description}</span>
                             {/if}
                         </div>
                     </div>
                     <div class="flex flex-col items-end gap-1 shrink-0">
                         {#if project.budget}
-                            <span class="text-sm font-bold text-nudo-text-primary">{formatBudget(project.budget)}</span>
+                            <span class="text-xs sm:text-sm font-bold text-nudo-text-primary">{formatBudget(project.budget)}</span>
                         {/if}
-                        <span class="text-xs text-nudo-text-tertiary">{formatDate(project.createdAt)}</span>
+                        <span class="text-[10px] sm:text-xs text-nudo-text-tertiary">{formatDate(project.createdAt)}</span>
                     </div>
                 </a>
             {/each}

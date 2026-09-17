@@ -53,14 +53,14 @@
             Markdowns de {data.project.name}
         </h1>
         <div class="flex items-center gap-1.5">
-            <button onclick={toggleSort} class="icon-btn" aria-label="Cambiar orden" title="Cambiar orden">
+            <button onclick={toggleSort} class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-transparent border-none text-nudo-text-secondary cursor-pointer text-lg hover:bg-nudo-surface hover:text-nudo-text-primary transition-all" aria-label="Cambiar orden" title="Cambiar orden">
                 {#if sortOrder === 'desc'}
                     <i class="ri-sort-desc" aria-hidden="true"></i>
                 {:else}
                     <i class="ri-sort-asc" aria-hidden="true"></i>
                 {/if}
             </button>
-            <button onclick={toggleView} class="icon-btn" aria-label="Cambiar vista" title="Cambiar vista">
+            <button onclick={toggleView} class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-transparent border-none text-nudo-text-secondary cursor-pointer text-lg hover:bg-nudo-surface hover:text-nudo-text-primary transition-all" aria-label="Cambiar vista" title="Cambiar vista">
                 {#if viewMode === 'list'}
                     <i class="ri-layout-grid-line" aria-hidden="true"></i>
                 {:else}

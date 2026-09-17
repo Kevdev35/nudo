@@ -73,6 +73,13 @@
         archivo: 'ri-attachment-2',
     };
 
+    const typeColors: Record<string, string> = {
+        nota: 'bg-nudo-warning-soft text-nudo-warning',
+        tarea: 'bg-nudo-success-soft text-nudo-success',
+        doc: 'bg-[#e8f1ff] text-nudo-accent',
+        archivo: 'bg-nudo-bg text-nudo-text-tertiary',
+    };
+
     const stats = $derived([
         { key: 'notas', label: 'Notas', icon: 'ri-file-text-line', value: data.notes.length, sub: `${completedNotes} completadas`, href: `/projects/${data.project.id}/notes` },
         { key: 'tareas', label: 'Tareas', icon: 'ri-checkbox-circle-line', value: data.cards.length, sub: `${completedCards} completadas`, href: `/projects/${data.project.id}/kanban` },
@@ -81,232 +88,55 @@
     ]);
 </script>
 
-<section class="page-general">
-    <h1>Resumen de {data.project.name}</h1>
+<section class="bg-nudo-bg flex flex-col gap-7 px-4 md:px-8 py-1 pb-10">
+    <h1 class="text-nudo-text-primary font-extrabold tracking-tight m-0" style="font-size:clamp(26px,3vw,34px)">
+        Resumen de {data.project.name}
+    </h1>
 
-    <div class="stats-grid">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
         {#each stats as s}
-            <button type="button" class="stat-card" onclick={() => goto(s.href)}>
-                <span class="stat-icon"><i class={s.icon} aria-hidden="true"></i></span>
-                <p class="stat-label">{s.label}</p>
-                <p class="stat-value">{s.value}</p>
-                <p class="stat-sub">{s.sub}</p>
+            <button type="button" class="text-left bg-nudo-surface border border-transparent rounded-[var(--nudo-radius-lg)] px-4 py-4 cursor-pointer hover:bg-nudo-bg hover:border-nudo-border transition-all duration-150"
+                onclick={() => goto(s.href)}>
+                <span class="inline-flex items-center justify-center w-[30px] h-[30px] rounded-[9px] bg-nudo-bg text-nudo-text-tertiary text-[15px] mb-3">
+                    <i class={s.icon} aria-hidden="true"></i>
+                </span>
+                <p class="text-sm font-semibold text-nudo-text-secondary m-0 mb-0.5">{s.label}</p>
+                <p class="text-[32px] font-extrabold text-nudo-text-primary m-0 leading-[1.1]">{s.value}</p>
+                <p class="text-[13px] text-nudo-text-tertiary m-0 mt-1.5">{s.sub}</p>
             </button>
         {/each}
     </div>
 
     {#if activity.length > 0}
-        <div class="activity-block">
-            <h2>Actividad reciente</h2>
-            <div class="activity-list" role="list">
+        <div class="flex flex-col">
+            <h2 class="text-base font-bold text-nudo-text-secondary m-0 mb-2.5">Actividad reciente</h2>
+            <div class="bg-nudo-surface rounded-[var(--nudo-radius-lg)] overflow-hidden" role="list">
                 {#each activity as item (item.id)}
-                    <button type="button" class="activity-row" role="listitem" onclick={() => goto(item.href)}>
-                        <span class="activity-icon type-{item.type}">
+                    <button type="button" class="flex items-center gap-3 w-full px-4 py-3 border-b border-nudo-border cursor-pointer bg-transparent text-left font-[inherit] hover:bg-nudo-bg transition-colors last:border-b-0"
+                        role="listitem" onclick={() => goto(item.href)}>
+                        <span class="inline-flex items-center justify-center w-8 h-8 rounded-[10px] text-base shrink-0 {typeColors[item.type]}">
                             <i class={typeIcon[item.type]} aria-hidden="true"></i>
                         </span>
-                        <span class="activity-text">
-                            <p class="activity-title">{item.title}</p>
-                            <p class="activity-type">{item.type}</p>
+                        <span class="flex-1 min-w-0 flex flex-col">
+                            <p class="text-[15px] font-semibold text-nudo-text-primary m-0 truncate">{item.title}</p>
+                            <p class="text-[13px] text-nudo-text-tertiary m-0 mt-px capitalize">{item.type}</p>
                         </span>
                         {#if item.completed !== undefined}
-                            <span class="activity-check" class:done={!!item.completed}>
+                            <span class="shrink-0 inline-flex text-lg {item.completed ? 'text-nudo-success' : 'text-nudo-text-tertiary'}">
                                 <i class={item.completed ? 'ri-checkbox-circle-fill' : 'ri-checkbox-blank-circle-line'} aria-hidden="true"></i>
-                                <span class="sr-only">{item.completed ? 'Completado' : 'Pendiente'}</span>
+                                <span class="absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0" style="clip:rect(0,0,0,0)">{item.completed ? 'Completado' : 'Pendiente'}</span>
                             </span>
                         {/if}
-                        <span class="activity-time">{timeAgo(item.date)}</span>
+                        <span class="shrink-0 text-[13.5px] text-nudo-text-tertiary">{timeAgo(item.date)}</span>
                     </button>
                 {/each}
             </div>
         </div>
     {:else}
-        <div class="empty-state">
-            <i class="ri-inbox-line" aria-hidden="true"></i>
-            <p>Sin actividad todavía</p>
-            <p class="empty-sub">Crea una nota, tarea o documento para verlo aquí.</p>
+        <div class="flex flex-col items-center justify-center gap-1.5 text-center py-12 px-5 bg-nudo-surface rounded-[var(--nudo-radius-lg)] text-nudo-text-secondary">
+            <i class="ri-inbox-line text-nudo-text-tertiary text-[26px] mb-1" aria-hidden="true"></i>
+            <p class="m-0 text-[15px] font-semibold text-nudo-text-primary">Sin actividad todavía</p>
+            <p class="m-0 text-[14px] text-nudo-text-secondary">Crea una nota, tarea o documento para verlo aquí.</p>
         </div>
     {/if}
 </section>
-
-<style>
-    .sr-only {
-        position: absolute;
-        width: 1px; height: 1px;
-        padding: 0; margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border: 0;
-    }
-
-    .page-general {
-        display: flex;
-        flex-direction: column;
-        gap: 28px;
-        padding: 4px 32px 40px;
-    }
-
-    .page-general h1 {
-        font-size: clamp(26px, 3vw, 34px);
-        font-weight: 800;
-        color: var(--nudo-text-primary);
-        margin: 0;
-        letter-spacing: -0.01em;
-    }
-
-    /* ---------- Stat cards ---------- */
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 12px;
-    }
-
-    .stat-card {
-        text-align: left;
-        background: var(--nudo-surface);
-        border: 1px solid transparent;
-        border-radius: var(--nudo-radius-lg);
-        padding: 16px 18px;
-        cursor: pointer;
-        transition: background .15s ease, border-color .15s ease;
-        font-family: inherit;
-    }
-    .stat-card:hover {
-        background: var(--nudo-bg);
-        border-color: var(--nudo-border);
-    }
-
-    .stat-icon {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 30px;
-        height: 30px;
-        border-radius: 9px;
-        background: var(--nudo-bg);
-        color: var(--nudo-text-tertiary);
-        font-size: 15px;
-        margin-bottom: 12px;
-    }
-
-    .stat-label {
-        font-size: 14px;
-        font-weight: 600;
-        color: var(--nudo-text-secondary);
-        margin: 0 0 2px;
-    }
-    .stat-value {
-        font-size: 32px;
-        font-weight: 800;
-        color: var(--nudo-text-primary);
-        margin: 0;
-        line-height: 1.1;
-    }
-    .stat-sub {
-        font-size: 13px;
-        color: var(--nudo-text-tertiary);
-        margin: 5px 0 0;
-    }
-
-    /* ---------- Activity ---------- */
-    .activity-block h2 {
-        font-size: 16px;
-        font-weight: 700;
-        color: var(--nudo-text-secondary);
-        margin: 0 0 10px;
-    }
-
-    .activity-list {
-        background: var(--nudo-surface);
-        border-radius: var(--nudo-radius-lg);
-        overflow: hidden;
-    }
-
-    .activity-row {
-        all: unset;
-        box-sizing: border-box;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        width: 100%;
-        padding: 12px 16px;
-        cursor: pointer;
-        border-bottom: 1px solid var(--nudo-border);
-        font-family: inherit;
-    }
-    .activity-row:last-child { border-bottom: none; }
-    .activity-row:hover { background: var(--nudo-bg); }
-
-    .activity-icon {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 32px;
-        height: 32px;
-        border-radius: 10px;
-        font-size: 16px;
-        flex-shrink: 0;
-    }
-    .activity-icon.type-nota { background: var(--nudo-warning-soft); color: var(--nudo-warning); }
-    .activity-icon.type-tarea { background: var(--nudo-success-soft); color: var(--nudo-success); }
-    .activity-icon.type-doc { background: #e8f1ff; color: var(--nudo-accent); }
-    .activity-icon.type-archivo { background: var(--nudo-bg); color: var(--nudo-text-tertiary); }
-
-    .activity-text {
-        flex: 1;
-        min-width: 0;
-        display: flex;
-        flex-direction: column;
-    }
-    .activity-title {
-        font-size: 15px;
-        font-weight: 600;
-        color: var(--nudo-text-primary);
-        margin: 0;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    .activity-type {
-        font-size: 13px;
-        color: var(--nudo-text-tertiary);
-        margin: 1px 0 0;
-        text-transform: capitalize;
-    }
-
-    .activity-check {
-        flex-shrink: 0;
-        display: inline-flex;
-        font-size: 18px;
-        color: var(--nudo-text-tertiary);
-    }
-    .activity-check.done { color: var(--nudo-success); }
-
-    .activity-time {
-        flex-shrink: 0;
-        font-size: 13.5px;
-        color: var(--nudo-text-tertiary);
-    }
-
-    /* ---------- Empty state ---------- */
-    .empty-state {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        text-align: center;
-        padding: 48px 20px;
-        background: var(--nudo-surface);
-        border-radius: var(--nudo-radius-lg);
-        color: var(--nudo-text-secondary);
-    }
-    .empty-state i { font-size: 26px; color: var(--nudo-text-tertiary); margin-bottom: 4px; }
-    .empty-state p { margin: 0; font-size: 15px; font-weight: 600; color: var(--nudo-text-primary); }
-    .empty-sub { font-weight: 400 !important; font-size: 14px !important; color: var(--nudo-text-secondary) !important; }
-
-    @media (max-width: 760px) {
-        .stats-grid { grid-template-columns: repeat(2, 1fr); }
-        .page-general { padding-left: 20px; padding-right: 20px; }
-    }
-</style>
