@@ -1,2 +1,5 @@
-onlyBuiltDependencies:
-  - esbuild
+allowBuilds:
+  bufferutil: true
+  es5-ext: true
+  esbuild: true
+  utf-8-validate: true
