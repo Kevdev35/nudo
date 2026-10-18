@@ -91,4 +91,9 @@ pnpm db:studio    # Drizzle Studio (UI de la DB)
 
 ## Licencia
 
-MIT
+Software propietario — Copyright © 2026 KevDev. Todos los derechos reservados. Ver [LICENSE](../LICENSE).
+
+| Uso | Costo |
+|-----|-------|
+| Personal / individual | **Gratuito** |
+| Empresa / organización | **Licencia comercial** (pago único por organización) |

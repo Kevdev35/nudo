@@ -1,6 +1,6 @@
 # NUDO
 
-App hecha a la medida del **desarrollador** — no para competir en el mercado, sino como núcleo interno para organizar ideas de proyectos, notas, PDFs y avances. Pensada para ser un núcleo bien documentado y modular: que otras personas puedan modificarlo o construir un SaaS a partir de él.
+App de escritorio **local-first** para organizar ideas de proyectos, notas, PDFs y avances — hecha a la medida del desarrollador. Licencia propietaria: **uso personal gratuito**; las empresas adquieren una licencia de uso por organización.
 
 > **Estado actual:** en desarrollo. Arquitectura y base de datos iniciadas; UI y auth pendientes (ver [Estado del proyecto](#estado-del-proyecto)).
 
@@ -273,3 +273,12 @@ at-mos update --add --name --color-x --value "#fff" --json  # agregar variable
 3. Casos de uso y API de las rutas `(app)`.
 4. UI y flujo de proyecto/kanban/markdown.
 5. *Futuro:* Gantt y capa de IA.
+
+---
+
+## Licencia
+
+Software propietario (ver [LICENSE](./LICENSE)):
+
+- **Uso personal**: gratuito.
+- **Uso en empresas**: requiere licencia comercial (pago único por organización).

@@ -16,11 +16,11 @@
         <a href="#caracteristicas" class="hover:text-nudo-text-primary transition-colors">Funcionalidades</a>
         <a href="#flujo" class="hover:text-nudo-text-primary transition-colors">Flujo</a>
         <a href="#arquitectura" class="hover:text-nudo-text-primary transition-colors">Arquitectura</a>
-        <a href="#donaciones" class="hover:text-nudo-text-primary transition-colors">Soportar</a>
+        <a href="#licencias" class="hover:text-nudo-text-primary transition-colors">Licencias</a>
       </nav>
 
       <div class="flex items-center gap-4">
-        <a href="https://github.com" target="_blank" class="text-sm font-medium text-nudo-text-secondary hover:text-nudo-text-primary transition-colors flex items-center gap-2">
+        <a href="https://github.com/Kevdev35/nudo" target="_blank" class="text-sm font-medium text-nudo-text-secondary hover:text-nudo-text-primary transition-colors flex items-center gap-2">
           <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
           GitHub
         </a>
@@ -38,7 +38,7 @@
     <div class="max-w-6xl mx-auto px-6 relative z-10 text-center">
       <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-nudo-surface text-xs font-semibold text-nudo-accent mb-6 border border-nudo-border">
         <span class="w-2 h-2 rounded-full bg-nudo-accent animate-pulse"></span>
-        Open source. Built for developers.
+        Local-first. Built for developers.
       </div>
 
       <h1 class="text-4xl md:text-7xl font-black tracking-tight leading-[1.1] text-nudo-text-primary max-w-4xl mx-auto">
@@ -50,11 +50,11 @@
       </p>
 
       <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-        <a href="/login" class="w-full sm:w-auto px-8 py-3.5 bg-nudo-accent hover:opacity-90 text-white font-bold rounded-2xl shadow-lg shadow-nudo-accent/30 transition-all text-center">
-          Probar Nudo Online (Gratis)
+        <a href="#lista-de-espera" class="w-full sm:w-auto px-8 py-3.5 bg-nudo-accent hover:opacity-90 text-white font-bold rounded-2xl shadow-lg shadow-nudo-accent/30 transition-all text-center">
+          🚀 Unirme a la lista de espera
         </a>
-        <a href="https://github.com" target="_blank" class="w-full sm:w-auto px-8 py-3.5 bg-nudo-surface hover:bg-nudo-bg text-nudo-text-primary font-semibold rounded-2xl transition-all text-center border border-nudo-border">
-          Self-Hosted / GitHub
+        <a href="/login" class="w-full sm:w-auto px-8 py-3.5 bg-nudo-surface hover:bg-nudo-bg text-nudo-text-primary font-semibold rounded-2xl transition-all text-center border border-nudo-border">
+          Probar Nudo Online (Gratis)
         </a>
       </div>
 
@@ -366,7 +366,7 @@
     <div class="max-w-6xl mx-auto px-6">
       <div class="grid md:grid-cols-2 gap-12 items-center">
         <div>
-          <span class="text-xs font-bold uppercase tracking-widest text-nudo-accent">Para Contributors y Devs</span>
+          <span class="text-xs font-bold uppercase tracking-widest text-nudo-accent">Ingeniería de Software</span>
           <h2 class="text-3xl md:text-4xl font-black text-nudo-text-primary mt-2">Arquitectura Hexagonal & Decoupled Core</h2>
           <p class="text-nudo-text-secondary text-sm mt-4 leading-relaxed">
             Nudo implementa un patrón Ports & Adapters. El dominio del proyecto reside en un núcleo independiente que no depende directamente del framework web ni de la base de datos.
@@ -439,30 +439,57 @@
     </div>
   </section>
 
-  <!-- SECCIÓN: Open Source & Donaciones -->
-  <section id="donaciones" class="py-24 border-t border-nudo-border relative">
+  <!-- SECCIÓN: Licencias (personal gratis / empresas) -->
+  <section id="licencias" class="py-24 border-t border-nudo-border relative">
     <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse 60% 40% at 50% 100%, rgba(10,132,255,0.05), transparent);"></div>
     <div class="max-w-5xl mx-auto px-6 text-center relative z-10">
-      <span class="text-xs font-bold uppercase tracking-widest text-nudo-accent">Comunidad & Desarrollo</span>
-      <h2 class="text-4xl md:text-5xl font-black text-nudo-text-primary mt-2">Nudo is open source and designed to grow</h2>
+      <span class="text-xs font-bold uppercase tracking-widest text-nudo-accent">Licencias</span>
+      <h2 class="text-4xl md:text-5xl font-black text-nudo-text-primary mt-2">Gratis para ti. Licencia para empresas.</h2>
       <p class="text-nudo-text-secondary text-base max-w-2xl mx-auto mt-4 leading-relaxed">
-        Puedes auto-hospedarlo libremente, contribuir al código o utilizar <strong class="text-nudo-text-primary">Nudo Online (Gratis)</strong>.
+        Nudo es una app de escritorio <strong class="text-nudo-text-primary">local-first</strong>: tus datos viven en tu máquina, no en la nube. Si la usas <strong class="text-nudo-text-primary">personalmente, es gratis para siempre</strong>. Las empresas pagan una licencia única por organización.
       </p>
 
-      <div class="mt-12 p-8 md:p-12 rounded-3xl max-w-3xl mx-auto bg-nudo-surface border border-nudo-border">
-        <h3 class="text-2xl font-black text-nudo-text-primary">Help keep Nudo alive</h3>
-        <p class="text-nudo-text-secondary text-sm mt-3 leading-relaxed">
-          Nudo es gratuito y de código abierto. Si te resulta útil en tu trabajo diario, puedes apoyar su desarrollo e infraestructura mediante donaciones voluntarias.
-        </p>
-
-        <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a href="https://github.com/sponsors" target="_blank" class="w-full sm:w-auto px-8 py-3.5 bg-nudo-accent hover:opacity-90 text-white font-bold rounded-2xl shadow-lg transition-all">
-            Support Nudo (Sponsor)
-          </a>
-          <a href="https://github.com" target="_blank" class="w-full sm:w-auto px-8 py-3.5 bg-nudo-bg hover:bg-nudo-surface text-nudo-text-primary font-semibold rounded-2xl transition-all border border-nudo-border">
-            Contribuir en GitHub
+      <div class="mt-12 grid md:grid-cols-2 gap-6 max-w-3xl mx-auto text-left">
+        <!-- Personas -->
+        <div class="p-8 rounded-3xl bg-nudo-surface border border-nudo-border">
+          <span class="text-xs font-bold uppercase tracking-widest text-nudo-success">Personas</span>
+          <h3 class="text-2xl font-black text-nudo-text-primary mt-2">Uso personal — Gratis</h3>
+          <ul class="mt-4 space-y-2.5 text-sm text-nudo-text-secondary">
+            <li class="flex items-start gap-2.5"><span class="text-nudo-success font-bold">✓</span> Todas las funciones, sin límites</li>
+            <li class="flex items-start gap-2.5"><span class="text-nudo-success font-bold">✓</span> Para siempre, sin registro de empresa</li>
+            <li class="flex items-start gap-2.5"><span class="text-nudo-success font-bold">✓</span> Ideal para freelancers y proyectos propios</li>
+          </ul>
+          <a href="/login" class="mt-6 block w-full px-6 py-3 bg-nudo-bg hover:bg-nudo-bg/60 text-nudo-text-primary font-semibold rounded-2xl transition-all border border-nudo-border text-center">
+            Probar Nudo Online
           </a>
         </div>
+
+        <!-- Empresas -->
+        <div class="p-8 rounded-3xl bg-nudo-surface border border-nudo-accent/40 relative">
+          <span class="text-xs font-bold uppercase tracking-widest text-nudo-accent">Empresas</span>
+          <h3 class="text-2xl font-black text-nudo-text-primary mt-2">Licencia comercial</h3>
+          <ul class="mt-4 space-y-2.5 text-sm text-nudo-text-secondary">
+            <li class="flex items-start gap-2.5"><span class="text-nudo-accent font-bold">✓</span> Licencia única por organización (pago único)</li>
+            <li class="flex items-start gap-2.5"><span class="text-nudo-accent font-bold">✓</span> Uso para todo el equipo</li>
+            <li class="flex items-start gap-2.5"><span class="text-nudo-accent font-bold">✓</span> Soporte prioritario y facturación</li>
+          </ul>
+          <!-- TODO: reemplazar con tu email real de contacto -->
+          <a href="mailto:contacto@nudo-workspace.com?subject=Licencia%20comercial%20Nudo" class="mt-6 block w-full px-6 py-3 bg-nudo-accent hover:opacity-90 text-white font-bold rounded-2xl transition-all text-center shadow-lg shadow-nudo-accent/30">
+            Solicitar licencia
+          </a>
+        </div>
+      </div>
+
+      <!-- Lista de espera: app de escritorio -->
+      <div id="lista-de-espera" class="mt-10 p-6 rounded-3xl max-w-3xl mx-auto bg-nudo-bg border border-dashed border-nudo-border flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="text-left">
+          <p class="font-bold text-nudo-text-primary text-sm">🚀 La app de escritorio está en desarrollo</p>
+          <p class="text-nudo-text-secondary text-xs mt-1">Windows, macOS y Linux — con tus datos guardados en tu propia base de datos local.</p>
+        </div>
+        <!-- TODO: reemplazar con tu email real de contacto -->
+        <a href="mailto:contacto@nudo-workspace.com?subject=Lista%20de%20espera%20Nudo%20Desktop" class="shrink-0 px-6 py-3 bg-nudo-surface hover:bg-nudo-bg text-nudo-text-primary font-semibold rounded-2xl transition-all border border-nudo-border text-center">
+          Avisarme cuando salga
+        </a>
       </div>
     </div>
   </section>
@@ -480,11 +507,11 @@
             Un proyecto. Un contexto. Concentra tus ideas, documentación, tareas y clientes en un solo lugar.
           </p>
           <div class="flex items-center gap-3 mt-5">
-            <a href="https://github.com" target="_blank" class="w-9 h-9 rounded-xl bg-nudo-bg border border-nudo-border flex items-center justify-center text-nudo-text-secondary hover:text-nudo-text-primary hover:border-nudo-accent/40 transition-all" aria-label="GitHub">
+            <a href="https://github.com/Kevdev35/nudo" target="_blank" class="w-9 h-9 rounded-xl bg-nudo-bg border border-nudo-border flex items-center justify-center text-nudo-text-secondary hover:text-nudo-text-primary hover:border-nudo-accent/40 transition-all" aria-label="GitHub">
               <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
             </a>
-            <a href="https://github.com/sponsors" target="_blank" class="w-9 h-9 rounded-xl bg-nudo-bg border border-nudo-border flex items-center justify-center text-nudo-text-secondary hover:text-nudo-accent hover:border-nudo-accent/40 transition-all" aria-label="Sponsor">
-              <i class="ri-heart-3-line text-base"></i>
+            <a href="#licencias" class="w-9 h-9 rounded-xl bg-nudo-bg border border-nudo-border flex items-center justify-center text-nudo-text-secondary hover:text-nudo-accent hover:border-nudo-accent/40 transition-all" aria-label="Licencias">
+              <i class="ri-briefcase-line text-base"></i>
             </a>
           </div>
         </div>
@@ -505,18 +532,18 @@
           <h4 class="text-sm font-bold text-nudo-text-primary uppercase tracking-wider mb-5">Recursos</h4>
           <ul class="space-y-3">
             <li>
-              <a href="https://github.com" target="_blank" class="text-sm text-nudo-text-secondary hover:text-nudo-text-primary transition-colors inline-flex items-center gap-1.5">
+              <a href="https://github.com/Kevdev35/nudo" target="_blank" class="text-sm text-nudo-text-secondary hover:text-nudo-text-primary transition-colors inline-flex items-center gap-1.5">
                 <i class="ri-github-fill text-base"></i> GitHub
               </a>
             </li>
             <li><a href="/changelog" class="text-sm text-nudo-text-secondary hover:text-nudo-text-primary transition-colors inline-flex items-center gap-1.5">
               <i class="ri-file-list-3-line text-base"></i> Changelog & Versiones
             </a></li>
-            <li><a href="https://github.com" target="_blank" class="text-sm text-nudo-text-secondary hover:text-nudo-text-primary transition-colors inline-flex items-center gap-1.5">
+            <li><a href="https://github.com/Kevdev35/nudo/tree/main/docs" target="_blank" class="text-sm text-nudo-text-secondary hover:text-nudo-text-primary transition-colors inline-flex items-center gap-1.5">
               <i class="ri-book-open-line text-base"></i> Documentación
             </a></li>
-            <li><a href="#donaciones" class="text-sm text-nudo-text-secondary hover:text-nudo-text-primary transition-colors inline-flex items-center gap-1.5">
-              <i class="ri-heart-3-line text-base"></i> Soportar el proyecto
+            <li><a href="#licencias" class="text-sm text-nudo-text-secondary hover:text-nudo-text-primary transition-colors inline-flex items-center gap-1.5">
+              <i class="ri-briefcase-line text-base"></i> Licencias para empresas
             </a></li>
           </ul>
         </div>
@@ -547,7 +574,7 @@
     <div class="border-t border-nudo-border">
       <div class="max-w-6xl mx-auto px-6 py-5 flex flex-col md:flex-row items-center justify-between gap-4">
         <p class="text-xs text-nudo-text-tertiary">
-          &copy; 2026 Nudo Workspace. Software de código abierto bajo licencia MIT.
+          &copy; 2026 Nudo Workspace. Software propietario — uso personal gratuito, uso comercial bajo licencia.
         </p>
         <div class="flex items-center gap-4 text-xs text-nudo-text-tertiary">
           <span class="inline-flex items-center gap-1.5">

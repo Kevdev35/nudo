@@ -56,7 +56,7 @@ src/routes/
 |---------|------|
 | `+page.svelte` | Página marketing |
 
-Contiene: hero, features, arquitectura, roadmap, donaciones, footer.
+Contiene: hero, features, arquitectura, roadmap, licencias, footer.
 
 ---
 
