@@ -6,6 +6,7 @@ export const note = sqliteTable('note',{
     project_id: text().notNull().references(() => project.id),
     order: integer().notNull(),
     content: text().notNull(),
+    title: text(),
     color: text(),
     completed: integer().notNull().default(0),
     createdAt: integer("created_at", { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),

@@ -3,6 +3,7 @@ export interface Note{
     project_id:  string,
     order: number,
     content: string,
+    title: string | null,
     color: string | null,
     completed?: number,
     createdAt: Date;
