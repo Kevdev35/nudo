@@ -58,6 +58,65 @@ export const actions: Actions = {
         throw redirect(302, `/projects/${projectId}/notes`);
     },
 
+    saveDraft: async ({locals, request, params}) => {
+        if (!locals.user) {
+            return fail(401, {error: 'No autorizado'})
+        }
+
+        const projectId = params.id;
+        if (!projectId) {
+            return fail(400, {error: 'Proyecto no encontrado'})
+        }
+
+        const formData = await request.formData()
+        const title = ((formData.get("title") as string | null) ?? '').trim()
+        const content = (formData.get("content") as string | null) ?? ''
+        const color = formData.get("color") as string | null
+        const noteId = (formData.get("noteId") as string | null) ?? ''
+
+        if (!title && !content.trim()) {
+            return { skipped: true }
+        }
+
+        const existingNotes = await noteRepo.listByProject(projectId)
+
+        if (noteId) {
+            const note = existingNotes.find(n => n.id === noteId)
+            if (!note || !note.draft) {
+                return fail(400, {error: 'Borrador no encontrado'})
+            }
+
+            try {
+                await updateNote(locals.user.id, noteId, {
+                    title: title || null,
+                    content,
+                    color: color || undefined,
+                    draft: 1,
+                })
+            } catch (err) {
+                return fail(400, {error: (err as Error).message})
+            }
+
+            return { success: true }
+        }
+
+        const order = existingNotes.length + 1
+
+        try {
+            await createNote(locals.user.id, projectId, {
+                title: title || null,
+                content,
+                order,
+                color: color || undefined,
+                draft: 1,
+            })
+        } catch (err) {
+            return fail(400, {error: (err as Error).message})
+        }
+
+        return { success: true }
+    },
+
     deleteNote: async ({locals, request, params}) => {
         if (!locals.user) {
             throw redirect(302, "/login")
@@ -128,11 +187,12 @@ export const actions: Actions = {
                 title: title === '' ? null : title,
                 content: content || undefined,
                 color: color || undefined,
+                draft: 0,
             })
         } catch (err) {
             return fail(400, {error: (err as Error).message})
         }
 
-        throw redirect(302, `/projects/${projectId}/notes`);
+        return { success: true }
     }
 }

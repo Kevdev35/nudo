@@ -2,7 +2,7 @@ import type { NoteRepository } from "@ports/note-repository";
 import type { ProjectRepository } from "@ports/project-repository";
 
 export function createUpdateNoteUseCase(noteRepo: NoteRepository, projectRepo: ProjectRepository) {
-    return async (userId: string, noteId: string, data: { content?: string; order?: number; completed?: number; color?: string; title?: string | null }) => {
+    return async (userId: string, noteId: string, data: { content?: string; order?: number; completed?: number; color?: string; title?: string | null; draft?: number }) => {
         const note = await noteRepo.findById(noteId);
 
         if (!note) {

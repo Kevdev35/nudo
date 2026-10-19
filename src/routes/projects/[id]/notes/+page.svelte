@@ -1,6 +1,8 @@
 <script lang="ts">
   import type { PageData } from './$types';
   import { onMount } from 'svelte';
+  import { invalidateAll } from '$app/navigation';
+  import { enhance } from '$app/forms';
   let { data }: { data: PageData } = $props();
 
   import Button from "@components/Button.svelte"
@@ -12,6 +14,25 @@
   let editTitle = $state('');
   let editContent = $state('');
   let editColor = $state('');
+
+  let newTitle = $state('');
+  let newContent = $state('');
+  let newColor = $state('default');
+  let savingDraft = $state(false);
+  let justPublishedId = $state<string | null>(null);
+
+  function handleEditEnhance() {
+    // enhance llama a esto ANTES del fetch; el callback que retornamos recibe la respuesta
+    return async ({ result, update }: any) => {
+      const id = editingNote?.id;
+      if (result.type === 'success' && id) {
+        justPublishedId = id;
+        editDialogRef.close();
+        editingNote = null;
+      }
+      await update();
+    };
+  }
 
   const colors = [
     { name: 'default', bg: 'var(--nudo-surface)', text: 'var(--nudo-text-primary)' },
@@ -34,11 +55,46 @@
   }
 
   function openModal() {
+    newTitle = '';
+    newContent = '';
+    newColor = 'default';
     dialogRef.showModal()
   }
 
-  function closeModal() {
-    dialogRef.close()
+  async function persistDraft(payload: { noteId?: string; title: string; content: string; color: string }): Promise<boolean> {
+    try {
+      const fd = new FormData();
+      if (payload.noteId) fd.append('noteId', payload.noteId);
+      fd.append('title', payload.title);
+      fd.append('content', payload.content);
+      fd.append('color', payload.color);
+      const res = await fetch('?/saveDraft', { method: 'POST', body: fd });
+      return res.ok;
+    } catch {
+      return false;
+    }
+  }
+
+  async function closeModal() {
+    if (savingDraft) return;
+
+    const title = newTitle;
+    const content = newContent;
+    const hasContent = title.trim().length > 0 || content.trim().length > 0;
+
+    if (hasContent) {
+      savingDraft = true;
+      const ok = await persistDraft({ title, content, color: newColor });
+      savingDraft = false;
+      // si falla, se queda abierto para no perder lo escrito
+      if (!ok) return;
+    }
+
+    dialogRef.close();
+    newTitle = '';
+    newContent = '';
+    newColor = 'default';
+    if (hasContent) await invalidateAll();
   }
 
   function openEdit(note: any) {
@@ -49,9 +105,36 @@
     editDialogRef.showModal();
   }
 
-  function closeEdit() {
+  async function closeEdit() {
+    if (savingDraft) return;
+
+    const note = editingNote;
+    if (!note) {
+      editDialogRef.close();
+      return;
+    }
+
+    const title = editTitle;
+    const content = editContent;
+    const color = editColor;
+    const hasContent = title.trim().length > 0 || content.trim().length > 0;
+    const changed = title !== (note.title ?? '') || content !== note.content || color !== (note.color || 'default');
+
+    // Solo los borradores se guardan al cerrar; las notas publicadas
+    // solo cambian al presionar "Guardar cambios"
+    const willSave = !!note.draft && hasContent && changed;
+
+    if (willSave) {
+      savingDraft = true;
+      const ok = await persistDraft({ noteId: note.id, title, content, color });
+      savingDraft = false;
+      // si falla, se queda abierto para no perder lo escrito
+      if (!ok) return;
+    }
+
     editDialogRef.close();
     editingNote = null;
+    if (willSave) await invalidateAll();
   }
 
   let showCompleted = $state(false);
@@ -68,9 +151,18 @@
     localStorage.setItem('notes-sort', sortOrder);
   }
 
+  let draftNotes = $derived(
+    data.notes
+      .filter(n => n.draft)
+      .sort((a, b) => sortOrder === 'asc'
+        ? new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        : new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      )
+  );
+
   let activeNotes = $derived(
     data.notes
-      .filter(n => !n.completed)
+      .filter(n => !n.completed && !n.draft)
       .sort((a, b) => sortOrder === 'asc'
         ? new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
         : new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
@@ -78,7 +170,7 @@
   );
   let completedNotes = $derived(
     data.notes
-      .filter(n => n.completed)
+      .filter(n => n.completed && !n.draft)
       .sort((a, b) => sortOrder === 'asc'
         ? new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
         : new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
@@ -127,6 +219,7 @@
   <!-- Modal crear nota -->
   <dialog
     bind:this={dialogRef}
+    oncancel={(e) => { e.preventDefault(); closeModal(); }}
     onclick={(e) => e.target === dialogRef && closeModal()}
     class="fixed inset-0 m-auto max-w-[440px] w-full p-7 border-none rounded-[var(--nudo-radius-lg)] bg-nudo-bg shadow-2xl backdrop:bg-black/40"
   >
@@ -137,31 +230,32 @@
       </button>
     </div>
 
-    <form method="POST" action="?/createNote" class="flex flex-col gap-4">
+    <form method="POST" action="?/createNote" class="flex flex-col gap-4"
+      onkeydown={(e) => { if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') { e.preventDefault(); e.currentTarget.requestSubmit(); } }}>
       <label class="flex flex-col gap-2">
         <span class="text-sm font-semibold text-nudo-text-secondary">Título</span>
-        <input type="text" name="title" placeholder="Título de la nota..."
+        <input type="text" name="title" bind:value={newTitle} placeholder="Título de la nota..."
           class="border border-nudo-border rounded-[var(--nudo-radius-md)] px-4 py-3.5 text-[15px] text-nudo-text-primary bg-nudo-bg font-[inherit] focus:outline-none focus:ring-2 focus:ring-nudo-accent focus:border-nudo-accent" />
       </label>
       <label class="flex flex-col gap-2">
         <span class="text-sm font-semibold text-nudo-text-secondary">Contenido</span>
-        <textarea name="content" required placeholder="Escribe tu nota..."
+        <textarea name="content" required bind:value={newContent} placeholder="Escribe tu nota..."
           class="border border-nudo-border rounded-[var(--nudo-radius-md)] px-4 py-3.5 text-[15px] text-nudo-text-primary bg-nudo-bg font-[inherit] resize-y min-h-[90px] focus:outline-none focus:ring-2 focus:ring-nudo-accent focus:border-nudo-accent"></textarea>
       </label>
       <div class="flex flex-col gap-2">
         <span class="text-sm font-semibold text-nudo-text-secondary">Color</span>
         <div class="flex gap-2 flex-wrap">
           {#each colors as color}
-            <button type="button" onclick={() => editColor = color.name}
+            <button type="button" onclick={() => newColor = color.name}
               class="w-7 h-7 rounded-full cursor-pointer border-2 border-transparent shadow-[inset_0_0_0_1px_var(--nudo-border)] transition-all hover:scale-110
-                {editColor === color.name ? 'border-nudo-accent shadow-[0_0_0_2px_var(--nudo-bg),0_0_0_4px_var(--nudo-accent)]' : ''}"
+                {newColor === color.name ? 'border-nudo-accent shadow-[0_0_0_2px_var(--nudo-bg),0_0_0_4px_var(--nudo-accent)]' : ''}"
               style="background-color: {color.bg}"
               aria-label={color.name}
-              aria-pressed={editColor === color.name}
+              aria-pressed={newColor === color.name}
             ></button>
           {/each}
         </div>
-        <input type="hidden" name="color" value={editColor} />
+        <input type="hidden" name="color" value={newColor} />
       </div>
       <Button type="submit">Agregar nota</Button>
     </form>
@@ -170,6 +264,7 @@
   <!-- Modal editar nota -->
   <dialog
     bind:this={editDialogRef}
+    oncancel={(e) => { e.preventDefault(); closeEdit(); }}
     onclick={(e) => e.target === editDialogRef && closeEdit()}
     class="fixed inset-0 m-auto max-w-[440px] w-full p-7 border-none rounded-[var(--nudo-radius-lg)] bg-nudo-bg shadow-2xl backdrop:bg-black/40"
   >
@@ -181,17 +276,19 @@
     </div>
 
     {#if editingNote}
-      <form method="POST" action="?/editNote" class="flex flex-col gap-4">
+      <form method="POST" action="?/editNote" use:enhance={handleEditEnhance}
+        onkeydown={(e) => { if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') { e.preventDefault(); e.currentTarget.requestSubmit(); } }}
+        class="flex flex-col gap-4">
         <input type="hidden" name="noteId" value={editingNote.id} />
         <label class="flex flex-col gap-2">
           <span class="text-sm font-semibold text-nudo-text-secondary">Título</span>
-          <input type="text" name="title" value={editTitle} placeholder="Título de la nota..."
+          <input type="text" name="title" bind:value={editTitle} placeholder="Título de la nota..."
             class="border border-nudo-border rounded-[var(--nudo-radius-md)] px-4 py-3.5 text-[15px] text-nudo-text-primary bg-nudo-bg font-[inherit] focus:outline-none focus:ring-2 focus:ring-nudo-accent focus:border-nudo-accent" />
         </label>
         <label class="flex flex-col gap-2">
           <span class="text-sm font-semibold text-nudo-text-secondary">Contenido</span>
-          <textarea name="content" rows="6" required
-            class="border border-nudo-border rounded-[var(--nudo-radius-md)] px-4 py-3.5 text-[15px] text-nudo-text-primary bg-nudo-bg font-[inherit] resize-y min-h-[90px] focus:outline-none focus:ring-2 focus:ring-nudo-accent focus:border-nudo-accent">{editContent}</textarea>
+          <textarea name="content" rows="6" required bind:value={editContent}
+            class="border border-nudo-border rounded-[var(--nudo-radius-md)] px-4 py-3.5 text-[15px] text-nudo-text-primary bg-nudo-bg font-[inherit] resize-y min-h-[90px] focus:outline-none focus:ring-2 focus:ring-nudo-accent focus:border-nudo-accent"></textarea>
         </label>
         <div class="flex flex-col gap-2">
           <span class="text-sm font-semibold text-nudo-text-secondary">Color</span>
@@ -208,6 +305,12 @@
           </div>
           <input type="hidden" name="color" value={editColor} />
         </div>
+        {#if editingNote.draft}
+          <p class="m-0 flex items-center gap-1.5 text-[12px] text-nudo-text-tertiary">
+            <i class="ri-draft-line" aria-hidden="true"></i>
+            Se guardará como borrador al cerrar · <span class="font-semibold">⌘/Ctrl + Enter</span> para publicar
+          </p>
+        {/if}
         <Button type="submit">Guardar cambios</Button>
       </form>
     {/if}
@@ -216,7 +319,7 @@
   <!-- Notes List -->
 
   <div class="flex flex-col gap-6">
-    {#if activeNotes.length === 0 && completedNotes.length === 0}
+    {#if activeNotes.length === 0 && completedNotes.length === 0 && draftNotes.length === 0}
       <div class="flex flex-col items-center justify-center gap-1.5 text-center py-14 px-5 bg-nudo-surface rounded-[var(--nudo-radius-lg)]">
         <i class="ri-sticky-note-line text-nudo-text-tertiary text-[26px] mb-1" aria-hidden="true"></i>
         <p class="m-0 text-[15px] font-semibold text-nudo-text-primary">Aún no hay notas en este proyecto</p>
@@ -224,11 +327,42 @@
       </div>
     {:else}
       <div class="{viewMode === 'grid' ? 'grid grid-cols-2 md:grid-cols-3 gap-3' : 'flex flex-col gap-2'}">
+        {#each draftNotes as note}
+          <div
+            data-highlight-id={note.id}
+            onclick={() => openEdit(note)}
+            class="draft-card relative flex items-start justify-between gap-3 px-4 py-4 rounded-[var(--nudo-radius-lg)] cursor-pointer transition-all hover:brightness-[0.97]
+              {viewMode === 'grid' ? 'flex-col min-h-[150px]' : ''}"
+            style="background-color: {getNoteBg(note.color)}; color: {getNoteText(note.color)}"
+          >
+            <div class="flex-1 min-w-0 pr-6">
+              <span class="draft-chip inline-flex items-center gap-1 text-[11px] font-extrabold uppercase tracking-wide mb-1.5 px-2 py-0.5 rounded-full">
+                <i class="ri-draft-line" aria-hidden="true"></i> Borrador
+              </span>
+              {#if note.title}
+                <h3 class="m-0 mb-1 text-[15px] font-bold break-words">{note.title}</h3>
+              {/if}
+              {#if note.content}
+                <p class="text-base leading-relaxed m-0 whitespace-pre-wrap break-words
+                  {viewMode === 'grid' ? 'line-clamp-5' : ''}">{note.content}</p>
+              {/if}
+            </div>
+            <form method="POST" action="?/deleteNote" onclick={(e) => e.stopPropagation()}
+              class="absolute top-2.5 right-2.5 opacity-70 hover:opacity-100">
+              <input type="hidden" name="noteId" value={note.id} />
+              <button type="submit" class="inline-flex items-center justify-center w-7 h-7 rounded-[9px] bg-transparent border-none cursor-pointer text-[16px] text-nudo-text-tertiary hover:bg-black/5 hover:text-[#d70015] transition-all" aria-label="Descartar borrador" title="Descartar borrador">
+                <i class="ri-close-line" aria-hidden="true"></i>
+              </button>
+            </form>
+          </div>
+        {/each}
         {#each activeNotes as note}
           <div
             data-highlight-id={note.id}
             onclick={() => openEdit(note)}
+            onanimationend={() => (justPublishedId = null)}
             class="flex items-start justify-between gap-3 px-4 py-4 rounded-[var(--nudo-radius-lg)] cursor-pointer transition-all hover:brightness-[0.97]
+              {justPublishedId === note.id ? 'just-published' : ''}
               {viewMode === 'grid' ? 'flex-col min-h-[150px]' : ''}"
             style="background-color: {getNoteBg(note.color)}; color: {getNoteText(note.color)}"
           >
@@ -310,3 +444,63 @@
     {/if}
   </div>
 </section>
+
+<style>
+  .draft-card {
+    border: 2px dashed color-mix(in srgb, currentColor 50%, transparent);
+  }
+
+  .draft-chip {
+    background: color-mix(in srgb, currentColor 15%, transparent);
+    color: inherit;
+  }
+
+  .just-published {
+    position: relative;
+    animation: publish-pop 480ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+
+  .just-published::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 2px dashed color-mix(in srgb, currentColor 55%, transparent);
+    border-radius: inherit;
+    pointer-events: none;
+    animation: draft-fade 480ms ease-out forwards;
+  }
+
+  @keyframes publish-pop {
+    0% {
+      transform: scale(1.012);
+      box-shadow: inset 0 0 0 0 transparent;
+    }
+    35% {
+      box-shadow: inset 0 0 0 2px color-mix(in srgb, currentColor 45%, transparent);
+    }
+    100% {
+      transform: scale(1);
+      box-shadow: inset 0 0 0 0 transparent;
+    }
+  }
+
+  @keyframes draft-fade {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .just-published,
+    .just-published::after {
+      animation: none;
+    }
+
+    .just-published::after {
+      opacity: 0;
+    }
+  }
+</style>

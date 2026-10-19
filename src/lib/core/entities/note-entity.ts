@@ -6,6 +6,7 @@ export interface Note{
     title: string | null,
     color: string | null,
     completed?: number,
+    draft?: number,
     createdAt: Date;
     updatedAt: Date;
     deletedAt: Date | null;

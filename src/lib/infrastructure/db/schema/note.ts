@@ -9,6 +9,7 @@ export const note = sqliteTable('note',{
     title: text(),
     color: text(),
     completed: integer().notNull().default(0),
+    draft: integer().notNull().default(0),
     createdAt: integer("created_at", { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
     updatedAt: integer("updated_at", { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
     deletedAt: integer("deleted_at", { mode: 'timestamp' }),
