@@ -42,6 +42,7 @@ export const actions: Actions = {
         }
 
         const formData = await request.formData()
+        const title = formData.get("title") as string
         const content = formData.get("content") as string
         const color = formData.get("color") as string | null
         
@@ -49,7 +50,7 @@ export const actions: Actions = {
         const order = existingNotes.length + 1
         
         try {
-            await createNote(locals.user.id, projectId, {content, order, color: color || undefined})
+            await createNote(locals.user.id, projectId, {title, content, order, color: color || undefined})
         } catch (err){
             return fail(400, {error: (err as Error).message})
         }
@@ -118,11 +119,13 @@ export const actions: Actions = {
 
         const formData = await request.formData()
         const noteId = formData.get("noteId") as string
+        const title = formData.get("title") as string
         const content = formData.get("content") as string
         const color = formData.get("color") as string | null
 
         try {
             await updateNote(locals.user.id, noteId, {
+                title: title === '' ? null : title,
                 content: content || undefined,
                 color: color || undefined,
             })

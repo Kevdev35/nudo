@@ -9,6 +9,7 @@
   let editDialogRef: HTMLDialogElement = $state() as HTMLDialogElement
 
   let editingNote = $state<any>(null);
+  let editTitle = $state('');
   let editContent = $state('');
   let editColor = $state('');
 
@@ -42,6 +43,7 @@
 
   function openEdit(note: any) {
     editingNote = note;
+    editTitle = note.title ?? '';
     editContent = note.content;
     editColor = note.color || 'default';
     editDialogRef.showModal();
@@ -137,7 +139,12 @@
 
     <form method="POST" action="?/createNote" class="flex flex-col gap-4">
       <label class="flex flex-col gap-2">
-        <span class="text-sm font-semibold text-nudo-text-secondary">Nueva nota</span>
+        <span class="text-sm font-semibold text-nudo-text-secondary">Título</span>
+        <input type="text" name="title" placeholder="Título de la nota..."
+          class="border border-nudo-border rounded-[var(--nudo-radius-md)] px-4 py-3.5 text-[15px] text-nudo-text-primary bg-nudo-bg font-[inherit] focus:outline-none focus:ring-2 focus:ring-nudo-accent focus:border-nudo-accent" />
+      </label>
+      <label class="flex flex-col gap-2">
+        <span class="text-sm font-semibold text-nudo-text-secondary">Contenido</span>
         <textarea name="content" required placeholder="Escribe tu nota..."
           class="border border-nudo-border rounded-[var(--nudo-radius-md)] px-4 py-3.5 text-[15px] text-nudo-text-primary bg-nudo-bg font-[inherit] resize-y min-h-[90px] focus:outline-none focus:ring-2 focus:ring-nudo-accent focus:border-nudo-accent"></textarea>
       </label>
@@ -177,6 +184,11 @@
       <form method="POST" action="?/editNote" class="flex flex-col gap-4">
         <input type="hidden" name="noteId" value={editingNote.id} />
         <label class="flex flex-col gap-2">
+          <span class="text-sm font-semibold text-nudo-text-secondary">Título</span>
+          <input type="text" name="title" value={editTitle} placeholder="Título de la nota..."
+            class="border border-nudo-border rounded-[var(--nudo-radius-md)] px-4 py-3.5 text-[15px] text-nudo-text-primary bg-nudo-bg font-[inherit] focus:outline-none focus:ring-2 focus:ring-nudo-accent focus:border-nudo-accent" />
+        </label>
+        <label class="flex flex-col gap-2">
           <span class="text-sm font-semibold text-nudo-text-secondary">Contenido</span>
           <textarea name="content" rows="6" required
             class="border border-nudo-border rounded-[var(--nudo-radius-md)] px-4 py-3.5 text-[15px] text-nudo-text-primary bg-nudo-bg font-[inherit] resize-y min-h-[90px] focus:outline-none focus:ring-2 focus:ring-nudo-accent focus:border-nudo-accent">{editContent}</textarea>
@@ -201,6 +213,8 @@
     {/if}
   </dialog>
 
+  <!-- Notes List -->
+
   <div class="flex flex-col gap-6">
     {#if activeNotes.length === 0 && completedNotes.length === 0}
       <div class="flex flex-col items-center justify-center gap-1.5 text-center py-14 px-5 bg-nudo-surface rounded-[var(--nudo-radius-lg)]">
@@ -218,8 +232,13 @@
               {viewMode === 'grid' ? 'flex-col min-h-[150px]' : ''}"
             style="background-color: {getNoteBg(note.color)}; color: {getNoteText(note.color)}"
           >
-            <p class="flex-1 text-base leading-relaxed m-0 whitespace-pre-wrap break-words
-              {viewMode === 'grid' ? 'line-clamp-5' : ''}">{note.content}</p>
+            <div class="flex-1 min-w-0">
+              {#if note.title}
+                <h3 class="m-0 mb-1 text-[15px] font-bold break-words">{note.title}</h3>
+              {/if}
+              <p class="text-base leading-relaxed m-0 whitespace-pre-wrap break-words
+                {viewMode === 'grid' ? 'line-clamp-5' : ''}">{note.content}</p>
+            </div>
             <div class="flex items-center gap-1 shrink-0 opacity-70
               {viewMode === 'grid' ? 'self-end mt-auto pt-2.5' : ''}">
               <form method="POST" action="?/toggleComplete" onclick={(e) => e.stopPropagation()}>
@@ -261,8 +280,13 @@
                   {viewMode === 'grid' ? 'flex-col min-h-[150px]' : ''}"
                 style="background-color: {getNoteBg(note.color)}; color: {getNoteText(note.color)}"
               >
-                <p class="flex-1 text-base leading-relaxed m-0 whitespace-pre-wrap break-words line-through
-                  {viewMode === 'grid' ? 'line-clamp-5' : ''}">{note.content}</p>
+                <div class="flex-1 min-w-0">
+                  {#if note.title}
+                    <h3 class="m-0 mb-1 text-[15px] font-bold break-words line-through">{note.title}</h3>
+                  {/if}
+                  <p class="text-base leading-relaxed m-0 whitespace-pre-wrap break-words line-through
+                    {viewMode === 'grid' ? 'line-clamp-5' : ''}">{note.content}</p>
+                </div>
                 <div class="flex items-center gap-1 shrink-0 opacity-70
                   {viewMode === 'grid' ? 'self-end mt-auto pt-2.5' : ''}">
                   <form method="POST" action="?/toggleComplete" onclick={(e) => e.stopPropagation()}>
