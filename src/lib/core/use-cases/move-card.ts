@@ -39,11 +39,34 @@ export function moveCardUseCase(kbCard: KanbanCardRepository, kbList: KanbanList
             throw new Error('La lista destino no pertenece al mismo tablero');
         }
 
-        const updatedCard = await kbCard.update(cardId, {
-            kanban_list_id: targetListId,
-            order: newOrder
-        });
+        // `newOrder` es la posición (0-based) dentro de la lista destino, sin contar
+        // la tarjeta movida. Se renumera la lista completa para evitar huecos
+        // y que el orden quede estable al recargar.
+        const targetCards = (await kbCard.listByList(targetListId))
+            .filter((c) => c.id !== cardId)
+            .sort((a, b) => a.order - b.order);
 
-        return updatedCard;
+        const index = Number.isFinite(newOrder)
+            ? Math.min(Math.max(Math.trunc(newOrder), 0), targetCards.length)
+            : targetCards.length;
+
+        const reordered = [...targetCards.slice(0, index), card, ...targetCards.slice(index)];
+
+        await Promise.all(reordered.map((c, i) =>
+            kbCard.update(c.id, {
+                order: i + 1,
+                ...(c.id === cardId ? { kanban_list_id: targetListId } : {}),
+            })
+        ));
+
+        if (card.kanban_list_id !== targetListId) {
+            const sourceCards = (await kbCard.listByList(card.kanban_list_id))
+                .filter((c) => c.id !== cardId)
+                .sort((a, b) => a.order - b.order);
+
+            await Promise.all(sourceCards.map((c, i) => kbCard.update(c.id, { order: i + 1 })));
+        }
+
+        return kbCard.findById(cardId);
     };
 }

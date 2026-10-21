@@ -1,6 +1,6 @@
 import { kanbancard } from "@infrastructure/db/schema/kanban-card";
 import type { LibSQLDatabase } from "drizzle-orm/libsql";
-import { eq, and, isNull } from 'drizzle-orm';
+import { eq, and, isNull, asc } from 'drizzle-orm';
 import type { KanbanCardRepository } from "@ports/kanban-card-repository";
 import type { NewKanbanCard } from "@entities/kanban-card-entity";
 
@@ -15,7 +15,9 @@ export function createKanbanCardRepository(db: LibSQLDatabase): KanbanCardReposi
             return results[0] ?? null;
         },
         async listByList(kanbanListId) {
-            const results = await db.select().from(kanbancard).where(and(eq(kanbancard.kanban_list_id, kanbanListId), isNull(kanbancard.deletedAt)));
+            const results = await db.select().from(kanbancard)
+                .where(and(eq(kanbancard.kanban_list_id, kanbanListId), isNull(kanbancard.deletedAt)))
+                .orderBy(asc(kanbancard.order));
             return results;
         },
         async update(id, data) {

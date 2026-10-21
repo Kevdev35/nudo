@@ -63,6 +63,45 @@
     }
   }
 
+  let draggingCardId = $state<string | null>(null);
+  let dropTarget = $state<{ listId: string; beforeId: string | null } | null>(null);
+
+  let pointerDownCardId: string | null = null;
+  let pointerStart: { x: number; y: number } | null = null;
+  let pointerMoved = false;
+  let pointerX = 0;
+  let pointerY = 0;
+
+  function isInteractiveTarget(target: EventTarget | null) {
+    return target instanceof Element &&
+      !!target.closest('button, a, input, textarea, select, label, [contenteditable="true"]');
+  }
+
+  // Lista y tarjeta (por id) sobre las que caería el arrastre, según el puntero.
+  function updateDropTarget(cardId: string) {
+    const under = document.elementFromPoint(pointerX, pointerY);
+    const column = under instanceof Element ? under.closest<HTMLElement>('[data-kanban-list]') : null;
+    const listId = column?.dataset.kanbanList;
+    if (!column || !listId) {
+      dropTarget = null;
+      return;
+    }
+
+    const siblings = [...column.querySelectorAll<HTMLElement>('[data-highlight-id]')]
+      .filter((el) => el.dataset.highlightId !== cardId);
+
+    let beforeId: string | null = null;
+    for (const el of siblings) {
+      const { top, height } = el.getBoundingClientRect();
+      if (pointerY < top + height / 2) {
+        beforeId = el.dataset.highlightId ?? null;
+        break;
+      }
+    }
+
+    dropTarget = { listId, beforeId };
+  }
+
   function handleDrop(state: DragDropState<{ id: string }>) {
     const { draggedItem, targetContainer } = state;
     if (!targetContainer || !draggedItem) return;
@@ -71,17 +110,38 @@
     const sourceListId = Object.keys(cardsByList).find(listId =>
       cardsByList[listId]?.some((c: { id: string }) => c.id === cardId)
     );
-    if (!sourceListId || sourceListId === targetListId) return;
+    if (!sourceListId) return;
     const card = cardsByList[sourceListId]?.find((c: { id: string }) => c.id === cardId);
     if (!card) return;
-    cardsByList[sourceListId] = cardsByList[sourceListId]?.filter((c: { id: string }) => c.id !== cardId) ?? [];
-    const targetCards = cardsByList[targetListId] ?? [];
-    cardsByList[targetListId] = [...targetCards, card];
+
+    updateDropTarget(cardId);
+
+    const targetCards = (cardsByList[targetListId] ?? []).filter((c) => c.id !== cardId);
+    let index = targetCards.length;
+    if (dropTarget?.listId === targetListId && dropTarget.beforeId) {
+      const beforeIndex = targetCards.findIndex((c) => c.id === dropTarget!.beforeId);
+      if (beforeIndex !== -1) index = beforeIndex;
+    }
+
+    const currentIndex = (cardsByList[targetListId] ?? []).findIndex((c) => c.id === cardId);
+    if (sourceListId === targetListId && index === currentIndex) {
+      dropTarget = null;
+      draggingCardId = null;
+      return;
+    }
+
+    if (sourceListId !== targetListId) {
+      cardsByList[sourceListId] = cardsByList[sourceListId]?.filter((c) => c.id !== cardId) ?? [];
+    }
+    cardsByList[targetListId] = [...targetCards.slice(0, index), card, ...targetCards.slice(index)];
+
     const formData = new FormData();
     formData.append('cardId', cardId);
     formData.append('targetListId', targetListId);
-    formData.append('newOrder', String(cardsByList[targetListId]?.length ?? 1));
+    formData.append('newOrder', String(index));
     fetch('?/moveCard', { method: 'POST', body: formData, headers: { 'x-sveltekit-action': 'true' } });
+    dropTarget = null;
+    draggingCardId = null;
   }
 
   function handleCardClick(e: MouseEvent, card: KanbanCard) {
@@ -93,32 +153,73 @@
     openEditCard(card);
   }
 
-  // Distingue un click (abrir edición) de un arrastre (mover de columna),
-  // porque ahora se puede arrastrar desde cualquier parte de la tarjeta.
-  let pointerStart: { x: number; y: number } | null = null;
-  let pointerMoved = false;
-
-  function onCardPointerDown(e: PointerEvent) {
+  function onCardPointerDown(e: PointerEvent, card: KanbanCard) {
+    if (isInteractiveTarget(e.target)) return;
+    pointerDownCardId = card.id;
     pointerStart = { x: e.clientX, y: e.clientY };
+    pointerX = e.clientX;
+    pointerY = e.clientY;
     pointerMoved = false;
+    draggingCardId = null;
+    dropTarget = null;
     window.addEventListener('pointermove', trackPointerMove, { passive: true });
     window.addEventListener('pointerup', stopTrackingPointer, { passive: true });
     window.addEventListener('pointercancel', stopTrackingPointer, { passive: true });
   }
 
+  // Distingue un click (abrir edición) de un arrastre (mover o reordenar),
+  // porque ahora se puede arrastrar desde cualquier parte de la tarjeta.
   function trackPointerMove(e: PointerEvent) {
     if (!pointerStart) return;
-    if (Math.abs(e.clientX - pointerStart.x) > 5 || Math.abs(e.clientY - pointerStart.y) > 5) {
-      pointerMoved = true;
+    pointerX = e.clientX;
+    pointerY = e.clientY;
+    if (!pointerMoved) {
+      if (Math.abs(e.clientX - pointerStart.x) > 8 || Math.abs(e.clientY - pointerStart.y) > 8) {
+        pointerMoved = true;
+        draggingCardId = pointerDownCardId;
+      } else {
+        return;
+      }
     }
+    if (draggingCardId) updateDropTarget(draggingCardId);
   }
 
   function stopTrackingPointer() {
     pointerStart = null;
+    pointerDownCardId = null;
+    draggingCardId = null;
+    dropTarget = null;
     window.removeEventListener('pointermove', trackPointerMove);
     window.removeEventListener('pointerup', stopTrackingPointer);
     window.removeEventListener('pointercancel', stopTrackingPointer);
   }
+
+  function onCardDragStart(e: DragEvent, card: KanbanCard) {
+    if (pointerDownCardId !== card.id) return;
+    draggingCardId = card.id;
+    pointerX = e.clientX;
+    pointerY = e.clientY;
+  }
+
+  // El arrastre nativo (mouse) no emite pointermove: seguimos el dragover.
+  $effect(() => {
+    const onDragOver = (e: DragEvent) => {
+      if (!draggingCardId) return;
+      pointerX = e.clientX;
+      pointerY = e.clientY;
+      updateDropTarget(draggingCardId);
+    };
+
+    const onDragEnd = () => stopTrackingPointer();
+
+    window.addEventListener('dragover', onDragOver, { passive: true });
+    window.addEventListener('dragend', onDragEnd, { passive: true });
+
+    return () => {
+      window.removeEventListener('dragover', onDragOver);
+      window.removeEventListener('dragend', onDragEnd);
+    };
+  });
 </script>
 
 <section class="flex flex-col gap-5 px-8 pb-12 pt-1">
@@ -144,6 +245,7 @@
     <div class="flex gap-5 overflow-x-auto pb-4">
       {#each data.lists as list}
         <div
+          data-kanban-list={list.id}
           use:droppable={{ container: list.id, callbacks: { onDrop: handleDrop } }}
           class="min-w-[300px] max-w-[300px] bg-nudo-surface rounded-3xl p-4 flex flex-col gap-3"
         >
@@ -160,9 +262,11 @@
                 <div
                   data-highlight-id={card.id}
                   use:draggable={{ container: list.id, dragData: card }}
-                  onpointerdown={onCardPointerDown}
+                  onpointerdown={(e) => onCardPointerDown(e, card)}
+                  ondragstart={(e) => onCardDragStart(e, card)}
                   onclick={(e) => handleCardClick(e, card)}
                   class="bg-nudo-bg border border-nudo-border rounded-2xl p-4 cursor-pointer active:cursor-grabbing hover:shadow-sm transition-all duration-150 {card.completed ? 'opacity-60' : ''}"
+                  class:drop-before-line={dropTarget?.listId === list.id && dropTarget.beforeId === card.id}
                 >
                   <div class="flex items-start justify-between gap-2">
                     <div class="flex-1 min-w-0">
@@ -193,6 +297,9 @@
               {/each}
             {:else}
               <p class="text-sm text-nudo-text-tertiary px-2 m-0">Sin tarjetas</p>
+            {/if}
+            {#if draggingCardId && dropTarget?.listId === list.id && dropTarget.beforeId === null}
+              <div class="h-0.5 rounded-full bg-nudo-accent mx-1" aria-hidden="true"></div>
             {/if}
           </div>
         </div>
@@ -308,3 +415,13 @@
     </div>
   {/if}
 </dialog>
+
+<style>
+  :global([data-highlight-id].drop-before-line) {
+    box-shadow: 0 -3px 0 0 var(--color-nudo-accent);
+  }
+
+  :global([data-highlight-id].dragging) {
+    opacity: 0.45;
+  }
+</style>
