@@ -3,6 +3,7 @@
     import { marked } from 'marked';
     import { enhance } from '$app/forms';
     import Button from "@ui/components/Button.svelte";
+    import { isBackdropClick } from "@ui/modal";
 
     let { data }: { data: PageData } = $props()
 
@@ -165,7 +166,7 @@
 <dialog
     bind:this={historyDialog}
     oncancel={(e) => { e.preventDefault(); closeHistory(); }}
-    onclick={(e) => e.target === historyDialog && closeHistory()}
+    onclick={(e) => isBackdropClick(e, historyDialog) && closeHistory()}
     aria-labelledby="history-title"
     class="fixed inset-0 m-auto max-w-[1000px] w-[94vw] p-0 border border-nudo-border rounded-[var(--nudo-radius-lg)] bg-nudo-bg shadow-2xl backdrop:bg-black/40 overflow-hidden"
 >

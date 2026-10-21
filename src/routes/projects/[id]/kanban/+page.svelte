@@ -4,6 +4,7 @@
   let { data }: { data: PageData } = $props();
 
   import Button from "@components/Button.svelte"
+  import { isBackdropClick } from '@ui/modal'
   import { draggable, droppable, type DragDropState } from '@thisux/sveltednd';
 
   let dialogRef: HTMLDialogElement = $state() as HTMLDialogElement
@@ -170,7 +171,7 @@
 </section>
 
 <!-- Modal: Crear tablero -->
-<dialog bind:this={dialogRef} onclick={(e) => e.target === dialogRef && closeModal()}
+<dialog bind:this={dialogRef} onclick={(e) => isBackdropClick(e, dialogRef) && closeModal()}
   class="fixed inset-0 m-auto max-w-md w-full p-7 border-none rounded-3xl bg-nudo-bg shadow-2xl backdrop:bg-black/40">
   <div class="flex items-center justify-between mb-5">
     <h2 class="text-xl font-extrabold text-nudo-text-primary m-0">Crear tablero</h2>
@@ -187,7 +188,7 @@
 </dialog>
 
 <!-- Modal: Crear columna -->
-<dialog bind:this={dialogRefList} onclick={(e) => e.target === dialogRefList && closeListModal()}
+<dialog bind:this={dialogRefList} onclick={(e) => isBackdropClick(e, dialogRefList) && closeListModal()}
   class="fixed inset-0 m-auto max-w-md w-full p-7 border-none rounded-3xl bg-nudo-bg shadow-2xl backdrop:bg-black/40">
   <div class="flex items-center justify-between mb-5">
     <h2 class="text-xl font-extrabold text-nudo-text-primary m-0">Nueva columna</h2>
@@ -205,7 +206,7 @@
 </dialog>
 
 <!-- Modal: Crear tarjeta -->
-<dialog bind:this={dialogRefCard} onclick={(e) => e.target === dialogRefCard && closeCardModal()}
+<dialog bind:this={dialogRefCard} onclick={(e) => isBackdropClick(e, dialogRefCard) && closeCardModal()}
   class="fixed inset-0 m-auto max-w-md w-full p-7 border-none rounded-3xl bg-nudo-bg shadow-2xl backdrop:bg-black/40">
   <div class="flex items-center justify-between mb-5">
     <h2 class="text-xl font-extrabold text-nudo-text-primary m-0">Nueva tarjeta</h2>
@@ -231,7 +232,7 @@
 </dialog>
 
 <!-- Modal: Editar tarjeta -->
-<dialog bind:this={dialogRefEdit} onclick={(e) => e.target === dialogRefEdit && closeEditCard()}
+<dialog bind:this={dialogRefEdit} onclick={(e) => isBackdropClick(e, dialogRefEdit) && closeEditCard()}
   class="fixed inset-0 m-auto max-w-md w-full p-7 border-none rounded-3xl bg-nudo-bg shadow-2xl backdrop:bg-black/40">
   <div class="flex items-center justify-between mb-5">
     <h2 class="text-xl font-extrabold text-nudo-text-primary m-0">Editar tarjeta</h2>

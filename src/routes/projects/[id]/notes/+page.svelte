@@ -6,6 +6,7 @@
   let { data }: { data: PageData } = $props();
 
   import Button from "@components/Button.svelte"
+  import { isBackdropClick } from '@ui/modal'
 
   let dialogRef: HTMLDialogElement = $state() as HTMLDialogElement
   let editDialogRef: HTMLDialogElement = $state() as HTMLDialogElement
@@ -220,7 +221,7 @@
   <dialog
     bind:this={dialogRef}
     oncancel={(e) => { e.preventDefault(); closeModal(); }}
-    onclick={(e) => e.target === dialogRef && closeModal()}
+    onclick={(e) => isBackdropClick(e, dialogRef) && closeModal()}
     class="fixed inset-0 m-auto max-w-[440px] w-full p-7 border-none rounded-[var(--nudo-radius-lg)] bg-nudo-bg shadow-2xl backdrop:bg-black/40"
   >
     <div class="flex items-center justify-between mb-5">
@@ -265,7 +266,7 @@
   <dialog
     bind:this={editDialogRef}
     oncancel={(e) => { e.preventDefault(); closeEdit(); }}
-    onclick={(e) => e.target === editDialogRef && closeEdit()}
+    onclick={(e) => isBackdropClick(e, editDialogRef) && closeEdit()}
     class="fixed inset-0 m-auto max-w-[440px] w-full p-7 border-none rounded-[var(--nudo-radius-lg)] bg-nudo-bg shadow-2xl backdrop:bg-black/40"
   >
     <div class="flex items-center justify-between mb-5">

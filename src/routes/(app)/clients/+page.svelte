@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { PageData } from "./$types"
     import Button from "@ui/components/Button.svelte";
+    import { isBackdropClick } from "@ui/modal";
     let { data }: { data: PageData } = $props()
 
     let dialogRef: HTMLDialogElement = $state() as HTMLDialogElement
@@ -24,7 +25,7 @@
 
 <dialog
     bind:this={dialogRef}
-    onclick={(e) => e.target === dialogRef && closeModal()}
+    onclick={(e) => isBackdropClick(e, dialogRef) && closeModal()}
     class="fixed inset-0 m-auto max-w-md w-[calc(100%-2rem)] p-7 border-none rounded-3xl bg-nudo-bg shadow-2xl backdrop:bg-black/40"
 >
     <div class="flex items-center justify-between mb-5">

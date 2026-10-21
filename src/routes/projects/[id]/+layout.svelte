@@ -7,6 +7,7 @@
     import { onMount, tick } from 'svelte';
     import Button from '@components/Button.svelte';
     import { PROJECT_STATUSES, projectStatusClass, projectStatusLabel } from '@ui/project-status';
+    import { isBackdropClick } from '@ui/modal';
     let { data, children }: { data: LayoutData; children: any } = $props();
 
     let query = $state('');
@@ -212,7 +213,7 @@
 <!-- Modal: Configuración del Proyecto -->
 <dialog
     bind:this={settingsDialog}
-    onclick={(e) => e.target === settingsDialog && closeSettings()}
+    onclick={(e) => isBackdropClick(e, settingsDialog) && closeSettings()}
     class="fixed inset-0 m-auto max-w-lg w-full p-7 border-none rounded-3xl bg-nudo-bg shadow-2xl backdrop:bg-black/40 max-h-[90vh] overflow-y-auto"
 >
     <div class="flex items-center justify-between mb-5">
@@ -293,7 +294,7 @@
 <!-- Modal: Confirmar Eliminación -->
 <dialog
     bind:this={deleteDialog}
-    onclick={(e) => e.target === deleteDialog && closeDelete()}
+    onclick={(e) => isBackdropClick(e, deleteDialog) && closeDelete()}
     class="fixed inset-0 m-auto max-w-md w-full p-7 border-none rounded-3xl bg-nudo-bg shadow-2xl backdrop:bg-black/40"
 >
     <div class="flex items-center justify-between mb-5">
