@@ -15,6 +15,8 @@
   let editingCard = $state<KanbanCard | null>(null);
   let editTitle = $state('');
   let editDescription = $state('');
+  let newCardError = $state('');
+  let editCardError = $state('');
 
   let cardsByList = $state<Record<string, KanbanCard[]>>(data.cardsByList as Record<string, KanbanCard[]>);
 
@@ -22,16 +24,43 @@
   function closeModal() { dialogRef.close() }
   function openListModal() { dialogRefList.showModal() }
   function closeListModal() { dialogRefList.close() }
-  function openCardModal(listId: string) { activeListId = listId; dialogRefCard.showModal() }
+  function openCardModal(listId: string) { activeListId = listId; newCardError = ''; dialogRefCard.showModal() }
   function closeCardModal() { dialogRefCard.close() }
 
   function openEditCard(card: KanbanCard) {
     editingCard = card;
     editTitle = card.title;
     editDescription = card.description ?? '';
+    editCardError = '';
     dialogRefEdit.showModal();
   }
   function closeEditCard() { dialogRefEdit.close(); editingCard = null; }
+
+  function hasCardContent(form: HTMLFormElement) {
+    const formData = new FormData(form);
+    return (
+      String(formData.get('title') ?? '').trim().length > 0 ||
+      String(formData.get('description') ?? '').trim().length > 0
+    );
+  }
+
+  function validateNewCard(e: SubmitEvent) {
+    if (!hasCardContent(e.currentTarget as HTMLFormElement)) {
+      e.preventDefault();
+      newCardError = 'Escribí un título o una descripción.';
+    } else {
+      newCardError = '';
+    }
+  }
+
+  function validateEditCard(e: SubmitEvent) {
+    if (!hasCardContent(e.currentTarget as HTMLFormElement)) {
+      e.preventDefault();
+      editCardError = 'Escribí un título o una descripción.';
+    } else {
+      editCardError = '';
+    }
+  }
 
   function handleDrop(state: DragDropState<{ id: string }>) {
     const { draggedItem, targetContainer } = state;
@@ -105,9 +134,15 @@
                 >
                   <div class="flex items-start justify-between gap-2">
                     <div class="flex-1 min-w-0">
-                      <p class="font-semibold text-base text-nudo-text-primary m-0 {card.completed ? 'line-through' : ''}">{card.title}</p>
-                      {#if card.description}
-                        <p class="text-sm text-nudo-text-secondary mt-1 m-0">{card.description}</p>
+                      {#if card.title}
+                        <p class="font-semibold text-base text-nudo-text-primary m-0 {card.completed ? 'line-through' : ''}">{card.title}</p>
+                        {#if card.description}
+                          <p class="text-sm text-nudo-text-secondary mt-1 m-0">{card.description}</p>
+                        {/if}
+                      {:else if card.description}
+                        <p class="font-semibold text-base text-nudo-text-primary m-0 {card.completed ? 'line-through' : ''}">{card.description}</p>
+                      {:else}
+                        <p class="italic text-sm text-nudo-text-tertiary m-0">(Sin título)</p>
                       {/if}
                     </div>
                     <div class="flex items-center gap-1 shrink-0">
@@ -176,11 +211,11 @@
     <h2 class="text-xl font-extrabold text-nudo-text-primary m-0">Nueva tarjeta</h2>
     <button onclick={closeCardModal} class="icon-btn" aria-label="Cerrar"><i class="ri-close-line" aria-hidden="true"></i></button>
   </div>
-  <form method="POST" action="?/createCard" class="flex flex-col gap-4">
+  <form method="POST" action="?/createCard" onsubmit={validateNewCard} class="flex flex-col gap-4">
     <input type="hidden" name="listId" value={activeListId} />
     <label class="flex flex-col gap-2">
-      <span class="text-sm font-semibold text-nudo-text-secondary">Título</span>
-      <input name="title" type="text" required placeholder="Titulo de la tarjeta"
+      <span class="text-sm font-semibold text-nudo-text-secondary">Título (opcional)</span>
+      <input name="title" type="text" placeholder="Titulo de la tarjeta"
         class="border border-nudo-border rounded-2xl px-4 py-3.5 text-[15px] text-nudo-text-primary bg-nudo-bg focus:outline-none focus:border-nudo-accent" />
     </label>
     <label class="flex flex-col gap-2">
@@ -188,6 +223,9 @@
       <textarea name="description" rows="3" placeholder="Descripcion de la tarjeta..."
         class="border border-nudo-border rounded-2xl px-4 py-3.5 text-[15px] text-nudo-text-primary bg-nudo-bg focus:outline-none focus:border-nudo-accent resize-none"></textarea>
     </label>
+    {#if newCardError}
+      <p class="text-sm text-red-600 dark:text-red-400 m-0">{newCardError}</p>
+    {/if}
     <Button type="submit">Crear tarjeta</Button>
   </form>
 </dialog>
@@ -200,11 +238,11 @@
     <button onclick={closeEditCard} class="icon-btn" aria-label="Cerrar"><i class="ri-close-line" aria-hidden="true"></i></button>
   </div>
   {#if editingCard}
-    <form method="POST" action="?/updateCard" class="flex flex-col gap-4">
+    <form method="POST" action="?/updateCard" onsubmit={validateEditCard} class="flex flex-col gap-4">
       <input type="hidden" name="cardId" value={editingCard.id} />
       <label class="flex flex-col gap-2">
-        <span class="text-sm font-semibold text-nudo-text-secondary">Título</span>
-        <input name="title" type="text" required value={editTitle}
+        <span class="text-sm font-semibold text-nudo-text-secondary">Título (opcional)</span>
+        <input name="title" type="text" value={editTitle}
           class="border border-nudo-border rounded-2xl px-4 py-3.5 text-[15px] text-nudo-text-primary bg-nudo-bg focus:outline-none focus:border-nudo-accent" />
       </label>
       <label class="flex flex-col gap-2">
@@ -212,6 +250,9 @@
         <textarea name="description" rows="4"
           class="border border-nudo-border rounded-2xl px-4 py-3.5 text-[15px] text-nudo-text-primary bg-nudo-bg focus:outline-none focus:border-nudo-accent resize-none">{editDescription}</textarea>
       </label>
+      {#if editCardError}
+        <p class="text-sm text-red-600 dark:text-red-400 m-0">{editCardError}</p>
+      {/if}
       <div class="flex gap-3 items-center">
         <Button type="submit">Guardar cambios</Button>
         <Button type="button" onclick={closeEditCard}>Cancelar</Button>

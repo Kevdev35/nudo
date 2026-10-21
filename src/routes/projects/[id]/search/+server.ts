@@ -50,7 +50,7 @@ export const GET: RequestHandler = async ({ locals, params, url }) => {
                 if (c.title?.toLowerCase().includes(q) || c.description?.toLowerCase().includes(q)) {
                     results.push({
                         id: c.id,
-                        title: c.title,
+                        title: c.title || c.description?.slice(0, 80) || '(Sin título)',
                         type: 'tarea',
                         href: `/projects/${projectId}/kanban`,
                         excerpt: c.description?.slice(0, 120),

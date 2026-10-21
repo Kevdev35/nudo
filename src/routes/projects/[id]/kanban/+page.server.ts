@@ -120,8 +120,12 @@ export const actions: Actions = {
 
         const formData = await request.formData();
         const listId = formData.get("listId") as string;
-        const title = formData.get("title") as string;
-        const description = (formData.get("description") as string) || null;
+        const title = ((formData.get("title") as string | null) ?? '').trim();
+        const description = ((formData.get("description") as string | null) ?? '').trim() || null;
+
+        if (!title && !description) {
+            return fail(400, { error: 'La tarjeta necesita un título o una descripción' });
+        }
 
         const existingCards = await listCards(locals.user.id, listId);
         const order = existingCards.length + 1;
@@ -166,8 +170,12 @@ export const actions: Actions = {
 
         const formData = await request.formData();
         const cardId = formData.get("cardId") as string;
-        const title = formData.get("title") as string;
-        const description = (formData.get("description") as string) || null;
+        const title = ((formData.get("title") as string | null) ?? '').trim();
+        const description = ((formData.get("description") as string | null) ?? '').trim() || null;
+
+        if (!title && !description) {
+            return fail(400, { error: 'La tarjeta necesita un título o una descripción' });
+        }
 
         try {
             await updateCard(locals.user.id, cardId, { title, description });
