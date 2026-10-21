@@ -39,7 +39,7 @@
     {:else}
         {#each data.deletedProjects as project}
             <div class="flex items-center gap-3 sm:gap-4 px-4 sm:px-5 py-3 sm:py-4 bg-nudo-surface rounded-3xl group">
-                <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-red-500/10 flex items-center justify-center text-lg sm:text-xl text-red-500 shrink-0">
+                <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-nudo-danger-soft flex items-center justify-center text-lg sm:text-xl text-nudo-danger shrink-0">
                     <i class="ri-delete-bin-line" aria-hidden="true"></i>
                 </div>
                 <div class="flex-1 min-w-0">
@@ -68,7 +68,7 @@
                         <button
                             type="submit"
                             disabled={restoring === project.id}
-                            class="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 rounded-xl bg-nudo-accent-bg text-nudo-accent text-[10px] sm:text-xs font-semibold border-none cursor-pointer hover:bg-nudo-accent hover:text-white transition-all disabled:opacity-50"
+                            class="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 rounded-xl bg-nudo-accent-soft text-nudo-accent text-[10px] sm:text-xs font-semibold border-none cursor-pointer hover:opacity-90 transition-all disabled:opacity-50"
                         >
                             <i class="ri-refresh-line" aria-hidden="true"></i>
                             <span class="hidden sm:inline">{restoring === project.id ? 'Restaurando...' : 'Restaurar'}</span>

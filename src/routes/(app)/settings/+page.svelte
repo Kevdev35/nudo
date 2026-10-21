@@ -31,7 +31,7 @@
         {/if}
 
         {#if profileError}
-            <div class="mb-4 p-3 rounded-2xl bg-red-500/10 text-red-500 text-sm font-medium flex items-center gap-2">
+            <div class="mb-4 p-3 rounded-2xl bg-nudo-danger-soft text-nudo-danger text-sm font-medium flex items-center gap-2">
                 <i class="ri-error-warning-line text-lg"></i> {profileError}
             </div>
         {/if}
@@ -85,7 +85,7 @@
         {/if}
 
         {#if passwordError}
-            <div class="mb-4 p-3 rounded-2xl bg-red-500/10 text-red-500 text-sm font-medium flex items-center gap-2">
+            <div class="mb-4 p-3 rounded-2xl bg-nudo-danger-soft text-nudo-danger text-sm font-medium flex items-center gap-2">
                 <i class="ri-error-warning-line text-lg"></i> {passwordError}
             </div>
         {/if}

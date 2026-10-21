@@ -5,7 +5,7 @@
             title: 'Apariencia y pulido',
             date: 'Sep 2025',
             tag: 'Última',
-            tagColor: 'bg-nudo-accent-bg text-nudo-accent',
+            tagColor: 'bg-nudo-accent-soft text-nudo-accent',
             changes: [
                 { icon: 'ri-user-settings-line', text: 'Configuración de perfil: cambiar nombre, email y contraseña', type: 'feat' },
                 { icon: 'ri-palette-line', text: 'Selector de tema oscuro/claro', type: 'feat' },
@@ -58,7 +58,7 @@
 
     const typeStyles: Record<string, string> = {
         feat: 'bg-nudo-success-soft text-nudo-success',
-        fix: 'bg-red-500/10 text-red-500',
+        fix: 'bg-nudo-danger-soft text-nudo-danger',
     };
 
     const typeLabels: Record<string, string> = {

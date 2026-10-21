@@ -40,7 +40,7 @@
 			</div>
 
 			{#if form?.error}
-				<div class="mb-6 p-3 rounded-2xl bg-red-500/10 text-red-500 text-sm font-medium flex items-center gap-2">
+				<div class="mb-6 p-3 rounded-2xl bg-nudo-danger-soft text-nudo-danger text-sm font-medium flex items-center gap-2">
 					<i class="ri-error-warning-line text-lg"></i> {form.error}
 				</div>
 			{/if}

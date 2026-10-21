@@ -62,7 +62,7 @@
                         onclick={handleNavClick}
                         class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium no-underline transition-colors duration-150
                             {currentPath === item.href
-                                ? 'bg-nudo-accent-bg text-nudo-accent'
+                                ? 'bg-nudo-accent-soft text-nudo-accent'
                                 : 'text-nudo-text-secondary hover:bg-nudo-surface hover:text-nudo-text-primary'}"
                     >
                         <i class="{item.icon} text-lg" aria-hidden="true"></i>

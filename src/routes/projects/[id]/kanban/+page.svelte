@@ -459,7 +459,7 @@
         class="border border-nudo-border rounded-2xl px-4 py-3.5 text-[15px] text-nudo-text-primary bg-nudo-bg focus:outline-none focus:border-nudo-accent resize-none"></textarea>
     </label>
     {#if newCardError}
-      <p class="text-sm text-red-600 dark:text-red-400 m-0">{newCardError}</p>
+      <p class="text-sm text-nudo-danger m-0">{newCardError}</p>
     {/if}
     <Button type="submit">Crear tarjeta</Button>
   </form>
@@ -486,7 +486,7 @@
           class="border border-nudo-border rounded-2xl px-4 py-3.5 text-[15px] text-nudo-text-primary bg-nudo-bg focus:outline-none focus:border-nudo-accent resize-none">{editDescription}</textarea>
       </label>
       {#if editCardError}
-        <p class="text-sm text-red-600 dark:text-red-400 m-0">{editCardError}</p>
+        <p class="text-sm text-nudo-danger m-0">{editCardError}</p>
       {/if}
       <div class="flex gap-3 items-center">
         <Button type="submit">Guardar cambios</Button>
@@ -504,7 +504,7 @@
       </form>
       <form method="POST" action="?/deleteCard">
         <input type="hidden" name="cardId" value={editingCard.id} />
-        <button type="submit" class="flex items-center gap-2 text-sm text-nudo-text-tertiary hover:text-red-600 cursor-pointer bg-transparent border-none font-inherit">
+        <button type="submit" class="flex items-center gap-2 text-sm text-nudo-text-tertiary hover:text-nudo-danger cursor-pointer bg-transparent border-none font-inherit">
           <i class="ri-delete-bin-line text-base"></i> Eliminar tarjeta
         </button>
       </form>

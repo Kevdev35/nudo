@@ -76,7 +76,7 @@
     const typeColors: Record<string, string> = {
         nota: 'bg-nudo-warning-soft text-nudo-warning',
         tarea: 'bg-nudo-success-soft text-nudo-success',
-        doc: 'bg-[#e8f1ff] text-nudo-accent',
+        doc: 'bg-nudo-accent-soft text-nudo-accent',
         archivo: 'bg-nudo-bg text-nudo-text-tertiary',
     };
 

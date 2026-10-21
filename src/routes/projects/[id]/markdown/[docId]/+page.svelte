@@ -203,7 +203,7 @@
                             <span class="text-sm font-bold text-nudo-text-primary">v{v.version_number}</span>
                             <span class="text-[11px] font-mono">
                                 <span class="text-nudo-success">+{s.add}</span>
-                                <span class="text-red-600 dark:text-red-400"> -{s.del}</span>
+                                <span class="text-nudo-danger"> -{s.del}</span>
                             </span>
                         </span>
                         <span class="text-[11px] text-nudo-text-tertiary">{formatDate(v.createdAt)}</span>
@@ -218,7 +218,7 @@
                             v{selectedVersion.version_number} → contenido actual
                             <span class="font-mono text-[11px] ml-2">
                                 <span class="text-nudo-success">+{stats.add}</span>
-                                <span class="text-red-600 dark:text-red-400"> -{stats.del}</span>
+                                <span class="text-nudo-danger"> -{stats.del}</span>
                             </span>
                         </span>
                         <form method="POST" action="?/updateDoc" use:enhance={handleRestore}>
@@ -241,8 +241,8 @@
                         </p>
                     {:else}
                         {#each diffRows as row, i (i)}
-                            <div class="whitespace-pre {row.type === 'add' ? 'bg-nudo-success-soft' : row.type === 'del' ? 'bg-red-50 dark:bg-red-950/30' : ''}">
-                                <span class="select-none inline-block w-5 text-center {row.type === 'add' ? 'text-nudo-success' : row.type === 'del' ? 'text-red-600 dark:text-red-400' : 'text-nudo-text-tertiary'}">{row.type === 'add' ? '+' : row.type === 'del' ? '-' : ' '}</span><span class="text-nudo-text-primary">{row.text || ' '}</span>
+                            <div class="whitespace-pre {row.type === 'add' ? 'bg-nudo-success-soft' : row.type === 'del' ? 'bg-nudo-danger-soft' : ''}">
+                                <span class="select-none inline-block w-5 text-center {row.type === 'add' ? 'text-nudo-success' : row.type === 'del' ? 'text-nudo-danger' : 'text-nudo-text-tertiary'}">{row.type === 'add' ? '+' : row.type === 'del' ? '-' : ' '}</span><span class="text-nudo-text-primary">{row.text || ' '}</span>
                             </div>
                         {/each}
                     {/if}

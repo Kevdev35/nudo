@@ -37,12 +37,12 @@
 
   const colors = [
     { name: 'default', bg: 'var(--nudo-surface)', text: 'var(--nudo-text-primary)' },
-    { name: 'amarillo', bg: '#fde68a', text: '#78350f' },
-    { name: 'rosa', bg: '#fbcfe8', text: '#831843' },
-    { name: 'azul', bg: '#bfdbfe', text: '#1e3a5f' },
-    { name: 'verde', bg: '#bbf7d0', text: '#14532d' },
-    { name: 'morado', bg: '#ddd6fe', text: '#4c1d95' },
-    { name: 'naranja', bg: '#fed7aa', text: '#7c2d12' },
+    { name: 'amarillo', bg: 'var(--nudo-note-amarillo-bg)', text: 'var(--nudo-note-amarillo-text)' },
+    { name: 'rosa', bg: 'var(--nudo-note-rosa-bg)', text: 'var(--nudo-note-rosa-text)' },
+    { name: 'azul', bg: 'var(--nudo-note-azul-bg)', text: 'var(--nudo-note-azul-text)' },
+    { name: 'verde', bg: 'var(--nudo-note-verde-bg)', text: 'var(--nudo-note-verde-text)' },
+    { name: 'morado', bg: 'var(--nudo-note-morado-bg)', text: 'var(--nudo-note-morado-text)' },
+    { name: 'naranja', bg: 'var(--nudo-note-naranja-bg)', text: 'var(--nudo-note-naranja-text)' },
   ];
 
   function getNoteBg(color: string | null): string {
@@ -351,7 +351,7 @@
             <form method="POST" action="?/deleteNote" onclick={(e) => e.stopPropagation()}
               class="absolute top-2.5 right-2.5 opacity-70 hover:opacity-100">
               <input type="hidden" name="noteId" value={note.id} />
-              <button type="submit" class="inline-flex items-center justify-center w-7 h-7 rounded-[9px] bg-transparent border-none cursor-pointer text-[16px] text-nudo-text-tertiary hover:bg-black/5 hover:text-[#d70015] transition-all" aria-label="Descartar borrador" title="Descartar borrador">
+              <button type="submit" class="inline-flex items-center justify-center w-7 h-7 rounded-[9px] bg-transparent border-none cursor-pointer text-[16px] text-nudo-text-tertiary hover:bg-nudo-hover-soft hover:text-nudo-danger transition-all" aria-label="Descartar borrador" title="Descartar borrador">
                 <i class="ri-close-line" aria-hidden="true"></i>
               </button>
             </form>
@@ -378,13 +378,13 @@
               {viewMode === 'grid' ? 'self-end mt-auto pt-2.5' : ''}">
               <form method="POST" action="?/toggleComplete" onclick={(e) => e.stopPropagation()}>
                 <input type="hidden" name="noteId" value={note.id} />
-                <button type="submit" class="inline-flex items-center justify-center w-8 h-8 rounded-[9px] bg-transparent border-none cursor-pointer text-[17px] text-nudo-text-tertiary hover:bg-black/5 hover:text-nudo-text-primary transition-all" aria-label="Marcar como completada" title="Marcar como completada">
+                <button type="submit" class="inline-flex items-center justify-center w-8 h-8 rounded-[9px] bg-transparent border-none cursor-pointer text-[17px] text-nudo-text-tertiary hover:bg-nudo-hover-soft hover:text-nudo-text-primary transition-all" aria-label="Marcar como completada" title="Marcar como completada">
                   <i class="ri-checkbox-blank-circle-line" aria-hidden="true"></i>
                 </button>
               </form>
               <form method="POST" action="?/deleteNote" onclick={(e) => e.stopPropagation()}>
                 <input type="hidden" name="noteId" value={note.id} />
-                <button type="submit" class="inline-flex items-center justify-center w-8 h-8 rounded-[9px] bg-transparent border-none cursor-pointer text-[17px] text-nudo-text-tertiary hover:bg-black/5 hover:text-[#d70015] transition-all" aria-label="Eliminar nota" title="Eliminar nota">
+                <button type="submit" class="inline-flex items-center justify-center w-8 h-8 rounded-[9px] bg-transparent border-none cursor-pointer text-[17px] text-nudo-text-tertiary hover:bg-nudo-hover-soft hover:text-nudo-danger transition-all" aria-label="Eliminar nota" title="Eliminar nota">
                   <i class="ri-delete-bin-line" aria-hidden="true"></i>
                 </button>
               </form>
@@ -426,13 +426,13 @@
                   {viewMode === 'grid' ? 'self-end mt-auto pt-2.5' : ''}">
                   <form method="POST" action="?/toggleComplete" onclick={(e) => e.stopPropagation()}>
                     <input type="hidden" name="noteId" value={note.id} />
-                    <button type="submit" class="inline-flex items-center justify-center w-8 h-8 rounded-[9px] bg-transparent border-none cursor-pointer text-[17px] text-nudo-success hover:bg-black/5 transition-all" aria-label="Marcar como pendiente" title="Marcar como pendiente">
+                    <button type="submit" class="inline-flex items-center justify-center w-8 h-8 rounded-[9px] bg-transparent border-none cursor-pointer text-[17px] text-nudo-success hover:bg-nudo-hover-soft transition-all" aria-label="Marcar como pendiente" title="Marcar como pendiente">
                       <i class="ri-checkbox-circle-fill" aria-hidden="true"></i>
                     </button>
                   </form>
                   <form method="POST" action="?/deleteNote" onclick={(e) => e.stopPropagation()}>
                     <input type="hidden" name="noteId" value={note.id} />
-                    <button type="submit" class="inline-flex items-center justify-center w-8 h-8 rounded-[9px] bg-transparent border-none cursor-pointer text-[17px] text-nudo-text-tertiary hover:bg-black/5 hover:text-[#d70015] transition-all" aria-label="Eliminar nota" title="Eliminar nota">
+                    <button type="submit" class="inline-flex items-center justify-center w-8 h-8 rounded-[9px] bg-transparent border-none cursor-pointer text-[17px] text-nudo-text-tertiary hover:bg-nudo-hover-soft hover:text-nudo-danger transition-all" aria-label="Eliminar nota" title="Eliminar nota">
                       <i class="ri-delete-bin-line" aria-hidden="true"></i>
                     </button>
                   </form>

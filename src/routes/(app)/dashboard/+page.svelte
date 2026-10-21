@@ -90,7 +90,7 @@
             {#each data.projects as project}
                 <a href="/projects/{project.id}"
                     class="flex items-center gap-3 sm:gap-4 px-4 sm:px-5 py-3 sm:py-4 bg-nudo-surface rounded-3xl no-underline text-inherit hover:bg-nudo-bg hover:shadow-sm transition-all duration-150">
-                    <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-nudo-accent-bg flex items-center justify-center text-lg sm:text-xl text-nudo-accent shrink-0">
+                    <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-nudo-accent-soft flex items-center justify-center text-lg sm:text-xl text-nudo-accent shrink-0">
                         <i class="ri-folder-3-line" aria-hidden="true"></i>
                     </div>
                     <div class="flex-1 min-w-0">

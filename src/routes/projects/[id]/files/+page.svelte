@@ -148,7 +148,7 @@
               <form method="POST" action="?/deleteFile">
                 <input type="hidden" name="fileId" value={file.id} />
                 <button type="submit"
-                  class="inline-flex items-center justify-center w-8 h-8 rounded-[9px] bg-transparent border-none cursor-pointer text-[17px] text-nudo-text-tertiary hover:bg-black/5 hover:text-[#d70015] transition-all"
+                  class="inline-flex items-center justify-center w-8 h-8 rounded-[9px] bg-transparent border-none cursor-pointer text-[17px] text-nudo-text-tertiary hover:bg-nudo-hover-soft hover:text-nudo-danger transition-all"
                   aria-label="Eliminar archivo" title="Eliminar archivo">
                   <i class="ri-delete-bin-line" aria-hidden="true"></i>
                 </button>
@@ -180,7 +180,7 @@
             <form method="POST" action="?/deleteFile" class="shrink-0">
               <input type="hidden" name="fileId" value={file.id} />
               <button type="submit"
-                class="inline-flex items-center justify-center w-8 h-8 rounded-[9px] bg-transparent border-none cursor-pointer text-[17px] text-nudo-text-tertiary hover:bg-black/5 hover:text-[#d70015] transition-all"
+                class="inline-flex items-center justify-center w-8 h-8 rounded-[9px] bg-transparent border-none cursor-pointer text-[17px] text-nudo-text-tertiary hover:bg-nudo-hover-soft hover:text-nudo-danger transition-all"
                 aria-label="Eliminar archivo" title="Eliminar archivo">
                 <i class="ri-delete-bin-line" aria-hidden="true"></i>
               </button>

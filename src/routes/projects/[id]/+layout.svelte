@@ -224,7 +224,7 @@
     </div>
 
     {#if settingsError}
-        <div class="mb-5 p-3 rounded-2xl bg-red-500/10 text-red-500 text-sm font-medium flex items-center gap-2">
+        <div class="mb-5 p-3 rounded-2xl bg-nudo-danger-soft text-nudo-danger text-sm font-medium flex items-center gap-2">
             <i class="ri-error-warning-line text-lg"></i> {settingsError}
         </div>
     {/if}
@@ -278,7 +278,7 @@
         </label>
         <div class="flex justify-between items-center mt-2">
             <button type="button" onclick={openDelete}
-                class="flex items-center gap-2 text-sm text-red-500 hover:text-red-600 cursor-pointer bg-transparent border-none font-inherit font-medium transition-colors">
+                class="flex items-center gap-2 text-sm text-nudo-danger hover:text-nudo-danger cursor-pointer bg-transparent border-none font-inherit font-medium transition-colors">
                 <i class="ri-delete-bin-line text-base" aria-hidden="true"></i> Eliminar proyecto
             </button>
             <div class="flex gap-2.5">
@@ -304,8 +304,8 @@
         </button>
     </div>
     <div class="flex flex-col items-center text-center gap-3 mb-6">
-        <div class="w-14 h-14 rounded-full bg-red-500/10 flex items-center justify-center">
-            <i class="ri-error-warning-line text-red-500 text-2xl" aria-hidden="true"></i>
+        <div class="w-14 h-14 rounded-full bg-nudo-danger-soft flex items-center justify-center">
+            <i class="ri-error-warning-line text-nudo-danger text-2xl" aria-hidden="true"></i>
         </div>
         <p class="text-nudo-text-primary font-semibold m-0">¿Estás seguro de eliminar este proyecto?</p>
         <p class="text-nudo-text-secondary text-sm m-0">
@@ -321,7 +321,7 @@
     >
         <Button type="button" onclick={closeDelete}>Cancelar</Button>
         <button type="submit" disabled={deleteLoading}
-            class="px-5 py-2.5 rounded-xl bg-red-500 text-white text-sm font-semibold border-none cursor-pointer hover:bg-red-600 transition-colors disabled:opacity-50">
+            class="px-5 py-2.5 rounded-xl bg-nudo-danger text-nudo-danger-on text-sm font-semibold border-none cursor-pointer hover:opacity-90 transition-colors disabled:opacity-50">
             {deleteLoading ? 'Eliminando...' : 'Sí, eliminar'}
         </button>
     </form>

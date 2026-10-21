@@ -25,7 +25,7 @@
     {form}
     {disabled}
     {onclick}
-    class="cursor-pointer py-4 px-6 rounded-3xl text-amber-50 bg-black transition-colors duration-200 hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center gap-2 {className}"
+    class="cursor-pointer py-4 px-6 rounded-3xl text-nudo-on-accent bg-nudo-accent transition-colors duration-200 hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center gap-2 {className}"
 >
     {#if icon}
         <i class="{icon}"></i>
