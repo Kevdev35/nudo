@@ -8,6 +8,7 @@ import { createProjectRepository } from '@infrastructure/db/repositories/project
 
 import { getMarkdownUseCase } from '@use-cases/get-markdown-doc';
 import { createUpdateMarkdownDocUseCase } from '@use-cases/update-markdown-doc';
+import { listMarkdownVersions } from '@use-cases/list-by-markdown-version';
 
 const mdRepo = createMarkdownDocRepository(db);
 const mdVersionRepo = createMarkdownDocVersionRepository(db);
@@ -15,6 +16,7 @@ const projectRepo = createProjectRepository(db);
 
 const getMarkdownDoc = getMarkdownUseCase(mdRepo, projectRepo);
 const updateMarkdownDoc = createUpdateMarkdownDocUseCase(mdRepo, mdVersionRepo, projectRepo);
+const getMarkdownVersions = listMarkdownVersions(mdVersionRepo, mdRepo, projectRepo);
 
 export const load: PageServerLoad = async ({ locals, params }) => {
     if (!locals.user) {
@@ -27,8 +29,10 @@ export const load: PageServerLoad = async ({ locals, params }) => {
     }
 
     const doc = await getMarkdownDoc(locals.user.id, docId);
+    const versions = (await getMarkdownVersions(locals.user.id, docId))
+        .sort((a, b) => b.version_number - a.version_number);
 
-    return { doc };
+    return { doc, versions };
 };
 
 export const actions: Actions = {
