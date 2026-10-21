@@ -86,8 +86,38 @@
 
   function handleCardClick(e: MouseEvent, card: KanbanCard) {
     const target = e.target as HTMLElement;
-    if (target.closest('.drag-handle')) return;
+    const moved = pointerMoved;
+    pointerStart = null;
+    pointerMoved = false;
+    if (moved || target.closest('.drag-handle')) return;
     openEditCard(card);
+  }
+
+  // Distingue un click (abrir edición) de un arrastre (mover de columna),
+  // porque ahora se puede arrastrar desde cualquier parte de la tarjeta.
+  let pointerStart: { x: number; y: number } | null = null;
+  let pointerMoved = false;
+
+  function onCardPointerDown(e: PointerEvent) {
+    pointerStart = { x: e.clientX, y: e.clientY };
+    pointerMoved = false;
+    window.addEventListener('pointermove', trackPointerMove, { passive: true });
+    window.addEventListener('pointerup', stopTrackingPointer, { passive: true });
+    window.addEventListener('pointercancel', stopTrackingPointer, { passive: true });
+  }
+
+  function trackPointerMove(e: PointerEvent) {
+    if (!pointerStart) return;
+    if (Math.abs(e.clientX - pointerStart.x) > 5 || Math.abs(e.clientY - pointerStart.y) > 5) {
+      pointerMoved = true;
+    }
+  }
+
+  function stopTrackingPointer() {
+    pointerStart = null;
+    window.removeEventListener('pointermove', trackPointerMove);
+    window.removeEventListener('pointerup', stopTrackingPointer);
+    window.removeEventListener('pointercancel', stopTrackingPointer);
   }
 </script>
 
@@ -129,9 +159,10 @@
               {#each cardsByList[list.id] as card (card.id)}
                 <div
                   data-highlight-id={card.id}
-                  use:draggable={{ container: list.id, dragData: card, handle: '.drag-handle' }}
+                  use:draggable={{ container: list.id, dragData: card }}
+                  onpointerdown={onCardPointerDown}
                   onclick={(e) => handleCardClick(e, card)}
-                  class="bg-nudo-bg border border-nudo-border rounded-2xl p-4 cursor-pointer hover:shadow-sm transition-all duration-150 {card.completed ? 'opacity-60' : ''}"
+                  class="bg-nudo-bg border border-nudo-border rounded-2xl p-4 cursor-pointer active:cursor-grabbing hover:shadow-sm transition-all duration-150 {card.completed ? 'opacity-60' : ''}"
                 >
                   <div class="flex items-start justify-between gap-2">
                     <div class="flex-1 min-w-0">
