@@ -41,8 +41,32 @@
   --nudo-note-morado-text: #4c1d95;
   --nudo-note-naranja-bg: #fed7aa;
   --nudo-note-naranja-text: #7c2d12;
+
+  /* Borde y luz de las notas. En temas planos no hay vidrio: transparentes. */
+  --nudo-note-border: transparent;
+  --nudo-note-inset: none;
+  --nudo-note-amarillo-border: transparent;
+  --nudo-note-rosa-border: transparent;
+  --nudo-note-azul-border: transparent;
+  --nudo-note-verde-border: transparent;
+  --nudo-note-morado-border: transparent;
+  --nudo-note-naranja-border: transparent;
+
   --nudo-bubble: #000000;
   --nudo-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.18);
+
+  /* Materiales: por defecto opacos (Claro / Oscuro son temas planos) */
+  --nudo-surface-2: #f0f0f2;
+  --nudo-material-bg: #ffffff;
+  --nudo-material-bg-strong: #ffffff;
+  --nudo-material-border: #e5e5ea;
+  --nudo-material-specular: transparent;
+  --nudo-blur: 0px;
+  --nudo-saturate: 100%;
+  --nudo-shadow-material: 0 10px 30px -12px rgba(0, 0, 0, 0.18);
+  --nudo-shadow-inset: inset 0 0 0 0 transparent;
+  --nudo-danger-on-soft: #d70015;
+  --nudo-orb-opacity: 0;
 }
 
 .dark {
@@ -77,7 +101,107 @@
   --nudo-note-morado-text: #ddd6fe;
   --nudo-note-naranja-bg: #4a2a12;
   --nudo-note-naranja-text: #fed7aa;
+
+  --nudo-note-inset: none;
+
   --nudo-bubble: #ffffff;
+
+  --nudo-surface-2: #242424;
+  --nudo-material-bg: #1c1c1c;
+  --nudo-material-bg-strong: #1c1c1c;
+  --nudo-material-border: #2a2a2a;
+  --nudo-shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  --nudo-danger-on-soft: #ff6b6b;
+}
+
+/*
+ * LIQUID LITE — tema oscuro translúcido (beta, sólo oscuro).
+ * Valores tomados de theme.html. Sólo CSS: nada de esto necesita JS.
+ * Los "orbs" de fondo son los que le dan algo real que refractar al
+ * backdrop-filter; sobre un fondo plano el vidrio se ve como un gris sucio.
+ * Única desviación: el nav y el sidebar son fijos, así que ahí el blur baja
+ * a 12px (un backdrop-filter en un elemento fijo se recalcula en cada frame
+ * de scroll). El resto usa los radios del prototipo.
+ */
+[data-theme='liquid'] {
+  --nudo-bg: #080a0f;
+  --nudo-surface: rgba(14, 18, 27, 0.65);
+  --nudo-surface-2: rgba(20, 26, 39, 0.7);
+  --nudo-border: rgba(255, 255, 255, 0.08);
+  --nudo-text-primary: #f1f5f9;
+  --nudo-text-secondary: #94a3b8;
+  --nudo-text-tertiary: #64748b;
+  --nudo-accent: #3b82f6;
+  --nudo-on-accent: #ffffff;
+  --nudo-danger: #f87171;
+  --nudo-danger-soft: rgba(248, 113, 113, 0.14);
+  --nudo-danger-on-soft: #fca5a5;
+  --nudo-danger-on: #1a0f12;
+  --nudo-hover-soft: rgba(255, 255, 255, 0.07);
+  --nudo-accent-soft: rgba(59, 130, 246, 0.18);
+  --nudo-success: #34d399;
+  --nudo-success-soft: rgba(52, 211, 153, 0.14);
+  --nudo-warning: #fbbf24;
+  --nudo-warning-soft: rgba(251, 191, 36, 0.14);
+
+  /* Materiales de vidrio (theme.html: .glass-panel / -subtle / -input /
+     -pill-nav). El blur/saturate compartido vive acá; nav y aside lo pisan. */
+  --nudo-material-bg: rgba(18, 24, 38, 0.65);
+  --nudo-material-bg-subtle: rgba(16, 21, 33, 0.45);
+  --nudo-material-bg-strong: rgba(15, 20, 31, 0.72);
+  --nudo-material-input: rgba(22, 29, 44, 0.55);
+  --nudo-material-border: rgba(255, 255, 255, 0.08);
+  --nudo-material-border-subtle: rgba(255, 255, 255, 0.06);
+  --nudo-material-specular: rgba(255, 255, 255, 0.14);
+  --nudo-blur: 24px;
+  --nudo-saturate: 190%;
+  --nudo-blur-input: 16px;
+  --nudo-shadow-material: 0 12px 32px 0 rgba(0, 0, 0, 0.37);
+  --nudo-shadow-user-inset: inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
+  --nudo-shadow-inset: inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
+  --nudo-shadow-input: inset 0 1.5px 4px rgba(0, 0, 0, 0.4), 0 1px 0 rgba(255, 255, 255, 0.05);
+  --nudo-orb-opacity: 1;
+
+  /* Acabado del botón primario (theme.html: .btn-liquid-blue) */
+  --nudo-accent-gradient: linear-gradient(180deg, #3b82f6 0%, #1d4ed8 100%);
+  --nudo-accent-gradient-hover: linear-gradient(180deg, #60a5fa 0%, #2563eb 100%);
+  --nudo-accent-border: rgba(147, 197, 253, 0.35);
+  --nudo-shadow-accent: 0 6px 20px -3px rgba(37, 99, 235, 0.55),
+    inset 0 1px 1px rgba(255, 255, 255, 0.45),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.2);
+  --nudo-shadow-accent-hover: 0 8px 25px -2px rgba(59, 130, 246, 0.7),
+    inset 0 1.5px 1.5px rgba(255, 255, 255, 0.65);
+
+  /* Notas de vidrio (theme.html: .glass-note-*): cada matiz define fondo
+     (gradiente 145°), borde y luz interior del color. */
+  --nudo-note-amarillo-bg: linear-gradient(145deg, rgba(53, 33, 10, 0.6) 0%, rgba(33, 20, 6, 0.75) 100%);
+  --nudo-note-amarillo-text: #fcd34d;
+  --nudo-note-amarillo-border: rgba(245, 158, 11, 0.25);
+  --nudo-note-amarillo-inset: inset 0 1px 1px rgba(252, 211, 77, 0.2);
+  --nudo-note-rosa-bg: linear-gradient(145deg, rgba(46, 28, 77, 0.65) 0%, rgba(26, 17, 46, 0.75) 100%);
+  --nudo-note-rosa-text: #e9d5ff;
+  --nudo-note-rosa-border: rgba(168, 85, 247, 0.22);
+  --nudo-note-rosa-inset: inset 0 1px 1px rgba(216, 180, 254, 0.2);
+  --nudo-note-azul-bg: linear-gradient(145deg, rgba(16, 42, 77, 0.65) 0%, rgba(10, 26, 51, 0.75) 100%);
+  --nudo-note-azul-text: #bfdbfe;
+  --nudo-note-azul-border: rgba(59, 130, 246, 0.24);
+  --nudo-note-azul-inset: inset 0 1px 1px rgba(147, 197, 253, 0.22);
+  --nudo-note-verde-bg: linear-gradient(145deg, rgba(13, 44, 34, 0.6) 0%, rgba(8, 28, 22, 0.75) 100%);
+  --nudo-note-verde-text: #a7f3d0;
+  --nudo-note-verde-border: rgba(16, 185, 129, 0.25);
+  --nudo-note-verde-inset: inset 0 1px 1px rgba(110, 231, 183, 0.2);
+  --nudo-note-morado-bg: linear-gradient(145deg, rgba(46, 28, 77, 0.65) 0%, rgba(26, 17, 46, 0.75) 100%);
+  --nudo-note-morado-text: #ddd6fe;
+  --nudo-note-morado-border: rgba(168, 85, 247, 0.22);
+  --nudo-note-morado-inset: inset 0 1px 1px rgba(216, 180, 254, 0.2);
+  --nudo-note-naranja-bg: linear-gradient(145deg, rgba(53, 33, 10, 0.6) 0%, rgba(33, 20, 6, 0.75) 100%);
+  --nudo-note-naranja-text: #fed7aa;
+  --nudo-note-naranja-border: rgba(245, 158, 11, 0.25);
+  --nudo-note-naranja-inset: inset 0 1px 1px rgba(252, 211, 77, 0.2);
+  --nudo-note-border: rgba(255, 255, 255, 0.08);
+  --nudo-note-inset: inset 0 1px 0.5px rgba(255, 255, 255, 0.12);
+
+  --nudo-bubble: #080a0f;
 }
 
 
@@ -86,6 +210,7 @@
 @theme {
   --color-nudo-bg: var(--nudo-bg);
   --color-nudo-surface: var(--nudo-surface);
+  --color-nudo-surface-2: var(--nudo-surface-2);
   --color-nudo-border: var(--nudo-border);
   --color-nudo-text-primary: var(--nudo-text-primary);
   --color-nudo-text-secondary: var(--nudo-text-secondary);
@@ -99,6 +224,81 @@
   --color-nudo-accent-soft: var(--nudo-accent-soft);
   --color-nudo-success: var(--nudo-success);
   --color-nudo-warning: var(--nudo-warning);
+}
+
+/* Material de vidrio reutilizable: superficie, borde y luz especular. */
+@utility glass {
+  background-color: var(--nudo-material-bg);
+  border: 1px solid var(--nudo-material-border);
+  backdrop-filter: blur(var(--nudo-blur)) saturate(var(--nudo-saturate));
+  -webkit-backdrop-filter: blur(var(--nudo-blur)) saturate(var(--nudo-saturate));
+  box-shadow: var(--nudo-shadow-material), var(--nudo-shadow-inset);
+}
+
+@utility glass-strong {
+  background-color: var(--nudo-material-bg-strong);
+  border: 1px solid var(--nudo-material-border);
+  backdrop-filter: blur(var(--nudo-blur)) saturate(var(--nudo-saturate));
+  -webkit-backdrop-filter: blur(var(--nudo-blur)) saturate(var(--nudo-saturate));
+  box-shadow: var(--nudo-shadow-material), var(--nudo-shadow-inset);
+}
+
+/* Orbes ambientales: sin ellos el backdrop-filter no tiene qué refractar. */
+.orbs {
+  display: none;
+}
+
+[data-theme='liquid'] .orbs {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+[data-theme='liquid'] .orbs span {
+  position: absolute;
+  border-radius: 9999px;
+  opacity: 1;
+}
+
+/* Orbes del prototipo: violeta, azul, ámbar, esmeralda. Opacidades bajas
+   (.10-.20) a propósito: son luz ambiental, no manchas de color. */
+.orbs span:nth-child(1) {
+  top: -8rem;
+  left: -8rem;
+  width: 24rem;
+  height: 24rem;
+  background: rgba(126, 34, 206, 0.2);
+  filter: blur(130px);
+}
+
+.orbs span:nth-child(2) {
+  top: 2.5rem;
+  left: 33%;
+  width: 34.375rem;
+  height: 20rem;
+  background: rgba(37, 99, 235, 0.15);
+  filter: blur(150px);
+}
+
+.orbs span:nth-child(3) {
+  top: 18rem;
+  right: 2.5rem;
+  width: 24rem;
+  height: 24rem;
+  background: rgba(217, 119, 6, 0.1);
+  filter: blur(140px);
+}
+
+.orbs span:nth-child(4) {
+  bottom: 2.5rem;
+  left: 25%;
+  width: 20rem;
+  height: 20rem;
+  background: rgba(5, 150, 105, 0.1);
+  filter: blur(130px);
 }
 
 @keyframes highlight-pulse {
@@ -126,4 +326,157 @@
 .search-field input:focus-visible {
   outline: none;
   border-radius: 0;
+}
+
+/* Notas: el borde existe siempre (transparente en temas planos, de color en
+   Liquid) para que el layout no salte al cambiar de tema. */
+.note-card {
+  border: 1px solid var(--nudo-note-border);
+  box-shadow: var(--nudo-note-inset);
+}
+
+[data-theme='liquid'] .note-card {
+  backdrop-filter: blur(22px) saturate(190%);
+  -webkit-backdrop-filter: blur(22px) saturate(190%);
+  box-shadow: var(--nudo-note-inset), 0 12px 28px -6px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme='liquid'] .note-card .draft-chip {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Cards del kanban: mismo vidrio que las notas, pero sin transform en hover
+   (pelea con el drag & drop). Se omite el translateY(-2px) del prototipo. */
+[data-theme='liquid'] .kanban-card {
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: 0 10px 26px -6px rgba(0, 0, 0, 0.5), inset 0 1px 0.5px rgba(255, 255, 255, 0.12);
+}
+
+[data-theme='liquid'] .kanban-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 14px 32px -6px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.25);
+}
+
+/* En Liquid Lite las superficies planas pasan a material de vidrio.
+   Se engancha en la utilidad de Tailwind en vez de tocar cada componente:
+   `bg-nudo-surface` ya resuelve a un color translúcido en este tema, sólo
+   falta el blur y la luz especular. */
+[data-theme='liquid'] .glass,
+[data-theme='liquid'] [class*='bg-nudo-surface'] {
+  backdrop-filter: blur(var(--nudo-blur)) saturate(var(--nudo-saturate));
+  -webkit-backdrop-filter: blur(var(--nudo-blur)) saturate(var(--nudo-saturate));
+  box-shadow: var(--nudo-shadow-material), var(--nudo-shadow-inset);
+}
+
+/* Los `hover:bg-nudo-surface` (ítems de menú, botones fantasma) no deben
+   heredar el vidrio: son estados de hover efímeros, no paneles. */
+[data-theme='liquid'] [class*='hover:bg-nudo-surface'] {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+}
+
+/* El header y el sidebar son fijos: un blur alto ahí se recalcula en cada frame
+   de scroll. Se les da el material fuerte del prototipo (.glass-pill-nav) pero
+   con el blur bajado a 12px. */
+[data-theme='liquid'] nav.glass-nav,
+[data-theme='liquid'] aside.glass-aside {
+  background-color: var(--nudo-material-bg-strong);
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  border-color: rgba(255, 255, 255, 0.09);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* Inputs: el material del prototipo (.glass-input) usa un inset en vez de
+   drop shadow, para que se lean "hundidos" en el vidrio. */
+[data-theme='liquid'] input.glass-input,
+[data-theme='liquid'] textarea.glass-input,
+[data-theme='liquid'] .search-field {
+  background-color: var(--nudo-material-input);
+  backdrop-filter: blur(var(--nudo-blur-input));
+  -webkit-backdrop-filter: blur(var(--nudo-blur-input));
+  border-color: rgba(255, 255, 255, 0.07);
+  box-shadow: var(--nudo-shadow-input);
+}
+
+/* Botón primario líquido (.btn-liquid-blue): gradiente azul + glow interior. */
+[data-theme='liquid'] .btn-liquid,
+[data-theme='liquid'] button[class*='bg-nudo-accent']:not([class*='bg-nudo-accent-soft']) {
+  background: var(--nudo-accent-gradient);
+  border: 1px solid var(--nudo-accent-border);
+  box-shadow: var(--nudo-shadow-accent);
+}
+
+[data-theme='liquid'] .btn-liquid:hover,
+[data-theme='liquid'] button[class*='bg-nudo-accent']:not([class*='bg-nudo-accent-soft']):hover {
+  background: var(--nudo-accent-gradient-hover);
+  box-shadow: var(--nudo-shadow-accent-hover);
+}
+
+/* El fondo de la app vive en el shell, en una capa FIJA detrás de todo (los
+   orbs van por encima y el contenido más arriba). No se usa `body`/`html`
+   porque la landing y el login se ven en todas las rutas. */
+[data-theme='liquid'] .app-shell {
+  background-color: transparent;
+}
+
+[data-theme='liquid'] .app-shell::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -20;
+  background-color: var(--nudo-bg);
+  pointer-events: none;
+}
+
+/*
+ * La landing (src/routes/+page.svelte) está AISLADA del sistema de temas:
+ * se ve igual elija el usuario el tema que elija. Como el <main> lleva
+ * `class="landing dark"`, acá se re-declaran los valores del tema oscuro
+ * plano para que `[data-theme='liquid']` no los pise.
+ */
+[data-theme='liquid'] .landing {
+  --nudo-bg: #141414;
+  --nudo-surface: #1c1c1c;
+  --nudo-surface-2: #242424;
+  --nudo-border: #2a2a2a;
+  --nudo-text-primary: #f5f5f5;
+  --nudo-text-secondary: #a1a1aa;
+  --nudo-text-tertiary: #525252;
+  --nudo-accent: #3b82f6;
+  --nudo-on-accent: #ffffff;
+  --nudo-danger: #ff6b6b;
+  --nudo-danger-soft: rgba(255, 107, 107, 0.14);
+  --nudo-hover-soft: rgba(255, 255, 255, 0.08);
+  --nudo-accent-soft: rgba(59, 130, 246, 0.16);
+  --nudo-success: #22c55e;
+  --nudo-success-soft: rgba(34, 197, 94, 0.12);
+  --nudo-warning: #f59e0b;
+  --nudo-warning-soft: rgba(245, 158, 11, 0.12);
+  --nudo-material-bg: #1c1c1c;
+  --nudo-material-bg-strong: #1c1c1c;
+  --nudo-material-border: #2a2a2a;
+  --nudo-blur: 0px;
+  --nudo-saturate: 100%;
+  --nudo-shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  --nudo-note-border: transparent;
+  --nudo-note-inset: none;
+}
+
+/* Ni el fondo ni el vidrio del tema deben filtrarse a la landing. */
+[data-theme='liquid'] .landing .glass,
+[data-theme='liquid'] .landing [class*='bg-nudo-surface'],
+[data-theme='liquid'] .landing .note-card,
+[data-theme='liquid'] .landing .kanban-card {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: var(--nudo-shadow-inset);
+}
+
+[data-theme='liquid'] .landing button[class*='bg-nudo-accent']:not([class*='bg-nudo-accent-soft']) {
+  background: var(--nudo-accent);
+  border: none;
+  box-shadow: none;
 }

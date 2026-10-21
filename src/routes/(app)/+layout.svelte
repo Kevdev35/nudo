@@ -7,7 +7,15 @@
     let sidebarOpen = $state(false);
 </script>
 
-<section class="bg-nudo-bg flex flex-col min-h-screen md:gap-5 md:px-8 pb-12 pt-1">
+<section class="app-shell bg-nudo-bg flex flex-col min-h-screen md:gap-5 md:px-8 pb-12 pt-1">
+    <!-- Orbes ambientales: sólo visibles en Liquid Lite (el CSS los oculta si no). -->
+    <div class="orbs" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
     <Navbar {data} onmenuclick={() => sidebarOpen = true} />
 
     <div class="flex flex-1">

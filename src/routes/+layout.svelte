@@ -20,7 +20,7 @@
 	<title>Dashboard — Nudo</title>
 </svelte:head>
 
-<section class="bg-nudo-bg min-h-screen">
+<section class="app-shell bg-nudo-bg min-h-screen">
 	{@render children()}
 	<FloatBtn />
 </section>

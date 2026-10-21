@@ -2,7 +2,7 @@
   import Logo from '@ui/components/Logo.svelte';
 </script>
 
-<main class="dark bg-nudo-bg text-nudo-text-primary font-sans antialiased selection:bg-nudo-accent selection:text-white">
+<main class="landing dark bg-nudo-bg text-nudo-text-primary font-sans antialiased selection:bg-nudo-accent selection:text-white">
 
   <!-- Header / Navigation -->
   <header class="fixed top-0 left-0 right-0 z-50 border-b border-nudo-border bg-nudo-bg/80 backdrop-blur-md">

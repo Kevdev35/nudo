@@ -36,13 +36,13 @@
   }
 
   const colors = [
-    { name: 'default', bg: 'var(--nudo-surface)', text: 'var(--nudo-text-primary)' },
-    { name: 'amarillo', bg: 'var(--nudo-note-amarillo-bg)', text: 'var(--nudo-note-amarillo-text)' },
-    { name: 'rosa', bg: 'var(--nudo-note-rosa-bg)', text: 'var(--nudo-note-rosa-text)' },
-    { name: 'azul', bg: 'var(--nudo-note-azul-bg)', text: 'var(--nudo-note-azul-text)' },
-    { name: 'verde', bg: 'var(--nudo-note-verde-bg)', text: 'var(--nudo-note-verde-text)' },
-    { name: 'morado', bg: 'var(--nudo-note-morado-bg)', text: 'var(--nudo-note-morado-text)' },
-    { name: 'naranja', bg: 'var(--nudo-note-naranja-bg)', text: 'var(--nudo-note-naranja-text)' },
+    { name: 'default', bg: 'var(--nudo-surface)', text: 'var(--nudo-text-primary)', border: 'var(--nudo-border)' },
+    { name: 'amarillo', bg: 'var(--nudo-note-amarillo-bg)', text: 'var(--nudo-note-amarillo-text)', border: 'var(--nudo-note-amarillo-border)' },
+    { name: 'rosa', bg: 'var(--nudo-note-rosa-bg)', text: 'var(--nudo-note-rosa-text)', border: 'var(--nudo-note-rosa-border)' },
+    { name: 'azul', bg: 'var(--nudo-note-azul-bg)', text: 'var(--nudo-note-azul-text)', border: 'var(--nudo-note-azul-border)' },
+    { name: 'verde', bg: 'var(--nudo-note-verde-bg)', text: 'var(--nudo-note-verde-text)', border: 'var(--nudo-note-verde-border)' },
+    { name: 'morado', bg: 'var(--nudo-note-morado-bg)', text: 'var(--nudo-note-morado-text)', border: 'var(--nudo-note-morado-border)' },
+    { name: 'naranja', bg: 'var(--nudo-note-naranja-bg)', text: 'var(--nudo-note-naranja-text)', border: 'var(--nudo-note-naranja-border)' },
   ];
 
   function getNoteBg(color: string | null): string {
@@ -53,6 +53,17 @@
   function getNoteText(color: string | null): string {
     const found = colors.find(c => c.name === color);
     return found ? found.text : colors[0].text;
+  }
+
+  function getNoteBorder(color: string | null): string {
+    const found = colors.find(c => c.name === color);
+    return found ? found.border : colors[0].border;
+  }
+
+  // `background` (no `background-color`) porque en Liquid Lite el valor es un
+  // gradiente. En Claro/Oscuro los bordes son transparentes y no cambia nada.
+  function getNoteStyle(color: string | null): string {
+    return `background: ${getNoteBg(color)}; color: ${getNoteText(color)}; border-color: ${getNoteBorder(color)}`;
   }
 
   function openModal() {
@@ -332,9 +343,9 @@
           <div
             data-highlight-id={note.id}
             onclick={() => openEdit(note)}
-            class="draft-card relative flex items-start justify-between gap-3 px-4 py-4 rounded-[var(--nudo-radius-lg)] cursor-pointer transition-all hover:brightness-[0.97]
+            class="draft-card note-card relative flex items-start justify-between gap-3 px-4 py-4 rounded-[var(--nudo-radius-lg)] cursor-pointer transition-all hover:brightness-[0.97]
               {viewMode === 'grid' ? 'flex-col min-h-[150px]' : ''}"
-            style="background-color: {getNoteBg(note.color)}; color: {getNoteText(note.color)}"
+            style={getNoteStyle(note.color)}
           >
             <div class="flex-1 min-w-0 pr-6">
               <span class="draft-chip inline-flex items-center gap-1 text-[11px] font-extrabold uppercase tracking-wide mb-1.5 px-2 py-0.5 rounded-full">
@@ -362,10 +373,10 @@
             data-highlight-id={note.id}
             onclick={() => openEdit(note)}
             onanimationend={() => (justPublishedId = null)}
-            class="flex items-start justify-between gap-3 px-4 py-4 rounded-[var(--nudo-radius-lg)] cursor-pointer transition-all hover:brightness-[0.97]
+            class="note-card flex items-start justify-between gap-3 px-4 py-4 rounded-[var(--nudo-radius-lg)] cursor-pointer transition-all hover:brightness-[0.97]
               {justPublishedId === note.id ? 'just-published' : ''}
               {viewMode === 'grid' ? 'flex-col min-h-[150px]' : ''}"
-            style="background-color: {getNoteBg(note.color)}; color: {getNoteText(note.color)}"
+            style={getNoteStyle(note.color)}
           >
             <div class="flex-1 min-w-0">
               {#if note.title}
@@ -411,9 +422,9 @@
               <div
                 data-highlight-id={note.id}
                 onclick={() => openEdit(note)}
-                class="flex items-start justify-between gap-3 px-4 py-4 rounded-[var(--nudo-radius-lg)] cursor-pointer opacity-60 hover:opacity-85 transition-all
+                class="note-card flex items-start justify-between gap-3 px-4 py-4 rounded-[var(--nudo-radius-lg)] cursor-pointer opacity-60 hover:opacity-85 transition-all
                   {viewMode === 'grid' ? 'flex-col min-h-[150px]' : ''}"
-                style="background-color: {getNoteBg(note.color)}; color: {getNoteText(note.color)}"
+                style={getNoteStyle(note.color)}
               >
                 <div class="flex-1 min-w-0">
                   {#if note.title}

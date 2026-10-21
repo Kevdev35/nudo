@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 import { browser } from '$app/environment';
-import { DEFAULT_THEME, isThemeId, type ThemeId } from '@ui/themes';
+import { DEFAULT_THEME, getTheme, isThemeId, type ThemeId } from '@ui/themes';
 
 const STORAGE_KEY = 'theme';
 
@@ -16,12 +16,15 @@ function apply(theme: ThemeId) {
     if (!browser) return;
 
     const root = document.documentElement;
+    const base = getTheme(theme)?.base ?? 'dark';
 
     root.dataset.theme = theme;
 
     // La clase `.dark` se mantiene porque `@custom-variant dark` y las
-    // utilidades `dark:*` de Tailwind la siguen usando.
-    root.classList.toggle('dark', theme === 'dark');
+    // utilidades `dark:*` de Tailwind la siguen usando. Los temas con
+    // identidad propia (Liquid Lite) declaran su base para no perder las
+    // reglas `dark:*` que ya escribimos en los componentes.
+    root.classList.toggle('dark', base === 'dark');
 }
 
 function createThemeStore() {

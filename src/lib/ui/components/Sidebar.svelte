@@ -39,7 +39,7 @@
     ></button>
 {/if}
 
-<aside class="flex flex-col w-56 shrink-0 pt-2 pr-5
+<aside class="glass-aside flex flex-col w-56 shrink-0 pt-2 pr-5
     fixed top-0 left-0 h-full bg-nudo-bg z-50 transform transition-transform duration-200 ease-in-out
     md:static md:translate-x-0 md:bg-transparent
     {open ? 'translate-x-0' : '-translate-x-full'}">

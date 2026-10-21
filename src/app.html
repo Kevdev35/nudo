@@ -9,13 +9,14 @@
 		<link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap" rel="stylesheet">
 		<script>
 			(function() {
-				var KNOWN = ['light', 'dark'];
+				// id -> base. Mantener en sync con src/lib/ui/themes.ts
+				var THEMES = { light: 'light', dark: 'dark', liquid: 'dark' };
 				var stored = localStorage.getItem('theme');
-				var theme = KNOWN.indexOf(stored) !== -1
+				var theme = Object.prototype.hasOwnProperty.call(THEMES, stored)
 					? stored
 					: (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 				document.documentElement.dataset.theme = theme;
-				document.documentElement.classList.toggle('dark', theme === 'dark');
+				document.documentElement.classList.toggle('dark', THEMES[theme] === 'dark');
 			})();
 		</script>
 		%sveltekit.head%

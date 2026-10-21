@@ -360,7 +360,7 @@
                   onpointerdown={(e) => onCardPointerDown(e, card)}
                   ondragstart={(e) => onCardDragStart(e, card)}
                   onclick={(e) => handleCardClick(e, card)}
-                  class="bg-nudo-bg border border-nudo-border rounded-2xl p-4 cursor-pointer active:cursor-grabbing hover:shadow-sm transition-all duration-150 {card.completed ? 'opacity-60' : ''}"
+                  class="kanban-card bg-nudo-surface border border-nudo-border rounded-2xl p-4 cursor-pointer active:cursor-grabbing hover:shadow-sm transition-all duration-150 {card.completed ? 'opacity-60' : ''}"
                   class:drop-before-line={dropTarget?.listId === list.id && dropTarget.beforeId === card.id}
                   class:card-selected={isSelected(card.id)}
                 >

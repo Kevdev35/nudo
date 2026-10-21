@@ -115,7 +115,15 @@
 	<title>{data.project.name} — Nudo</title>
 </svelte:head>
 
-<section class="bg-nudo-bg">
+<section class="app-shell bg-nudo-bg">
+    <!-- Orbes ambientales: sólo visibles en Liquid Lite (el CSS los oculta si no). -->
+    <div class="orbs" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
     <header>
         <!-- Topbar -->
         <div class="flex items-center justify-between gap-6 px-8 pt-3.5 pb-1 max-md:flex-wrap max-md:px-5">

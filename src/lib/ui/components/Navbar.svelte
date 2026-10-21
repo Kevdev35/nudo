@@ -3,7 +3,7 @@
     let { data, onmenuclick }: { data: { user?: { name?: string | null } | null }; onmenuclick?: () => void } = $props()
 </script>
 
-<nav class="flex items-center justify-between py-4 px-4 md:px-8 border-b border-nudo-border mb-4 md:mb-5">
+<nav class="glass-nav flex items-center justify-between py-4 px-4 md:px-8 border-b border-nudo-border mb-4 md:mb-5">
     <div class="flex items-center gap-3">
         {#if onmenuclick}
             <button
