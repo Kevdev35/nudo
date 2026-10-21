@@ -6,6 +6,7 @@
     import { page } from '$app/stores';
     import { onMount, tick } from 'svelte';
     import Button from '@components/Button.svelte';
+    import { PROJECT_STATUSES, projectStatusClass, projectStatusLabel } from '@ui/project-status';
     let { data, children }: { data: LayoutData; children: any } = $props();
 
     let query = $state('');
@@ -75,12 +76,6 @@
     const typeIcon: Record<string, string> = {
         nota: 'ri-file-text-line', tarea: 'ri-checkbox-circle-line',
         doc: 'ri-booklet-line', archivo: 'ri-attachment-2',
-    };
-
-    const statusClasses: Record<string, string> = {
-        pendiente: 'bg-nudo-warning-soft text-nudo-warning',
-        'en progreso': 'bg-[#e8f1ff] text-nudo-accent',
-        completado: 'bg-nudo-success-soft text-nudo-success',
     };
 
     const tabs = $derived([
@@ -179,10 +174,9 @@
                         {data.project.name}
                     </h1>
                     {#if data.project.status}
-                        {@const sClass = statusClasses[data.project.status] ?? 'bg-nudo-warning-soft text-nudo-warning'}
-                        <span class="text-[13.5px] font-semibold rounded-full gap-1.5 px-2.5 py-1 flex items-center text-center justify-center {sClass}">
+                        <span class="text-[13.5px] font-semibold rounded-full gap-1.5 px-2.5 py-1 flex items-center text-center justify-center {projectStatusClass(data.project.status)}">
                             <i class="ri-checkbox-blank-circle-fill text-xs flex text-center items-center"></i>
-                            {data.project.status}
+                            {projectStatusLabel(data.project.status)}
                         </span>
                     {/if}
                 </div>
@@ -260,9 +254,9 @@
                 <span class="text-sm font-semibold text-nudo-text-secondary">Estado</span>
                 <select name="status" bind:value={editStatus}
                     class="border border-nudo-border rounded-2xl px-4 py-3.5 text-[15px] text-nudo-text-primary bg-nudo-surface focus:outline-none focus:border-nudo-accent transition-colors">
-                    <option value="pendiente">Pendiente</option>
-                    <option value="activo">Activo</option>
-                    <option value="terminado">Terminado</option>
+                    {#each PROJECT_STATUSES as status}
+                        <option value={status.value}>{status.label}</option>
+                    {/each}
                 </select>
             </label>
             <label class="flex flex-col gap-2">

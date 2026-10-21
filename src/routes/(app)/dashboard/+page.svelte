@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { PageData } from "./$types"
     import Button from '@components/Button.svelte'
+    import { projectStatusClass, projectStatusLabel } from '@ui/project-status'
 
     let { data }: { data: PageData } = $props()
     let dialogRef: HTMLDialogElement = $state() as HTMLDialogElement
@@ -94,7 +95,7 @@
                     <div class="flex-1 min-w-0">
                         <p class="text-sm sm:text-base font-semibold text-nudo-text-primary m-0 truncate">{project.name}</p>
                         <div class="flex items-center gap-2 sm:gap-2.5 mt-1">
-                            <span class="text-[10px] sm:text-xs font-semibold px-2 sm:px-2.5 py-0.5 rounded-full bg-nudo-surface text-nudo-text-secondary capitalize">{project.status ?? 'active'}</span>
+                            <span class="text-[10px] sm:text-xs font-semibold px-2 sm:px-2.5 py-0.5 rounded-full {projectStatusClass(project.status)}">{projectStatusLabel(project.status)}</span>
                             {#if project.description}
                                 <span class="text-[10px] sm:text-xs text-nudo-text-tertiary truncate max-w-[140px] sm:max-w-[260px]">{project.description}</span>
                             {/if}
