@@ -2,7 +2,7 @@
     import type { PageData } from './$types';
     import { enhance } from '$app/forms';
     import Button from '@components/Button.svelte';
-    import ThemeToggle from '@ui/components/ThemeToggle.svelte';
+    import ThemePicker from '@ui/components/ThemePicker.svelte';
 
     let { data }: { data: PageData } = $props();
 
@@ -138,12 +138,12 @@
     <section class="bg-nudo-surface rounded-3xl p-6">
         <h2 class="text-lg font-bold text-nudo-text-primary m-0 mb-5">Apariencia</h2>
 
-        <div class="flex items-center justify-between">
+        <div class="flex items-center justify-between gap-4">
             <div>
                 <p class="text-sm font-semibold text-nudo-text-primary m-0">Tema</p>
-                <p class="text-xs text-nudo-text-tertiary m-0 mt-1">Cambia entre modo claro y oscuro</p>
+                <p class="text-xs text-nudo-text-tertiary m-0 mt-1">Elegí entre modo claro, oscuro y los temas que se sumen</p>
             </div>
-            <ThemeToggle />
+            <ThemePicker />
         </div>
     </section>
 </div>

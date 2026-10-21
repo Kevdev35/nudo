@@ -42,6 +42,7 @@
   --nudo-note-naranja-bg: #fed7aa;
   --nudo-note-naranja-text: #7c2d12;
   --nudo-bubble: #000000;
+  --nudo-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.18);
 }
 
 .dark {
