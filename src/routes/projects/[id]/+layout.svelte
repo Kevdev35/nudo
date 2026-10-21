@@ -337,14 +337,14 @@
 
 <!-- Tabs -->
 <nav class="bg-nudo-bg/85 sticky top-0 z-10 backdrop-blur-[10px] border-b border-nudo-border px-8 py-3.5 max-md:px-5" aria-label="Secciones del proyecto">
-    <div class="relative inline-flex gap-0.5 bg-nudo-surface p-1 rounded-full max-w-full overflow-x-auto">
-        <div class="absolute top-1 bottom-1 left-1 bg-nudo-bg rounded-full shadow-[0_1px_3px_rgba(0,0,0,0.08)] z-0 transition-all duration-[280ms] ease-[cubic-bezier(.4,0,.2,1)]"
+    <div class="tab-bar relative inline-flex gap-0.5 bg-nudo-surface p-1 rounded-full max-w-full overflow-x-auto">
+        <div class="tab-indicator absolute top-1 bottom-1 left-1 bg-nudo-bg rounded-full shadow-[0_1px_3px_rgba(0,0,0,0.08)] z-0 transition-all duration-[280ms] ease-[cubic-bezier(.4,0,.2,1)]"
             style={indicatorStyle}></div>
         {#each tabs as tab}
             <a
                 href={tab.href}
-                class="py-2.5 px-4 text-base font-semibold text-nudo-text-secondary min-h-10 whitespace-nowrap relative z-10 rounded-full inline-flex items-center gap-1.5 no-underline transition-colors hover:text-nudo-text-primary
-                    {isActive(tab.href) ? 'text-nudo-text-primary' : ''}"
+                class="tab-link py-2.5 px-4 text-base font-semibold text-nudo-text-secondary min-h-10 whitespace-nowrap relative z-10 rounded-full inline-flex items-center gap-1.5 no-underline transition-colors hover:text-nudo-text-primary
+                    {isActive(tab.href) ? 'is-active text-nudo-text-primary' : ''}"
                 aria-current={isActive(tab.href) ? 'page' : undefined}
                 bind:this={tabRefs[tab.href]}
             >
@@ -355,6 +355,6 @@
     </div>
 </nav>
 
-<main class="mt-5 bg-nudo-bg">
+<main class="app-content mt-5 bg-nudo-bg">
     {@render children()}
 </main>

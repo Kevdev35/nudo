@@ -88,7 +88,7 @@
     ]);
 </script>
 
-<section class="bg-nudo-bg flex flex-col gap-7 px-4 md:px-8 py-1 pb-10">
+<section class="app-content bg-nudo-bg flex flex-col gap-7 px-4 md:px-8 py-1 pb-10">
     <h1 class="text-nudo-text-primary font-extrabold tracking-tight m-0" style="font-size:clamp(26px,3vw,34px)">
         Resumen de {data.project.name}
     </h1>

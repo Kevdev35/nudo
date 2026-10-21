@@ -197,7 +197,7 @@
   });
 </script>
 
-<section class="bg-nudo-bg flex flex-col gap-5 px-4 md:px-8 py-1 pb-12">
+<section class="app-content bg-nudo-bg flex flex-col gap-5 px-4 md:px-8 py-1 pb-12">
   <div class="flex items-center justify-between gap-4 flex-wrap">
     <h1 class="text-nudo-text-primary font-extrabold tracking-tight m-0" style="font-size:clamp(26px,3vw,34px)">
       Notas de {data.project.name}

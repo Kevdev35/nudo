@@ -47,6 +47,19 @@
         </button>
     </div>
 
+    {#if THEMES.some((t) => t.beta)}
+        <div class="flex items-start gap-3 p-3.5 mb-5 rounded-2xl bg-nudo-warning-soft text-nudo-warning">
+            <i class="ri-flask-line text-lg mt-0.5 shrink-0" aria-hidden="true"></i>
+            <div>
+                <p class="text-sm font-bold m-0">Temas en beta</p>
+                <p class="text-xs m-0 mt-0.5 opacity-90">
+                    Los temas marcados como <strong>Beta</strong> están en desarrollo: puede haber detalles visuales sin pulir
+                    o cambios sin aviso. Si algo se ve raro, volvé a Claro u Oscuro.
+                </p>
+            </div>
+        </div>
+    {/if}
+
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {#each THEMES as option (option.id)}
             <button
@@ -71,7 +84,12 @@
                 </div>
 
                 <div class="flex items-center justify-between gap-2">
-                    <span class="text-sm font-bold text-nudo-text-primary">{option.label}</span>
+                    <span class="inline-flex items-center gap-2 text-sm font-bold text-nudo-text-primary">
+                        {option.label}
+                        {#if option.beta}
+                            <span class="text-[10px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded-md bg-nudo-warning-soft text-nudo-warning">Beta</span>
+                        {/if}
+                    </span>
                     {#if current === option.id}
                         <i class="ri-check-line text-nudo-accent" aria-hidden="true"></i>
                     {/if}

@@ -226,6 +226,27 @@
   --color-nudo-warning: var(--nudo-warning);
 }
 
+/* Botón de icono cuadrado: se usa en los modales y en el kanban. Estaba
+   referenciado en 10 componentes pero sin definir, así que los botones de
+   cerrar y los iconos quedaban sin tamaño ni padding. Sólo base: el color y
+   los estados hover los sigue poniendo cada componente. */
+@utility icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex-shrink: 0;
+  padding: 0;
+  border: none;
+  border-radius: var(--nudo-radius-md);
+  background-color: transparent;
+  font-size: 1.125rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
 /* Material de vidrio reutilizable: superficie, borde y luz especular. */
 @utility glass {
   background-color: var(--nudo-material-bg);
@@ -377,6 +398,65 @@
   box-shadow: none;
 }
 
+/* Liquid Lite: esquinas menos redondeadas que los temas planos, siguiendo el
+   prototipo (paneles rounded-2xl / 16px, tabs rounded-xl / 12px). Se ajusta vía
+   CSS sobre las utilidades para no tocar cada componente. */
+[data-theme='liquid'] {
+  --nudo-radius-lg: 14px;
+  --nudo-radius-md: 10px;
+}
+
+[data-theme='liquid'] [class*='rounded-3xl'] {
+  border-radius: 16px;
+}
+
+[data-theme='liquid'] [class*='nudo-radius-lg'] {
+  border-radius: var(--nudo-radius-lg);
+}
+
+[data-theme='liquid'] [class*='nudo-radius-md'] {
+  border-radius: var(--nudo-radius-md);
+}
+
+/* Barra de tabs del proyecto: el "pill nav" del prototipo. En liquid el tab
+   activo lleva el tratamiento specular (gradiente + borde claro + inset) en vez
+   del indicador deslizante de los temas planos. */
+[data-theme='liquid'] .tab-bar {
+  background-color: var(--nudo-material-bg-strong);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* El indicador deslizante sólo existe en temas planos. */
+[data-theme='liquid'] .tab-bar .tab-indicator {
+  display: none;
+}
+
+[data-theme='liquid'] .tab-bar .tab-link {
+  border-radius: 12px;
+  color: var(--nudo-text-secondary);
+}
+
+[data-theme='liquid'] .tab-bar .tab-link:hover {
+  color: var(--nudo-text-primary);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme='liquid'] .tab-bar .tab-link.is-active {
+  color: #ffffff;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.04) 100%),
+    rgba(38, 48, 68, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+}
+
+[data-theme='liquid'] .tab-bar .tab-link.is-active i {
+  color: #93c5fd;
+}
+
 /* El header y el sidebar son fijos: un blur alto ahí se recalcula en cada frame
    de scroll. Se les da el material fuerte del prototipo (.glass-pill-nav) pero
    con el blur bajado a 12px. */
@@ -419,6 +499,13 @@
    orbs van por encima y el contenido más arriba). No se usa `body`/`html`
    porque la landing y el login se ven en todas las rutas. */
 [data-theme='liquid'] .app-shell {
+  background-color: transparent;
+}
+
+/* El contenido de las páginas de proyecto también va transparente en liquid:
+   si no, un `bg-nudo-bg` opaco tapa los orbs y se ve como un bloque negro
+   sobrepuesto. */
+[data-theme='liquid'] .app-content {
   background-color: transparent;
 }
 

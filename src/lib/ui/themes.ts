@@ -6,6 +6,8 @@ export type ThemeDefinition = {
     description: string;
     /** Los temas que no son ni claro ni oscuro pisan el modo base. */
     base: 'light' | 'dark';
+    /** Tema en desarrollo: se muestra con un chip "Beta" en el selector. */
+    beta?: boolean;
     /** Colores solo para la preview de la tarjeta en Configuración. */
     preview: {
         bg: string;
@@ -48,11 +50,12 @@ export const THEMES: ThemeDefinition[] = [
         label: 'Liquid Lite',
         description: 'Vidrio translúcido con luz ambiental. Beta, solo oscuro.',
         base: 'dark',
+        beta: true,
         preview: {
-            bg: '#0b0f18',
-            surface: '#161c29',
+            bg: '#080a0f',
+            surface: 'rgba(18,24,38,0.65)',
             border: 'rgba(255,255,255,0.14)',
-            text: '#eef2f8',
+            text: '#f1f5f9',
             accent: '#3b82f6'
         }
     }
