@@ -256,15 +256,19 @@
       </label>
       <div class="flex flex-col gap-2">
         <span class="text-sm font-semibold text-nudo-text-secondary">Color</span>
-        <div class="flex gap-2 flex-wrap">
+        <div class="flex gap-2.5 flex-wrap">
           {#each colors as color}
             <button type="button" onclick={() => newColor = color.name}
-              class="w-7 h-7 rounded-full cursor-pointer border-2 border-transparent shadow-[inset_0_0_0_1px_var(--nudo-border)] transition-all hover:scale-110
-                {newColor === color.name ? 'border-nudo-accent shadow-[0_0_0_2px_var(--nudo-bg),0_0_0_4px_var(--nudo-accent)]' : ''}"
-              style="background-color: {color.bg}"
+              class="color-swatch relative w-8 h-8 rounded-full cursor-pointer border-none transition-transform duration-150 hover:scale-110
+                {newColor === color.name ? 'is-selected' : ''}"
+              style="background: {color.bg}"
               aria-label={color.name}
               aria-pressed={newColor === color.name}
-            ></button>
+            >
+              {#if newColor === color.name}
+                <i class="ri-check-line text-white text-[15px] drop-shadow-[0_1px_2px_rgba(0,0,0,0.55)]" aria-hidden="true"></i>
+              {/if}
+            </button>
           {/each}
         </div>
         <input type="hidden" name="color" value={newColor} />
@@ -304,15 +308,19 @@
         </label>
         <div class="flex flex-col gap-2">
           <span class="text-sm font-semibold text-nudo-text-secondary">Color</span>
-          <div class="flex gap-2 flex-wrap">
+          <div class="flex gap-2.5 flex-wrap">
             {#each colors as color}
               <button type="button" onclick={() => editColor = color.name}
-                class="w-7 h-7 rounded-full cursor-pointer border-2 border-transparent shadow-[inset_0_0_0_1px_var(--nudo-border)] transition-all hover:scale-110
-                  {editColor === color.name ? 'border-nudo-accent shadow-[0_0_0_2px_var(--nudo-bg),0_0_0_4px_var(--nudo-accent)]' : ''}"
-                style="background-color: {color.bg}"
+                class="color-swatch relative w-8 h-8 rounded-full cursor-pointer border-none transition-transform duration-150 hover:scale-110
+                  {editColor === color.name ? 'is-selected' : ''}"
+                style="background: {color.bg}"
                 aria-label={color.name}
                 aria-pressed={editColor === color.name}
-              ></button>
+              >
+                {#if editColor === color.name}
+                  <i class="ri-check-line text-white text-[15px] drop-shadow-[0_1px_2px_rgba(0,0,0,0.55)]" aria-hidden="true"></i>
+                {/if}
+              </button>
             {/each}
           </div>
           <input type="hidden" name="color" value={editColor} />
