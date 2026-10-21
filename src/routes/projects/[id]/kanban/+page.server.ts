@@ -14,6 +14,7 @@ import { createKanbanCardUseCase } from "@core/use-cases/create-kanban-card";
 import { listKanbanListsUseCase } from "@core/use-cases/list-kanban-lists-by-board";
 import { listKanbanCardsUseCase } from "@core/use-cases/list-kanban-cards-by-list";
 import { moveCardUseCase } from "@core/use-cases/move-card";
+import { moveCardsUseCase } from "@core/use-cases/move-cards";
 import { updateKanbanCardUseCase } from "@core/use-cases/update-kanban-card";
 import { deleteKanbanCardUseCase } from "@core/use-cases/delete-kanban-card";
 
@@ -29,6 +30,7 @@ const createCard = createKanbanCardUseCase(cardRepo, listRepo, boardRepo, projec
 const listLists = listKanbanListsUseCase(listRepo, boardRepo, projectRepo);
 const listCards = listKanbanCardsUseCase(cardRepo, listRepo, boardRepo, projectRepo);
 const moveCard = moveCardUseCase(cardRepo, listRepo, boardRepo, projectRepo);
+const moveCards = moveCardsUseCase(cardRepo, listRepo, boardRepo, projectRepo);
 const updateCard = updateKanbanCardUseCase(cardRepo, listRepo, boardRepo, projectRepo);
 const deleteCard = deleteKanbanCardUseCase(cardRepo, listRepo, boardRepo, projectRepo);
 
@@ -151,6 +153,39 @@ export const actions: Actions = {
 
         try {
             await moveCard(locals.user.id, cardId, targetListId, newOrder);
+        } catch (err) {
+            return fail(400, { error: (err as Error).message });
+        }
+
+        return { success: true };
+    },
+
+    moveCards: async ({ locals, request }) => {
+        if (!locals.user) {
+            throw redirect(302, "/login");
+        }
+
+        const formData = await request.formData();
+        const targetListId = String(formData.get("targetListId") ?? "");
+        const newOrder = Number(formData.get("newOrder"));
+        const rawCardIds = String(formData.get("cardIds") ?? "[]");
+
+        let cardIds: string[];
+        try {
+            const parsed = JSON.parse(rawCardIds);
+            cardIds = Array.isArray(parsed)
+                ? parsed.filter((id): id is string => typeof id === "string")
+                : [];
+        } catch {
+            return fail(400, { error: 'Tarjetas inválidas' });
+        }
+
+        if (cardIds.length === 0 || !targetListId) {
+            return fail(400, { error: 'Datos incompletos' });
+        }
+
+        try {
+            await moveCards(locals.user.id, cardIds, targetListId, newOrder);
         } catch (err) {
             return fail(400, { error: (err as Error).message });
         }

@@ -64,21 +64,61 @@
   }
 
   let draggingCardId = $state<string | null>(null);
+  let dragIds = $state<string[]>([]);
   let dropTarget = $state<{ listId: string; beforeId: string | null } | null>(null);
+  let selectedIds = $state<string[]>([]);
 
   let pointerDownCardId: string | null = null;
   let pointerStart: { x: number; y: number } | null = null;
   let pointerMoved = false;
   let pointerX = 0;
   let pointerY = 0;
+  let nativeDragId: string | null = null;
 
   function isInteractiveTarget(target: EventTarget | null) {
     return target instanceof Element &&
       !!target.closest('button, a, input, textarea, select, label, [contenteditable="true"]');
   }
 
+  function isSelected(cardId: string) {
+    return selectedIds.includes(cardId);
+  }
+
+  function toggleSelected(cardId: string) {
+    selectedIds = isSelected(cardId)
+      ? selectedIds.filter((id) => id !== cardId)
+      : [...selectedIds, cardId];
+  }
+
+  function cardById(cardId: string) {
+    for (const listId of Object.keys(cardsByList)) {
+      const card = cardsByList[listId]?.find((c) => c.id === cardId);
+      if (card) return card;
+    }
+    return null;
+  }
+
+  // Selección en el mismo orden visual en que se ven las tarjetas.
+  function selectedCardsInOrder() {
+    return Object.keys(cardsByList)
+      .flatMap((listId) => cardsByList[listId] ?? [])
+      .filter((card) => selectedIds.includes(card.id));
+  }
+
+  // Si la tarjeta arrastrada está seleccionada, se mueve toda la selección.
+  function startDrag(cardId: string) {
+    draggingCardId = cardId;
+    dragIds = isSelected(cardId) ? selectedCardsInOrder().map((c) => c.id) : [cardId];
+  }
+
+  function resetDrag() {
+    draggingCardId = null;
+    dragIds = [];
+    dropTarget = null;
+  }
+
   // Lista y tarjeta (por id) sobre las que caería el arrastre, según el puntero.
-  function updateDropTarget(cardId: string) {
+  function updateDropTarget() {
     const under = document.elementFromPoint(pointerX, pointerY);
     const column = under instanceof Element ? under.closest<HTMLElement>('[data-kanban-list]') : null;
     const listId = column?.dataset.kanbanList;
@@ -87,8 +127,9 @@
       return;
     }
 
+    const moving = new Set(dragIds);
     const siblings = [...column.querySelectorAll<HTMLElement>('[data-highlight-id]')]
-      .filter((el) => el.dataset.highlightId !== cardId);
+      .filter((el) => !moving.has(el.dataset.highlightId ?? ''));
 
     let beforeId: string | null = null;
     for (const el of siblings) {
@@ -105,43 +146,54 @@
   function handleDrop(state: DragDropState<{ id: string }>) {
     const { draggedItem, targetContainer } = state;
     if (!targetContainer || !draggedItem) return;
+
     const cardId = draggedItem.id;
     const targetListId = targetContainer as string;
-    const sourceListId = Object.keys(cardsByList).find(listId =>
-      cardsByList[listId]?.some((c: { id: string }) => c.id === cardId)
-    );
-    if (!sourceListId) return;
-    const card = cardsByList[sourceListId]?.find((c: { id: string }) => c.id === cardId);
-    if (!card) return;
 
-    updateDropTarget(cardId);
+    if (dragIds.length === 0) dragIds = [cardId];
+    updateDropTarget();
 
-    const targetCards = (cardsByList[targetListId] ?? []).filter((c) => c.id !== cardId);
+    const movingIds = [...dragIds];
+    const movingSet = new Set(movingIds);
+    const movingCards = movingIds.map(cardById).filter((c): c is KanbanCard => c !== null);
+    if (movingCards.length === 0) {
+      resetDrag();
+      return;
+    }
+
+    const targetCards = (cardsByList[targetListId] ?? []).filter((c) => !movingSet.has(c.id));
     let index = targetCards.length;
     if (dropTarget?.listId === targetListId && dropTarget.beforeId) {
       const beforeIndex = targetCards.findIndex((c) => c.id === dropTarget!.beforeId);
       if (beforeIndex !== -1) index = beforeIndex;
     }
 
-    const currentIndex = (cardsByList[targetListId] ?? []).findIndex((c) => c.id === cardId);
-    if (sourceListId === targetListId && index === currentIndex) {
-      dropTarget = null;
-      draggingCardId = null;
+    const nextTarget = [...targetCards.slice(0, index), ...movingCards, ...targetCards.slice(index)];
+    const currentTarget = cardsByList[targetListId] ?? [];
+    const unchanged = currentTarget.length === nextTarget.length &&
+      currentTarget.every((c, i) => c.id === nextTarget[i]?.id);
+
+    if (unchanged) {
+      resetDrag();
       return;
     }
 
-    if (sourceListId !== targetListId) {
-      cardsByList[sourceListId] = cardsByList[sourceListId]?.filter((c) => c.id !== cardId) ?? [];
+    for (const listId of Object.keys(cardsByList)) {
+      if (listId === targetListId) continue;
+      if ((cardsByList[listId] ?? []).some((c) => movingSet.has(c.id))) {
+        cardsByList[listId] = (cardsByList[listId] ?? []).filter((c) => !movingSet.has(c.id));
+      }
     }
-    cardsByList[targetListId] = [...targetCards.slice(0, index), card, ...targetCards.slice(index)];
+    cardsByList[targetListId] = nextTarget;
 
     const formData = new FormData();
-    formData.append('cardId', cardId);
+    formData.append('cardIds', JSON.stringify(movingIds));
     formData.append('targetListId', targetListId);
     formData.append('newOrder', String(index));
-    fetch('?/moveCard', { method: 'POST', body: formData, headers: { 'x-sveltekit-action': 'true' } });
-    dropTarget = null;
-    draggingCardId = null;
+    fetch('?/moveCards', { method: 'POST', body: formData, headers: { 'x-sveltekit-action': 'true' } });
+
+    if (isSelected(cardId)) selectedIds = [];
+    resetDrag();
   }
 
   function handleCardClick(e: MouseEvent, card: KanbanCard) {
@@ -150,6 +202,11 @@
     pointerStart = null;
     pointerMoved = false;
     if (moved || target.closest('.drag-handle')) return;
+    if (e.shiftKey) {
+      toggleSelected(card.id);
+      return;
+    }
+    if (selectedIds.length > 0) selectedIds = [];
     openEditCard(card);
   }
 
@@ -160,7 +217,9 @@
     pointerX = e.clientX;
     pointerY = e.clientY;
     pointerMoved = false;
+    nativeDragId = null;
     draggingCardId = null;
+    dragIds = [];
     dropTarget = null;
     window.addEventListener('pointermove', trackPointerMove, { passive: true });
     window.addEventListener('pointerup', stopTrackingPointer, { passive: true });
@@ -176,41 +235,58 @@
     if (!pointerMoved) {
       if (Math.abs(e.clientX - pointerStart.x) > 8 || Math.abs(e.clientY - pointerStart.y) > 8) {
         pointerMoved = true;
-        draggingCardId = pointerDownCardId;
+        if (pointerDownCardId) startDrag(pointerDownCardId);
       } else {
         return;
       }
     }
-    if (draggingCardId) updateDropTarget(draggingCardId);
+    if (draggingCardId) updateDropTarget();
   }
 
-  function stopTrackingPointer() {
-    pointerStart = null;
-    pointerDownCardId = null;
-    draggingCardId = null;
-    dropTarget = null;
+  function removePointerListeners() {
     window.removeEventListener('pointermove', trackPointerMove);
     window.removeEventListener('pointerup', stopTrackingPointer);
     window.removeEventListener('pointercancel', stopTrackingPointer);
   }
 
+  function cleanupPointerTracking() {
+    pointerStart = null;
+    pointerDownCardId = null;
+    removePointerListeners();
+  }
+
+  // El navegador dispara `pointercancel` justo después de `dragstart` en un
+  // arrastre nativo: ahí no hay que borrar el estado del drag o el drop queda
+  // en la posición original.
+  function stopTrackingPointer() {
+    cleanupPointerTracking();
+    if (!nativeDragId) resetDrag();
+  }
+
   function onCardDragStart(e: DragEvent, card: KanbanCard) {
     if (pointerDownCardId !== card.id) return;
-    draggingCardId = card.id;
+    nativeDragId = card.id;
+    startDrag(card.id);
     pointerX = e.clientX;
     pointerY = e.clientY;
+  }
+
+  function onNativeDragEnd() {
+    nativeDragId = null;
+    cleanupPointerTracking();
+    resetDrag();
   }
 
   // El arrastre nativo (mouse) no emite pointermove: seguimos el dragover.
   $effect(() => {
     const onDragOver = (e: DragEvent) => {
-      if (!draggingCardId) return;
+      if (!nativeDragId) return;
       pointerX = e.clientX;
       pointerY = e.clientY;
-      updateDropTarget(draggingCardId);
+      updateDropTarget();
     };
 
-    const onDragEnd = () => stopTrackingPointer();
+    const onDragEnd = () => onNativeDragEnd();
 
     window.addEventListener('dragover', onDragOver, { passive: true });
     window.addEventListener('dragend', onDragEnd, { passive: true });
@@ -237,10 +313,29 @@
       <h1 class="text-nudo-text-primary font-extrabold tracking-tight m-0" style="font-size:clamp(26px,3vw,34px)">
         {data.board.name}
       </h1>
-      <Button onclick={openListModal}>
-        <i class="ri-add-line" aria-hidden="true"></i> Nueva columna
-      </Button>
+      <div class="flex items-center gap-4 flex-wrap">
+        <p class="m-0 text-[13px] text-nudo-text-tertiary">Shift + click para seleccionar varias</p>
+        <Button onclick={openListModal}>
+          <i class="ri-add-line" aria-hidden="true"></i> Nueva columna
+        </Button>
+      </div>
     </div>
+
+    {#if selectedIds.length > 0}
+      <div class="flex items-center gap-3 flex-wrap bg-nudo-surface rounded-2xl px-4 py-3">
+        <span class="text-sm font-semibold text-nudo-text-primary">
+          {selectedIds.length} {selectedIds.length === 1 ? 'tarjeta seleccionada' : 'tarjetas seleccionadas'}
+        </span>
+        <span class="text-[13px] text-nudo-text-secondary">Arrastrá una de ellas a otra columna para moverlas juntas.</span>
+        <button
+          type="button"
+          onclick={() => selectedIds = []}
+          class="ml-auto bg-transparent border-none p-0 text-[13px] font-semibold text-nudo-text-secondary hover:text-nudo-text-primary cursor-pointer"
+        >
+          Limpiar selección
+        </button>
+      </div>
+    {/if}
 
     <div class="flex gap-5 overflow-x-auto pb-4">
       {#each data.lists as list}
@@ -267,6 +362,7 @@
                   onclick={(e) => handleCardClick(e, card)}
                   class="bg-nudo-bg border border-nudo-border rounded-2xl p-4 cursor-pointer active:cursor-grabbing hover:shadow-sm transition-all duration-150 {card.completed ? 'opacity-60' : ''}"
                   class:drop-before-line={dropTarget?.listId === list.id && dropTarget.beforeId === card.id}
+                  class:card-selected={isSelected(card.id)}
                 >
                   <div class="flex items-start justify-between gap-2">
                     <div class="flex-1 min-w-0">
@@ -298,7 +394,7 @@
             {:else}
               <p class="text-sm text-nudo-text-tertiary px-2 m-0">Sin tarjetas</p>
             {/if}
-            {#if draggingCardId && dropTarget?.listId === list.id && dropTarget.beforeId === null}
+            {#if dragIds.length > 0 && dropTarget?.listId === list.id && dropTarget.beforeId === null}
               <div class="h-0.5 rounded-full bg-nudo-accent mx-1" aria-hidden="true"></div>
             {/if}
           </div>
@@ -423,5 +519,10 @@
 
   :global([data-highlight-id].dragging) {
     opacity: 0.45;
+  }
+
+  :global([data-highlight-id].card-selected) {
+    outline: 2px solid var(--color-nudo-accent);
+    outline-offset: 1px;
   }
 </style>
