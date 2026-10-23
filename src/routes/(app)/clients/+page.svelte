@@ -66,7 +66,8 @@
     {:else}
         <div class="flex flex-col gap-2">
             {#each data.clients as client}
-                <div class="flex items-center gap-3 sm:gap-4 px-4 sm:px-5 py-3 sm:py-4 bg-nudo-surface rounded-3xl hover:bg-nudo-bg hover:shadow-sm transition-all duration-150">
+                <a href="/clients/{client.id}"
+                    class="flex items-center gap-3 sm:gap-4 px-4 sm:px-5 py-3 sm:py-4 bg-nudo-surface rounded-3xl no-underline text-inherit hover:bg-nudo-bg hover:shadow-sm transition-all duration-150">
                     <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-nudo-accent-soft flex items-center justify-center text-lg sm:text-xl text-nudo-accent shrink-0">
                         <i class="ri-user-3-line" aria-hidden="true"></i>
                     </div>
@@ -82,7 +83,8 @@
                         {/if}
                         <span class="text-[10px] sm:text-xs text-nudo-text-tertiary">{formatDate(client.createdAt)}</span>
                     </div>
-                </div>
+                    <i class="ri-arrow-right-s-line text-lg text-nudo-text-tertiary shrink-0" aria-hidden="true"></i>
+                </a>
             {/each}
         </div>
     {/if}
