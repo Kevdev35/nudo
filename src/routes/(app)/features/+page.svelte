@@ -1,11 +1,32 @@
 <script lang="ts">
     const versions = [
         {
+            version: '0.5',
+            title: 'Clientes, temas y pulido',
+            date: 'Oct 2026',
+            tag: 'Última',
+            tagColor: 'bg-nudo-accent-soft text-nudo-accent',
+            changes: [
+                { icon: 'ri-team-line', text: 'Ficha de cliente con sus proyectos, clickeable desde el listado', type: 'feat' },
+                { icon: 'ri-contacts-line', text: 'Contacto estructurado: email, teléfono y ubicación con iconos y enlaces', type: 'feat' },
+                { icon: 'ri-settings-3-line', text: 'Editar cliente desde la ficha (configuración) con guardado en tiempo real', type: 'feat' },
+                { icon: 'ri-delete-bin-line', text: 'Borrado de cliente protegido: bloquea si tiene proyectos con enlaces para reasignarlos o eliminarlos', type: 'feat' },
+                { icon: 'ri-add-circle-line', text: 'Crear proyecto directamente desde la ficha del cliente con asignación automática', type: 'feat' },
+                { icon: 'ri-palette-line', text: 'Sistema de temas con data-theme (light/dark/liquid) + Liquid Lite alineado al prototipo', type: 'feat' },
+                { icon: 'ri-layout-5-line', text: 'Pestañas del proyecto adaptadas a Liquid con estilo de prototipo', type: 'feat' },
+                { icon: 'ri-layout-masonry-line', text: 'Botones principales más compactos (44px) y radios ajustados', type: 'feat' },
+                { icon: 'ri-file-list-3-line', text: 'Separador de acciones de notas solo en vista de cuadrícula', type: 'feat' },
+                { icon: 'ri-paint-brush-line', text: 'Swatches de color de notas con anillo dual y sin parpadeo', type: 'feat' },
+                { icon: 'ri-markdown-line', text: 'Markdown sigue el tema activo en títulos y contenido (oscuro y liquid)', type: 'feat' },
+                { icon: 'ri-drag-drop-line', text: 'Drag & drop en Kanban, reordenado de columnas y multi-selección', type: 'feat' },
+                { icon: 'ri-refresh-line', text: 'Anti-FOUC en cambio de tema y registro central de temas', type: 'fix' },
+                { icon: 'ri-bug-line', text: 'Corregido parpadeo de swatches y comportamiento de borde en notas', type: 'fix' },
+            ]
+        },
+        {
             version: '0.4',
             title: 'Apariencia y pulido',
             date: 'Sep 2025',
-            tag: 'Última',
-            tagColor: 'bg-nudo-accent-soft text-nudo-accent',
             changes: [
                 { icon: 'ri-user-settings-line', text: 'Configuración de perfil: cambiar nombre, email y contraseña', type: 'feat' },
                 { icon: 'ri-palette-line', text: 'Selector de tema oscuro/claro', type: 'feat' },
