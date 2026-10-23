@@ -224,7 +224,7 @@ Reglas globales:
 | Tabla | Campos principales | Detalles |
 |-------|--------------------|----------|
 | `user` | `id`, `name`, `email` (único), `password_hash` | soft-delete, timestamps |
-| `client` | `id`, `user_id`, `name`, `contact_info`, `notes` | soft-delete, timestamps |
+| `client` | `id`, `user_id`, `name`, `email`, `phone`, `location`, `notes` | soft-delete, timestamps |
 | `session` | `id`, `user_id` (FK → `user`), `expires_at` | `created_at` |
 
 Esquema en `src/lib/infrastructure/db/schema/`, exportado desde `index.ts`.

@@ -26,7 +26,7 @@
 <dialog
     bind:this={dialogRef}
     onclick={(e) => isBackdropClick(e, dialogRef) && closeModal()}
-    class="fixed inset-0 m-auto max-w-md w-[calc(100%-2rem)] p-7 border-none rounded-3xl bg-nudo-bg shadow-2xl backdrop:bg-black/40"
+    class="fixed inset-0 m-auto max-w-md w-[calc(100%-2rem)] p-7 border-none rounded-3xl bg-nudo-bg shadow-2xl backdrop:bg-black/40 max-h-[90vh] overflow-y-auto"
 >
     <div class="flex items-center justify-between mb-5">
         <h2 class="text-xl font-extrabold text-nudo-text-primary m-0">Nuevo cliente</h2>
@@ -40,14 +40,24 @@
                 class="border border-nudo-border rounded-2xl px-4 py-3.5 text-[15px] text-nudo-text-primary bg-nudo-bg focus:outline-none focus:border-nudo-accent" />
         </label>
         <label class="flex flex-col gap-2">
-            <span class="text-sm font-semibold text-nudo-text-secondary">Contacto</span>
-            <textarea name="contact_info" rows="3" placeholder="Email, teléfono, dirección..."
-                class="border border-nudo-border rounded-2xl px-4 py-3.5 text-[15px] text-nudo-text-primary bg-nudo-bg focus:outline-none focus:border-nudo-accent resize-none"></textarea>
+            <span class="text-sm font-semibold text-nudo-text-secondary">Email</span>
+            <input name="email" type="email" placeholder="cliente@correo.com"
+                class="border border-nudo-border rounded-2xl px-4 py-3.5 text-[15px] text-nudo-text-primary bg-nudo-bg focus:outline-none focus:border-nudo-accent" />
+        </label>
+        <label class="flex flex-col gap-2">
+            <span class="text-sm font-semibold text-nudo-text-secondary">Teléfono</span>
+            <input name="phone" type="tel" placeholder="+52 555 000 0000"
+                class="border border-nudo-border rounded-2xl px-4 py-3.5 text-[15px] text-nudo-text-primary bg-nudo-bg focus:outline-none focus:border-nudo-accent" />
+        </label>
+        <label class="flex flex-col gap-2">
+            <span class="text-sm font-semibold text-nudo-text-secondary">Ubicación</span>
+            <input name="location" type="text" placeholder="Ciudad, dirección..."
+                class="border border-nudo-border rounded-2xl px-4 py-3.5 text-[15px] text-nudo-text-primary bg-nudo-bg focus:outline-none focus:border-nudo-accent" />
         </label>
         <label class="flex flex-col gap-2">
             <span class="text-sm font-semibold text-nudo-text-secondary">Notas</span>
-            <input name="notes" type="text" placeholder="Notas adicionales..."
-                class="border border-nudo-border rounded-2xl px-4 py-3.5 text-[15px] text-nudo-text-primary bg-nudo-bg focus:outline-none focus:border-nudo-accent" />
+            <textarea name="notes" rows="2" placeholder="Notas adicionales..."
+                class="border border-nudo-border rounded-2xl px-4 py-3.5 text-[15px] text-nudo-text-primary bg-nudo-bg focus:outline-none focus:border-nudo-accent resize-none"></textarea>
         </label>
         <div class="flex justify-end gap-2.5 mt-2">
             <Button type="button" onclick={closeModal}>Cancelar</Button>
@@ -73,8 +83,10 @@
                     </div>
                     <div class="flex-1 min-w-0">
                         <p class="text-sm sm:text-base font-semibold text-nudo-text-primary m-0 truncate">{client.name}</p>
-                        {#if client.contact_info}
-                            <p class="text-xs sm:text-sm text-nudo-text-secondary mt-1 m-0 truncate">{client.contact_info}</p>
+                        {#if client.email}
+                            <p class="text-xs sm:text-sm text-nudo-text-secondary mt-1 m-0 truncate">{client.email}</p>
+                        {:else if client.phone}
+                            <p class="text-xs sm:text-sm text-nudo-text-secondary mt-1 m-0 truncate">{client.phone}</p>
                         {/if}
                     </div>
                     <div class="flex flex-col items-end gap-1 shrink-0">

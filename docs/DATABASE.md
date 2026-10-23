@@ -69,7 +69,9 @@ CREATE TABLE client (
     id           TEXT PRIMARY KEY,           -- UUID
     user_id      TEXT NOT NULL,
     name         TEXT NOT NULL,
-    contact_info TEXT,
+    email        TEXT,
+    phone        TEXT,
+    location     TEXT,
     notes        TEXT,
     created_at   INTEGER NOT NULL,
     updated_at   INTEGER NOT NULL,

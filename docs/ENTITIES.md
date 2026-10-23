@@ -84,7 +84,9 @@ export interface Client {
     id: string;
     user_id: string;
     name: string;
-    contact_info: string | null;
+    email: string | null;
+    phone: string | null;
+    location: string | null;
     notes: string | null;
     createdAt: Date;
     updatedAt: Date;
@@ -99,7 +101,9 @@ export type NewClient = Omit<Client, 'id' | 'createdAt' | 'updatedAt' | 'deleted
 | `id` | string | UUID |
 | `user_id` | string | FK → User.id (owner) |
 | `name` | string | Nombre del cliente |
-| `contact_info` | string \| null | Email, teléfono, dirección |
+| `email` | string \| null | Correo electrónico |
+| `phone` | string \| null | Teléfono |
+| `location` | string \| null | Ubicación o dirección |
 | `notes` | string \| null | Notas adicionales |
 
 ---

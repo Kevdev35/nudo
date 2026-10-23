@@ -28,14 +28,20 @@ export const actions: Actions = {
         }
 
         const formData = await request.formData()
-        const name = formData.get("name") as string
-        const contact_info = formData.get("contact_info") as string || null
-        const notes = formData.get("notes") as string || null
+        const name = ((formData.get("name") as string) ?? "").trim()
+        const email = ((formData.get("email") as string) ?? "").trim() || null
+        const phone = ((formData.get("phone") as string) ?? "").trim() || null
+        const location = ((formData.get("location") as string) ?? "").trim() || null
+        const notes = ((formData.get("notes") as string) ?? "").trim() || null
+
+        if (!name) {
+            return fail(400, { error: "El nombre es obligatorio." });
+        }
 
         let newClient;
 
         try {
-            newClient = await createClient(locals.user.id, {name, contact_info, notes})
+            newClient = await createClient(locals.user.id, {name, email, phone, location, notes})
         } catch (error) {
             return fail(400, { error: (error as Error).message });
         }
