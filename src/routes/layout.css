@@ -405,6 +405,30 @@
     0 0 0 4px var(--nudo-accent);
 }
 
+/* Markdown: @tailwindcss/typography trae su propia paleta (--tw-prose-*) y los
+   títulos fijan `color: var(--tw-prose-headings)`, así que NO heredan el color
+   del contenedor. Por eso en Oscuro y Liquid se veían casi negros sobre fondo
+   oscuro. Se remapean las variables a los tokens de Nudo: con eso siguen el
+   tema activo sin necesidad de prose-invert ni clases por tema. */
+.prose {
+  --tw-prose-body: var(--nudo-text-primary);
+  --tw-prose-headings: var(--nudo-text-primary);
+  --tw-prose-lead: var(--nudo-text-secondary);
+  --tw-prose-links: var(--nudo-accent);
+  --tw-prose-bold: var(--nudo-text-primary);
+  --tw-prose-counters: var(--nudo-text-secondary);
+  --tw-prose-bullets: var(--nudo-text-tertiary);
+  --tw-prose-hr: var(--nudo-border);
+  --tw-prose-quotes: var(--nudo-text-secondary);
+  --tw-prose-quote-borders: var(--nudo-border);
+  --tw-prose-captions: var(--nudo-text-tertiary);
+  --tw-prose-code: var(--nudo-text-primary);
+  --tw-prose-pre-code: var(--nudo-text-primary);
+  --tw-prose-pre-bg: var(--nudo-surface-2);
+  --tw-prose-th-borders: var(--nudo-border);
+  --tw-prose-td-borders: var(--nudo-border);
+}
+
 /* En Liquid Lite las superficies planas pasan a material de vidrio.
    Se engancha en la utilidad de Tailwind en vez de tocar cada componente:
    `bg-nudo-surface` ya resuelve a un color translúcido en este tema, sólo
