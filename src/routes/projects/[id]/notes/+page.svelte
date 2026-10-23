@@ -365,6 +365,7 @@
               {#if note.content}
                 <p class="text-base leading-relaxed m-0 whitespace-pre-wrap break-words
                   {viewMode === 'grid' ? 'line-clamp-5' : ''}">{note.content}</p>
+                  <span>hola</span>
               {/if}
             </div>
             <form method="POST" action="?/deleteNote" onclick={(e) => e.stopPropagation()}
@@ -393,8 +394,8 @@
               <p class="text-base leading-relaxed m-0 whitespace-pre-wrap break-words
                 {viewMode === 'grid' ? 'line-clamp-5' : ''}">{note.content}</p>
             </div>
-            <div class="flex items-center gap-1 shrink-0 opacity-70
-              {viewMode === 'grid' ? 'self-end mt-auto pt-2.5' : ''}">
+            <div class="note-actions flex items-center gap-1 shrink-0 opacity-70
+              {viewMode === 'grid' ? 'w-full justify-end flex-wrap pt-2.5 is-grid' : ''}">
               <form method="POST" action="?/toggleComplete" onclick={(e) => e.stopPropagation()}>
                 <input type="hidden" name="noteId" value={note.id} />
                 <button type="submit" class="inline-flex items-center justify-center w-8 h-8 rounded-[9px] bg-transparent border-none cursor-pointer text-[17px] text-nudo-text-tertiary hover:bg-nudo-hover-soft hover:text-nudo-text-primary transition-all" aria-label="Marcar como completada" title="Marcar como completada">
@@ -430,7 +431,7 @@
               <div
                 data-highlight-id={note.id}
                 onclick={() => openEdit(note)}
-                class="note-card flex items-start justify-between gap-3 px-4 py-4 rounded-[var(--nudo-radius-lg)] cursor-pointer opacity-60 hover:opacity-85 transition-all
+                class="note-card flex items-start justify-between  px-4 py-4 rounded-[var(--nudo-radius-lg)] cursor-pointer opacity-60 hover:opacity-85 transition-all
                   {viewMode === 'grid' ? 'flex-col min-h-[150px]' : ''}"
                 style={getNoteStyle(note.color)}
               >
@@ -441,8 +442,9 @@
                   <p class="text-base leading-relaxed m-0 whitespace-pre-wrap break-words line-through
                     {viewMode === 'grid' ? 'line-clamp-5' : ''}">{note.content}</p>
                 </div>
-                <div class="flex items-center gap-1 shrink-0 opacity-70
-                  {viewMode === 'grid' ? 'self-end mt-auto pt-2.5' : ''}">
+                
+                <div class="note-actions flex items-center gap-1 shrink-0 opacity-70
+                  {viewMode === 'grid' ? 'w-full justify-end flex-wrap pt-2.5 is-grid' : ''}">
                   <form method="POST" action="?/toggleComplete" onclick={(e) => e.stopPropagation()}>
                     <input type="hidden" name="noteId" value={note.id} />
                     <button type="submit" class="inline-flex items-center justify-center w-8 h-8 rounded-[9px] bg-transparent border-none cursor-pointer text-[17px] text-nudo-success hover:bg-nudo-hover-soft transition-all" aria-label="Marcar como pendiente" title="Marcar como pendiente">
@@ -522,5 +524,17 @@
     .just-published::after {
       opacity: 0;
     }
+  }
+
+  /* Separador entre el contenido de la nota y sus acciones. Sólo existe en la
+     vista de cuadros: en la de lista los botones van al costado del contenido,
+     así que una línea horizontal no tiene sentido. El ::before ocupa el 100%
+     del ancho (flex-basis) y fuerza el salto, dejando los botones abajo. */
+  .note-actions.is-grid::before {
+    content: '';
+    flex-basis: 100%;
+    height: 1px;
+    margin-bottom: 0.5rem;
+    background: var(--nudo-border);
   }
 </style>
