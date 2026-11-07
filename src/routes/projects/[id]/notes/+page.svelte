@@ -1,4 +1,7 @@
 <script lang="ts">
+
+  import './notes.css'
+
   import type { PageData } from './$types';
   import { onMount } from 'svelte';
   import { invalidateAll } from '$app/navigation';
@@ -7,18 +10,20 @@
 
   import Button from "@components/Button.svelte"
   import { isBackdropClick } from '@ui/modal'
+  import { DEFAULT_NOTE_COLOR, noteColors as colors, getNoteStyle } from '@lib/notes/note-colors'
 
-  let dialogRef: HTMLDialogElement = $state() as HTMLDialogElement
-  let editDialogRef: HTMLDialogElement = $state() as HTMLDialogElement
+  let dialogRef: HTMLDialogElement = $state() as HTMLDialogElement;
+  let editDialogRef: HTMLDialogElement = $state() as HTMLDialogElement;
 
   let editingNote = $state<any>(null);
   let editTitle = $state('');
   let editContent = $state('');
-  let editColor = $state('');
+  let editColor = $state(DEFAULT_NOTE_COLOR);
 
   let newTitle = $state('');
   let newContent = $state('');
-  let newColor = $state('default');
+  let newColor = $state(DEFAULT_NOTE_COLOR);
+
   let savingDraft = $state(false);
   let justPublishedId = $state<string | null>(null);
 
@@ -35,41 +40,10 @@
     };
   }
 
-  const colors = [
-    { name: 'default', bg: 'var(--nudo-surface)', text: 'var(--nudo-text-primary)', border: 'var(--nudo-border)' },
-    { name: 'amarillo', bg: 'var(--nudo-note-amarillo-bg)', text: 'var(--nudo-note-amarillo-text)', border: 'var(--nudo-note-amarillo-border)' },
-    { name: 'rosa', bg: 'var(--nudo-note-rosa-bg)', text: 'var(--nudo-note-rosa-text)', border: 'var(--nudo-note-rosa-border)' },
-    { name: 'azul', bg: 'var(--nudo-note-azul-bg)', text: 'var(--nudo-note-azul-text)', border: 'var(--nudo-note-azul-border)' },
-    { name: 'verde', bg: 'var(--nudo-note-verde-bg)', text: 'var(--nudo-note-verde-text)', border: 'var(--nudo-note-verde-border)' },
-    { name: 'morado', bg: 'var(--nudo-note-morado-bg)', text: 'var(--nudo-note-morado-text)', border: 'var(--nudo-note-morado-border)' },
-    { name: 'naranja', bg: 'var(--nudo-note-naranja-bg)', text: 'var(--nudo-note-naranja-text)', border: 'var(--nudo-note-naranja-border)' },
-  ];
-
-  function getNoteBg(color: string | null): string {
-    const found = colors.find(c => c.name === color);
-    return found ? found.bg : colors[0].bg;
-  }
-
-  function getNoteText(color: string | null): string {
-    const found = colors.find(c => c.name === color);
-    return found ? found.text : colors[0].text;
-  }
-
-  function getNoteBorder(color: string | null): string {
-    const found = colors.find(c => c.name === color);
-    return found ? found.border : colors[0].border;
-  }
-
-  // `background` (no `background-color`) porque en Liquid Lite el valor es un
-  // gradiente. En Claro/Oscuro los bordes son transparentes y no cambia nada.
-  function getNoteStyle(color: string | null): string {
-    return `background: ${getNoteBg(color)}; color: ${getNoteText(color)}; border-color: ${getNoteBorder(color)}`;
-  }
-
   function openModal() {
     newTitle = '';
     newContent = '';
-    newColor = 'default';
+    newColor = DEFAULT_NOTE_COLOR;
     dialogRef.showModal()
   }
 
@@ -105,7 +79,7 @@
     dialogRef.close();
     newTitle = '';
     newContent = '';
-    newColor = 'default';
+    newColor = DEFAULT_NOTE_COLOR;
     if (hasContent) await invalidateAll();
   }
 
@@ -113,7 +87,7 @@
     editingNote = note;
     editTitle = note.title ?? '';
     editContent = note.content;
-    editColor = note.color || 'default';
+    editColor = note.color || DEFAULT_NOTE_COLOR;
     editDialogRef.showModal();
   }
 
@@ -130,7 +104,7 @@
     const content = editContent;
     const color = editColor;
     const hasContent = title.trim().length > 0 || content.trim().length > 0;
-    const changed = title !== (note.title ?? '') || content !== note.content || color !== (note.color || 'default');
+    const changed = title !== (note.title ?? '') || content !== note.content || color !== (note.color || DEFAULT_NOTE_COLOR);
 
     // Solo los borradores se guardan al cerrar; las notas publicadas
     // solo cambian al presionar "Guardar cambios"
@@ -466,75 +440,3 @@
     {/if}
   </div>
 </section>
-
-<style>
-  .draft-card {
-    border: 2px dashed color-mix(in srgb, currentColor 50%, transparent);
-  }
-
-  .draft-chip {
-    background: color-mix(in srgb, currentColor 15%, transparent);
-    color: inherit;
-  }
-
-  .just-published {
-    position: relative;
-    animation: publish-pop 480ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-  }
-
-  .just-published::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border: 2px dashed color-mix(in srgb, currentColor 55%, transparent);
-    border-radius: inherit;
-    pointer-events: none;
-    animation: draft-fade 480ms ease-out forwards;
-  }
-
-  @keyframes publish-pop {
-    0% {
-      transform: scale(1.012);
-      box-shadow: inset 0 0 0 0 transparent;
-    }
-    35% {
-      box-shadow: inset 0 0 0 2px color-mix(in srgb, currentColor 45%, transparent);
-    }
-    100% {
-      transform: scale(1);
-      box-shadow: inset 0 0 0 0 transparent;
-    }
-  }
-
-  @keyframes draft-fade {
-    from {
-      opacity: 1;
-    }
-    to {
-      opacity: 0;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .just-published,
-    .just-published::after {
-      animation: none;
-    }
-
-    .just-published::after {
-      opacity: 0;
-    }
-  }
-
-  /* Separador entre el contenido de la nota y sus acciones. Sólo existe en la
-     vista de cuadros: en la de lista los botones van al costado del contenido,
-     así que una línea horizontal no tiene sentido. El ::before ocupa el 100%
-     del ancho (flex-basis) y fuerza el salto, dejando los botones abajo. */
-  .note-actions.is-grid::before {
-    content: '';
-    flex-basis: 100%;
-    height: 1px;
-    margin-bottom: 0.5rem;
-    background: var(--nudo-border);
-  }
-</style>

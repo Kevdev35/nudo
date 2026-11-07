@@ -19,7 +19,9 @@ export default defineConfig({
 				'@components': './src/lib/ui/components',
 				'@layouts': './src/lib/ui/layouts',
 				'@stores': './src/lib/ui/stores',
-				'@config': './src/lib/config'
+				'@config': './src/lib/config',
+				'@lib': './src/lib',
+				'@img': './src/lib/assets/img'
 			},
 			compilerOptions: {
 				// Force runes mode for the project, except for libraries. Can be removed in svelte 6.

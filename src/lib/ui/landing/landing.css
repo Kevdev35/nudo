@@ -1,0 +1,187 @@
+
+.landing {
+  color-scheme: light;
+
+  /* Fondo y atmósfera */
+  --bg-page: #fbf9fe;
+  --bg-gradient: radial-gradient(circle at 75% 20%, #f1e4ff 0%, #faf5ff 40%, #ffffff 85%);
+  --blob-glow: #e2cbff;
+  --blob-fade: rgba(226, 203, 255, 0.15);
+  --dot: rgba(124, 58, 237, 0.12);
+
+  /* Texto */
+  --ink: #110d18;
+  --ink-soft: #2e263c;
+  --muted: #645b77;
+  --subtle: #988fa9;
+
+  /* Acento */
+  --accent: #7c3aed;
+  --accent-hover: #6d28d9;
+  --accent-light: #f3e8ff;
+  --accent-soft: rgba(124, 58, 237, 0.09);
+  --accent-border: #e4d4fc;
+  --accent-fg: #ffffff;
+
+  /* Cinta / marquee */
+  --strip: linear-gradient(90deg, #ede3f9 0%, #faedf9 50%, #ede3f9 100%);
+  --strip-shadow: inset 0 1px 3px rgba(124, 58, 237, 0.05);
+
+  /* Viñeta negativa ("Sin Nudo") */
+  --bad-bg: #f3eef8;
+  --bad-fg: #9a8fae;
+
+  /* Tarjetas y superficies */
+  --card-bg: #ffffff;
+  --card-bg-soft: rgba(255, 255, 255, 0.8);
+  --card-border: rgba(124, 58, 237, 0.12);
+  --card-shadow: 0 24px 48px -12px rgba(88, 28, 135, 0.12), 0 8px 24px -4px rgba(0, 0, 0, 0.04);
+  --card-shadow-soft: 0 12px 30px -8px rgba(88, 28, 135, 0.06);
+  --card-shadow-accent: 0 24px 48px -16px rgba(124, 58, 237, 0.22);
+  --orbiter-shadow: 0 16px 32px -8px rgba(88, 28, 135, 0.2), 0 2px 6px rgba(0, 0, 0, 0.03);
+
+  /* Navbar */
+  --nav-bg: rgba(255, 255, 255, 0.82);
+  --nav-bg-strong: rgba(255, 255, 255, 0.96);
+  --nav-border: rgba(124, 58, 237, 0.14);
+  --nav-shadow: 0 16px 36px -10px rgba(67, 24, 114, 0.1), 0 1px 2px rgba(0, 0, 0, 0.04);
+
+  /* Botón principal (CTA) y botón fantasma */
+  --cta-bg: #110d18;
+  --cta-bg-hover: #231b32;
+  --cta-fg: #ffffff;
+  --cta-shadow: 0 4px 12px rgba(17, 13, 24, 0.15);
+  --cta-shadow-hover: 0 8px 22px rgba(124, 58, 237, 0.28);
+  --ghost-bg: rgba(255, 255, 255, 0.6);
+  --ghost-bg-hover: #ffffff;
+  --ghost-shadow-hover: 0 6px 16px rgba(124, 58, 237, 0.1);
+
+  /* Superficie invertida (footer y CTA oscura) */
+  --invert-bg: #110d18;
+  --invert-fg: #ffffff;
+  --invert-text: #bfb4d2;
+  --invert-muted: #8f84a6;
+  --invert-link: #cfc6de;
+  --invert-border: rgba(255, 255, 255, 0.1);
+  --invert-glow: rgba(168, 85, 247, 0.45);
+
+  /* Detalles del hero */
+  --bar: #ebdcfc;
+  --ring: rgba(124, 58, 237, 0.24);
+
+  /* Mock de producto (sección Funciones) */
+  --mock-bg: rgba(255, 255, 255, 0.96);
+  --mock-border: rgba(124, 58, 237, 0.18);
+  --mock-shadow: 0 28px 60px -18px rgba(88, 28, 135, 0.3);
+  --mock-line: #f0e6ff;
+  --pane-bg: #faf7ff;
+  --pane-border: #f0e6ff;
+  --pane-inset: #ffffff;
+  --ghost-btn-bg: rgba(255, 255, 255, 0.7);
+  --panel-gradient: radial-gradient(circle at 85% 15%, #f1e4ff 0%, #faf5ff 55%, #ffffff 100%);
+  --line-soft: #e8dcf7;
+  --info-bg: #e0f2fe;
+  --info-fg: #0284c7;
+
+  /* Grano del hero */
+  --noise-opacity: 0.045;
+
+  --nav-h: 88px;
+  --radius-pill: 9999px;
+}
+
+.dark .landing {
+  color-scheme: dark;
+
+  /* Fondo y atmósfera */
+  --bg-page: var(--nudo-bg, #0f0a14);
+  --bg-gradient: radial-gradient(circle at 75% 20%, rgba(168, 85, 247, 0.16) 0%, rgba(15, 10, 20, 1) 40%, #0f0a14 85%);
+  --blob-glow: rgba(168, 85, 247, 0.28);
+  --blob-fade: rgba(168, 85, 247, 0.08);
+  --dot: rgba(167, 139, 250, 0.16);
+
+  /* Texto: valores propios, no los `--nudo-text-*` de la app, porque el
+     terciario del tema oscuro (#525252) no se lee sobre este fondo. */
+  --ink: #f8f5ff;
+  --ink-soft: #cbc4e4;
+  --muted: #a29ab8;
+  --subtle: #7d7495;
+
+  /* Acento */
+  --accent: #a78bfa;
+  --accent-hover: #c4b5fd;
+  --accent-light: rgba(167, 139, 250, 0.16);
+  --accent-soft: rgba(167, 139, 250, 0.14);
+  --accent-border: rgba(167, 139, 250, 0.34);
+  --accent-fg: #140f1f;
+
+  /* Cinta / marquee */
+  --strip: linear-gradient(
+    90deg,
+    rgba(167, 139, 250, 0.14) 0%,
+    rgba(168, 85, 247, 0.08) 50%,
+    rgba(167, 139, 250, 0.14) 100%
+  );
+  --strip-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+  /* Viñeta negativa ("Sin Nudo") */
+  --bad-bg: rgba(255, 255, 255, 0.06);
+  --bad-fg: #8d84a3;
+
+  /* Tarjetas y superficies */
+  --card-bg: var(--nudo-surface, #1a1625);
+  --card-bg-soft: rgba(26, 22, 37, 0.9);
+  --card-border: rgba(167, 139, 250, 0.22);
+  --card-shadow: 0 32px 64px -24px rgba(124, 58, 237, 0.45), 0 2px 6px rgba(0, 0, 0, 0.35);
+  --card-shadow-soft: 0 12px 30px -8px rgba(0, 0, 0, 0.35);
+  --card-shadow-accent: 0 24px 48px -16px rgba(124, 58, 237, 0.32);
+  --orbiter-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.55), 0 2px 6px rgba(0, 0, 0, 0.35);
+
+  /* Navbar */
+  --nav-bg: rgba(26, 22, 37, 0.82);
+  --nav-bg-strong: rgba(26, 22, 37, 0.96);
+  --nav-border: rgba(167, 139, 250, 0.28);
+  --nav-shadow: 0 20px 40px -16px rgba(124, 58, 237, 0.25), 0 1px 2px rgba(0, 0, 0, 0.4);
+
+  /* Botón principal (CTA) y botón fantasma: en oscuro el CTA pasa a claro
+     (texto oscuro) para no quedar blanco sobre blanco. */
+  --cta-bg: #f8f5ff;
+  --cta-bg-hover: #ffffff;
+  --cta-fg: #140f1f;
+  --cta-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+  --cta-shadow-hover: 0 10px 26px rgba(167, 139, 250, 0.35);
+  --ghost-bg: rgba(167, 139, 250, 0.08);
+  --ghost-bg-hover: rgba(167, 139, 250, 0.16);
+  --ghost-shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.3);
+
+  /* Superficie invertida (footer y CTA oscura): en oscuro se hunde un poco
+     más que el fondo para separarse de la página, y el texto sigue claro. */
+  --invert-bg: #0b0810;
+  --invert-fg: #f8f5ff;
+  --invert-text: #b9b0cc;
+  --invert-muted: #8d84a0;
+  --invert-link: #d5cde6;
+  --invert-border: rgba(255, 255, 255, 0.08);
+  --invert-glow: rgba(168, 85, 247, 0.28);
+
+  /* Detalles del hero */
+  --bar: rgba(167, 139, 250, 0.24);
+  --ring: rgba(167, 139, 250, 0.24);
+
+  /* Mock de producto (sección Funciones) */
+  --mock-bg: rgba(26, 22, 37, 0.96);
+  --mock-border: rgba(167, 139, 250, 0.28);
+  --mock-shadow: 0 28px 60px -18px rgba(0, 0, 0, 0.65);
+  --mock-line: rgba(167, 139, 250, 0.18);
+  --pane-bg: rgba(167, 139, 250, 0.07);
+  --pane-border: rgba(167, 139, 250, 0.18);
+  --pane-inset: rgba(255, 255, 255, 0.05);
+  --ghost-btn-bg: rgba(255, 255, 255, 0.04);
+  --panel-gradient: radial-gradient(circle at 85% 15%, rgba(168, 85, 247, 0.14) 0%, rgba(20, 16, 28, 1) 55%, #141414 100%);
+  --line-soft: rgba(167, 139, 250, 0.24);
+  --info-bg: rgba(56, 189, 248, 0.16);
+  --info-fg: #7dd3fc;
+
+  /* Grano del hero */
+  --noise-opacity: 0.025;
+}

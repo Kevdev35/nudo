@@ -99,7 +99,7 @@
     </div>
 
     <!-- Hero del cliente -->
-    <header class="flex items-center justify-between flex-wrap gap-5 max-md:flex-col max-md:items-start">
+    <header class="flex flex-col gap-4">
         <div class="flex flex-col gap-1 min-w-0">
             <h1
                 class="font-extrabold text-nudo-text-primary uppercase leading-none tracking-tight m-0"
@@ -108,68 +108,56 @@
                 {data.client.name}
             </h1>
             {#if data.client.notes}
-                <p class="text-nudo-text-secondary text-sm m-0 mt-1 max-w-[560px] whitespace-pre-line break-words">
+                <p class="text-nudo-text-secondary text-sm m-0 mt-1 max-w-[60ch] whitespace-pre-line break-words">
                     {data.client.notes}
                 </p>
             {/if}
         </div>
 
-        <div
-            class="flex flex-col gap-3 bg-nudo-surface rounded-2xl py-3 px-5 shrink-0 max-w-full md:max-w-[340px]"
-            role="list"
-            aria-label="Detalles del cliente"
-        >
-            {#if data.client.email || data.client.phone || data.client.location}
-                <div class="flex flex-col gap-2 min-w-0">
-                    {#if data.client.email}
-                        <div class="flex items-start gap-2 min-w-0" role="listitem">
-                            <i class="ri-mail-line text-nudo-text-tertiary text-base mt-0.5 shrink-0" aria-hidden="true"></i>
-                            <a
-                                href="mailto:{data.client.email}"
-                                class="text-sm font-semibold text-nudo-text-primary no-underline hover:underline break-all"
-                            >
-                                {data.client.email}
-                            </a>
-                        </div>
-                    {/if}
-                    {#if data.client.phone}
-                        <div class="flex items-start gap-2 min-w-0" role="listitem">
-                            <i class="ri-phone-line text-nudo-text-tertiary text-base mt-0.5 shrink-0" aria-hidden="true"></i>
-                            <a
-                                href="tel:{data.client.phone}"
-                                class="text-sm font-semibold text-nudo-text-primary no-underline hover:underline break-words"
-                            >
-                                {data.client.phone}
-                            </a>
-                        </div>
-                    {/if}
-                    {#if data.client.location}
-                        <div class="flex items-start gap-2 min-w-0" role="listitem">
-                            <i class="ri-map-pin-line text-nudo-text-tertiary text-base mt-0.5 shrink-0" aria-hidden="true"></i>
-                            <span class="text-sm font-semibold text-nudo-text-primary whitespace-pre-line break-words">
-                                {data.client.location}
-                            </span>
-                        </div>
-                    {/if}
-                </div>
+        <ul class="flex flex-wrap gap-2" aria-label="Detalles del cliente">
+            {#if data.client.email}
+                <li class="min-w-0 max-w-full">
+                    <a
+                        href="mailto:{data.client.email}"
+                        title={data.client.email}
+                        class="flex items-center gap-2 rounded-full bg-white/5 px-4 py-2 text-sm text-nudo-text-primary ring-1 ring-white/10 transition-colors hover:bg-white/10"
+                    >
+                        <i class="ri-mail-line shrink-0 text-nudo-text-tertiary"></i>
+                        <span class="truncate">{data.client.email}</span>
+                    </a>
+                </li>
             {/if}
-            <div class="flex items-center gap-5 border-t border-nudo-border pt-3">
-                <div class="flex flex-col gap-px whitespace-nowrap" role="listitem">
-                    <span class="text-xs text-nudo-text-secondary font-medium">Creado</span>
-                    <span class="text-sm font-bold text-nudo-text-primary">{formatDate(data.client.createdAt)}</span>
-                </div>
-                <div class="flex flex-col gap-px whitespace-nowrap" role="listitem">
-                    <span class="text-xs text-nudo-text-secondary font-medium">Proyectos</span>
-                    <span class="text-sm font-bold text-nudo-text-primary">{data.projects.length}</span>
-                </div>
-            </div>
-        </div>
+            {#if data.client.phone}
+                <li>
+                    <a
+                        href="tel:{data.client.phone.replace(/[^\d+]/g, '')}"
+                        class="flex items-center gap-2 rounded-full bg-white/5 px-4 py-2 text-sm text-nudo-text-primary ring-1 ring-white/10 transition-colors hover:bg-white/10"
+                    >
+                        <i class="ri-phone-line shrink-0 text-nudo-text-tertiary"></i>
+                        <span class="whitespace-nowrap">{data.client.phone}</span>
+                    </a>
+                </li>
+            {/if}
+            {#if data.client.location}
+                <li class="flex items-center gap-2 rounded-full bg-white/5 px-4 py-2 text-sm text-nudo-text-primary ring-1 ring-white/10">
+                    <i class="ri-map-pin-line shrink-0 text-nudo-text-tertiary"></i>
+                    <span class="whitespace-nowrap">{data.client.location}</span>
+                </li>
+            {/if}
+            <li class="flex items-center gap-2 rounded-full bg-white/5 px-4 py-2 text-sm text-nudo-text-primary ring-1 ring-white/10">
+                <i class="ri-calendar-line shrink-0 text-nudo-text-tertiary"></i>
+                <span class="whitespace-nowrap">Creado {formatDate(data.client.createdAt)}</span>
+            </li>
+        </ul>
     </header>
 
     <!-- Proyectos del cliente -->
     <section class="flex flex-col gap-3">
         <div class="flex items-center justify-between gap-3">
-            <h2 class="text-nudo-text-primary text-lg font-extrabold tracking-tight m-0">Proyectos</h2>
+            <div class="flex items-center gap-3 font-bold">
+                <h2 class="text-nudo-text-primary text-lg font-extrabold tracking-tight m-0">Proyectos</h2>
+                <span class="text-sm font-bold text-nudo-text-primary">{data.projects.length}</span>
+            </div>
             <button
                 type="button"
                 onclick={openProject}

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Logo from "./Logo.svelte";
+    import Logo from "@lib/assets/logotipo.svg";
     let { data, onmenuclick }: { data: { user?: { name?: string | null } | null }; onmenuclick?: () => void } = $props()
 </script>
 
@@ -15,7 +15,10 @@
                 <i class="ri-menu-line text-xl" aria-hidden="true"></i>
             </button>
         {/if}
-        <Logo showBadge={false}/>
+        
+        <a href="/" class="inline-flex items-center text-center justify-center">
+            <img src={Logo} alt="Logotipo de NUDO" class="h-7 w-auto -translate-y-[3px]" />
+        </a>
         <span class="text-nudo-text-tertiary hidden sm:inline">|</span>
         <h1 class="text-lg font-semibold text-nudo-text-secondary m-0 hidden sm:block">Hola, {data.user?.name ?? 'de nuevo'}!</h1>
     </div>

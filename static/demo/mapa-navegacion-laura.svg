@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" role="img" aria-labelledby="title desc">
+  <title id="title">Mapa de navegación — Portfolio Laura</title>
+  <desc id="desc">Diagrama de las páginas del portfolio: home, sesiones, blog, sobre mí y contacto, con sus vistas de detalle.</desc>
+  <defs>
+    <style>
+      .bg { fill: #f7f5f1; }
+      .node { fill: #ffffff; stroke: #c2694f; stroke-width: 2; }
+      .node-soft { fill: #ffffff; stroke: rgba(28, 27, 25, 0.18); stroke-width: 2; }
+      .label { fill: #1c1b19; font-family: Inter, system-ui, sans-serif; font-size: 22px; font-weight: 600; }
+      .sub { fill: #6b6560; font-family: Inter, system-ui, sans-serif; font-size: 15px; font-weight: 400; }
+      .eyebrow { fill: #c2694f; font-family: Inter, system-ui, sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+      .edge { fill: none; stroke: rgba(28, 27, 25, 0.35); stroke-width: 2; stroke-dasharray: 6 7; }
+      .edge-solid { fill: none; stroke: #c2694f; stroke-width: 2; }
+      .head { fill: #1c1b19; font-family: Fraunces, Georgia, serif; font-size: 34px; font-weight: 600; }
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(28, 27, 25, 0.45)" />
+    </marker>
+    <marker id="arrow-accent" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#c2694f" />
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1200" height="800" rx="0" />
+  <text class="eyebrow" x="70" y="72">Arquitectura de información</text>
+  <text class="head" x="70" y="118">Mapa de navegación y modelo de contenido</text>
+  <text class="sub" x="70" y="148">Portfolio Laura · versión 2 · 28 oct 2026</text>
+
+  <!-- Home -->
+  <rect class="node" x="470" y="205" width="260" height="88" rx="18" />
+  <text class="label" x="600" y="243" text-anchor="middle">Home</text>
+  <text class="sub" x="600" y="270" text-anchor="middle">Hero + galería destacada</text>
+
+  <!-- Sesiones -->
+  <rect class="node-soft" x="150" y="380" width="240" height="84" rx="18" />
+  <text class="label" x="270" y="416" text-anchor="middle">Sesiones</text>
+  <text class="sub" x="270" y="442" text-anchor="middle">Archivo filtrable</text>
+
+  <!-- Blog -->
+  <rect class="node-soft" x="480" y="380" width="240" height="84" rx="18" />
+  <text class="label" x="600" y="416" text-anchor="middle">Blog</text>
+  <text class="sub" x="600" y="442" text-anchor="middle">Listado de entradas</text>
+
+  <!-- Sobre mí -->
+  <rect class="node-soft" x="810" y="380" width="240" height="84" rx="18" />
+  <text class="label" x="930" y="416" text-anchor="middle">Sobre mí</text>
+  <text class="sub" x="930" y="442" text-anchor="middle">Bio + servicios</text>
+
+  <!-- Contacto -->
+  <rect class="node-soft" x="810" y="580" width="240" height="84" rx="18" />
+  <text class="label" x="930" y="616" text-anchor="middle">Contacto</text>
+  <text class="sub" x="930" y="642" text-anchor="middle">Formulario con Resend</text>
+
+  <!-- Detalle sesión -->
+  <rect class="node-soft" x="150" y="580" width="240" height="84" rx="18" />
+  <text class="label" x="270" y="616" text-anchor="middle">Detalle de sesión</text>
+  <text class="sub" x="270" y="642" text-anchor="middle">Galería + lightbox</text>
+
+  <!-- Detalle post -->
+  <rect class="node-soft" x="480" y="580" width="240" height="84" rx="18" />
+  <text class="label" x="600" y="616" text-anchor="middle">Detalle de entrada</text>
+  <text class="sub" x="600" y="642" text-anchor="middle">Lectura + compartir</text>
+
+  <!-- Aristas desde Home -->
+  <path class="edge" d="M 500 293 C 430 330, 360 340, 290 378" marker-end="url(#arrow)" />
+  <path class="edge" d="M 588 293 L 598 378" marker-end="url(#arrow)" />
+  <path class="edge" d="M 700 293 C 770 330, 840 340, 910 378" marker-end="url(#arrow)" />
+  <path class="edge" d="M 712 275 C 850 320, 980 430, 970 578" marker-end="url(#arrow)" />
+
+  <!-- Aristas de detalle -->
+  <path class="edge" d="M 270 464 L 270 578" marker-end="url(#arrow)" />
+  <path class="edge" d="M 600 464 L 600 578" marker-end="url(#arrow)" />
+
+  <!-- Detalle -> Contacto -->
+  <path class="edge-solid" d="M 390 622 C 560 622, 650 622, 808 622" marker-end="url(#arrow-accent)" />
+  <text class="sub" x="600" y="606" text-anchor="middle" fill="#c2694f">CTA: agendar sesión</text>
+</svg>

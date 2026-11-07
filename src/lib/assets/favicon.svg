@@ -1,17 +1,24 @@
-<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Fondo Base Dark con Bordes Suaves -->
-  <rect width="64" height="64" rx="16" fill="#16161A"/>
-  <rect width="64" height="64" rx="16" stroke="#FFFFFF" stroke-opacity="0.1" stroke-width="1.5"/>
-
-  <!-- Columna Izquierda -->
-  <path d="M 19 46 V 18" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round"/>
-
-  <!-- Diagonal de Conexión -->
-  <path d="M 19 18 L 45 46" stroke="#FFFFFF" stroke-opacity="0.4" stroke-width="8" stroke-linecap="round"/>
-
-  <!-- Columna Derecha Crimson Rose -->
-  <path d="M 45 46 V 18" stroke="#E11D48" stroke-width="8" stroke-linecap="round"/>
-
-  <!-- Nodo Central -->
-  <circle cx="32" cy="32" r="5" fill="#FFFFFF"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 30.393 30.393">
+  <defs>
+    <style>
+      .cls-1{fill:#ffffff;stroke:#000000;stroke-width:0.5;stroke-miterlimit:10}
+      .cls-2{fill:#000000}
+    </style>
+  </defs>
+  <title>Untitled-7</title>
+  <metadata>
+    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+      <rdf:Description rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:title>Untitled-7</dc:title>
+        <dc:date>2026-11-07T23:01:36Z</dc:date>
+      </rdf:Description>
+    </rdf:RDF>
+  </metadata>
+  <g id="Layer_1" data-name="Layer 1">
+    <path d="M9.074 0.25 L21.319 0.25 C26.192 0.25 30.143 4.201 30.143 9.074 L30.143 21.319 C30.143 26.192 26.192 30.143 21.319 30.143 L9.074 30.143 C4.201 30.143 0.25 26.192 0.25 21.319 L0.25 9.074 C0.25 4.201 4.201 0.25 9.074 0.25 Z" class="cls-1"/>
+    <path d="M23.987 10.059 L26.81 10.06 C26.798 11.877 26.896 13.725 26.804 15.538 C26.637 18.833 23.753 21.141 20.513 20.707 C19.664 20.594 18.796 20.286 18.092 19.793 C17.395 19.305 16.868 18.692 16.282 18.084 C15.254 17.018 14.256 15.922 13.226 14.857 C12.542 14.15 11.87 13.266 10.94 12.879 C10.547 12.715 10.135 12.579 9.706 12.553 C8.14 12.455 6.599 13.514 6.458 15.142 C6.418 15.601 6.448 16.078 6.449 16.539 C6.451 17.432 6.453 18.326 6.449 19.22 C6.447 19.682 6.466 20.147 6.434 20.609 L3.564 20.611 C3.538 19.819 3.558 19.024 3.557 18.231 C3.556 17.232 3.539 16.229 3.559 15.23 C3.577 14.288 3.894 13.32 4.378 12.518 C6.1 9.662 9.822 8.828 12.688 10.459 C13.898 11.148 14.772 12.19 15.709 13.197 C16.428 13.968 17.166 14.72 17.883 15.493 C18.456 16.111 19.181 17.034 19.897 17.446 C21.504 18.372 23.609 17.512 23.938 15.639 C24.06 14.945 23.987 14.215 23.992 13.513 C24.001 12.362 24.004 11.21 23.987 10.059 Z" class="cls-2"/>
+    <path d="M12.345 15.317 C12.999 15.963 13.638 16.626 14.273 17.29 C14.44 17.465 14.972 17.942 15.038 18.137 C15.105 18.336 15.059 18.613 15.059 18.821 C15.061 19.417 15.073 20.012 15.052 20.608 L12.309 20.624 C12.289 18.857 12.292 17.083 12.345 15.317 Z" class="cls-2"/>
+  </g>
 </svg>

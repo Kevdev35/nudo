@@ -21,7 +21,7 @@
     >
         <i class="ri-sparkling-2-line text-lg shrink-0"></i>
         <span class="text-sm font-semibold whitespace-nowrap transition-all duration-500
-            {expanded ? 'opacity-100 max-w-[200px]' : 'opacity-0 max-w-0'}">
+            {expanded ? 'opacity-100 max-w-50' : 'opacity-0 max-w-0'}">
             Nuevas funciones
         </span>
     </a>

@@ -109,6 +109,11 @@
         window.addEventListener('resize', onResize);
         return () => window.removeEventListener('resize', onResize);
     });
+
+    
+    function formatDate(d: Date | string): string {
+        return new Date(d).toLocaleDateString("es-ES", { day: "numeric", month: "short", year: "numeric" });
+    }
 </script>
 
 <svelte:head>
@@ -204,7 +209,7 @@
                 {/if}
                 <div class="flex flex-col gap-px whitespace-nowrap" role="listitem">
                     <span class="text-xs text-nudo-text-secondary font-medium">Creado</span>
-                    <span class="text-base font-bold text-nudo-text-primary">{data.project.createdAt}</span>
+                    <span class="text-base font-bold text-nudo-text-primary">{formatDate(data.project.createdAt)}</span>
                 </div>
                 <span class="w-px h-[22px] bg-nudo-border shrink-0" aria-hidden="true"></span>
                 <div class="flex flex-col gap-px whitespace-nowrap" role="listitem">
