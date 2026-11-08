@@ -22,5 +22,5 @@
 
 <section class="app-shell bg-nudo-bg min-h-screen">
 	{@render children()}
-	<FloatBtn />
+	
 </section>

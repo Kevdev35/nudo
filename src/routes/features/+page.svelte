@@ -1,4 +1,6 @@
 <script lang="ts">
+    import Logo from "@lib/assets/logotipo.svg";
+
     const versions = [
         {
             version: '0.5',
@@ -88,56 +90,71 @@
     };
 </script>
 
-<h1 class="text-nudo-text-primary font-extrabold tracking-tight m-0 mb-2" style="font-size:clamp(24px,3vw,34px)">
-    Changelog
-</h1>
-<p class="text-sm text-nudo-text-secondary m-0 mb-8">
-    Historial de versiones y funcionalidades de Nudo.
-</p>
-
-<div class="flex flex-col gap-10">
-    {#each versions as v, i}
-        <div class="relative flex gap-6">
-            {#if i < versions.length - 1}
-                <div class="absolute left-[15px] top-[36px] bottom-0 w-px bg-nudo-border"></div>
-            {/if}
-
-            <div class="relative z-10 w-8 h-8 rounded-full bg-nudo-surface border-2 border-nudo-border flex items-center justify-center shrink-0 mt-1">
-                <span class="text-xs font-bold text-nudo-text-secondary">{v.version.split('.')[0]}</span>
-            </div>
-
-            <div class="flex-1 min-w-0">
-                <div class="flex items-center gap-3 mb-3 flex-wrap">
-                    <h2 class="text-lg font-extrabold text-nudo-text-primary m-0">
-                        v{v.version} — {v.title}
-                    </h2>
-                    {#if v.tag}
-                        <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full {v.tagColor}">
-                            {v.tag}
-                        </span>
-                    {/if}
-                    <span class="text-xs text-nudo-text-tertiary">{v.date}</span>
-                </div>
-
-                <div class="flex flex-col gap-1.5">
-                    {#each v.changes as change}
-                        <div class="flex items-center gap-3 py-1.5">
-                            <i class="{change.icon} text-base text-nudo-text-tertiary w-5 text-center shrink-0" aria-hidden="true"></i>
-                            <span class="text-sm text-nudo-text-primary flex-1">{change.text}</span>
-                            <span class="text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-md {typeStyles[change.type]} shrink-0">
-                                {typeLabels[change.type]}
-                            </span>
-                        </div>
-                    {/each}
-                </div>
-            </div>
+<section class="p-20">
+    <nav class="text-black dark:text-white flex justify-between mb-8">
+        <div class="inline-flex justify-start gap-2 font-bold">
+            <i class="ri-arrow-left-line"></i>
+            <a href="/" class="">Atras</a>
         </div>
-    {/each}
-</div>
 
-<div class="mt-10 p-5 bg-nudo-surface rounded-3xl text-center">
-    <p class="text-sm text-nudo-text-secondary m-0">
-        Próximamente más funcionalidades.
-        <span class="font-semibold text-nudo-text-primary">Nudo</span> está en desarrollo activo.
+        <div class="">
+            <img src={Logo} alt="Logotipo de NUDO" class="h-10 w-auto -translate-y-[3px]" />
+        </div>
+
+        <div></div>
+    </nav>
+    <h1 class="text-nudo-text-primary font-extrabold tracking-tight m-0 mb-2" style="font-size:clamp(24px,3vw,34px)">
+        Changelog
+    </h1>
+    <p class="text-sm text-nudo-text-secondary m-0 mb-8">
+        Historial de versiones y funcionalidades de Nudo.
     </p>
-</div>
+
+    <div class="flex flex-col gap-10">
+        {#each versions as v, i}
+            <div class="relative flex gap-6">
+                {#if i < versions.length - 1}
+                    <div class="absolute left-[15px] top-[36px] bottom-0 w-px bg-nudo-border"></div>
+                {/if}
+
+                <div class="relative z-10 w-8 h-8 rounded-full bg-nudo-surface border-2 border-nudo-border flex items-center justify-center shrink-0 mt-1">
+                    <span class="text-xs font-bold text-nudo-text-secondary">{v.version.split('.')[0]}</span>
+                </div>
+
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-3 mb-3 flex-wrap">
+                        <h2 class="text-lg font-extrabold text-nudo-text-primary m-0">
+                            v{v.version} — {v.title}
+                        </h2>
+                        {#if v.tag}
+                            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full {v.tagColor}">
+                                {v.tag}
+                            </span>
+                        {/if}
+                        <span class="text-xs text-nudo-text-tertiary">{v.date}</span>
+                    </div>
+
+                    <div class="flex flex-col gap-1.5">
+                        {#each v.changes as change}
+                            <div class="flex items-center gap-3 py-1.5">
+                                <i class="{change.icon} text-base text-nudo-text-tertiary w-5 text-center shrink-0" aria-hidden="true"></i>
+                                <span class="text-sm text-nudo-text-primary flex-1">{change.text}</span>
+                                <span class="text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-md {typeStyles[change.type]} shrink-0">
+                                    {typeLabels[change.type]}
+                                </span>
+                            </div>
+                        {/each}
+                    </div>
+                </div>
+            </div>
+        {/each}
+    </div>
+
+    <div class="mt-10 p-5 bg-nudo-surface rounded-3xl text-center">
+        <p class="text-sm text-nudo-text-secondary m-0">
+            Próximamente más funcionalidades.
+            <span class="font-semibold text-nudo-text-primary">Nudo</span> está en desarrollo activo.
+        </p>
+    </div>
+
+</section>

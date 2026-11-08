@@ -3,7 +3,7 @@
 	import type { ActionData } from './$types';
 	import Button from '@components/Button.svelte';
 
-  import Logo from '@ui/components/Logo.svelte';
+  import Logo from "@lib/assets/logotipo.svg"
 
 	let { form }: { form: ActionData } = $props();
 
@@ -17,11 +17,17 @@
 
 <section class="min-h-screen grid grid-cols-1 md:grid-cols-2 relative">
   <div
-    class="absolute inset-0 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px] mask-[radial-gradient(ellipse_50%_50%_at_50%_50%,#000_60%,transparent_100%)]"
+    class="absolute inset-0 h-full w-full dark:bg-dark bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px] mask-[radial-gradient(ellipse_50%_50%_at_50%_50%,#000_60%,transparent_100%)]"
   ></div>
 	<!-- Logo NUDO en la esquina superior izquierda -->
 	<div class="absolute top-6 left-8 z-10">
-		<Logo showBadge={false}/>
+    <a
+      aria-label="NUDO, inicio"
+      href="/"
+      class="inline-flex items-center gap-2 text-[1.45rem] font-extrabold tracking-[-0.04em] text-(color:--ink) max-[960px]:-order-1"
+    >
+      <img src={Logo} alt="Logotipo de NUDO" class="h-7 w-auto -translate-y-[3px]" />
+    </a>
 	</div>
 
 	<!-- Columna Formulario -->
